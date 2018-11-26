@@ -3,10 +3,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[[source]]
+url = "https://www-dev:wuppie@nexus.iapc.utwente.nl/repository/pypi-releases/simple"
+verify_ssl = true
+name = "iapc-releases"
+
 [packages]
 django = ">=2.1,<2.2"
 django-modeltranslation = "==0.13b1"
 django-polymorphic = "==2.0.3"
+pysidian-core = ">=0.0.2"
 
 [dev-packages]
 
