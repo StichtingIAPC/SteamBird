@@ -67,14 +67,18 @@ class Course(models.Model):
     module = models.ForeignKey(Module, on_delete=SET_NULL, null=True,
                                verbose_name=_("Links course to possible module (maths) if needed"))
     course_code = models.IntegerField(verbose_name=_("Course code of module, references Osiris"), unique=True)
-    teacher_id = models.ForeignKey(Teacher, on_delete=SET_NULL, null=True)
+    teacher = models.ManyToManyField(Teacher)
     name = models.CharField(max_length=50, verbose_name=_("Name of Course"))
     year = models.IntegerField()
+    materials = models.ManyToManyField('MaterialSelectionProcess')
+    updated_teacher = models.BooleanField(default=False, verbose_name=_("Has the course been marked updated by the teacher for this year?"))
+    updated_IAPC = models.BooleanField(default=False, verbose_name=_("Have we already checked this course this year?"))
 
 
 class Study(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("Name of the study, e.g. Creative Technology"))
     study_type = models.CharField(max_length=5, choices=[(study_type, study_type.value) for study_type in StudyType])
+    courses = models.ManyToManyField(Course, through='StudyCourse', through_fields=('study', 'course'))
 
 
 class StudyCourse(models.Model):
@@ -86,20 +90,26 @@ class StudyCourse(models.Model):
     period = models.CharField(max_length=10, choices=[(period, period.value) for period in Period])
 
 
-class StudyMaterial(PolymorphicModel):
+class StudyMaterial(models.Model):
+    pass
+
+
+class StudyMaterialEdition(PolymorphicModel):
     name = models.CharField(null=False, blank=False, max_length=255)
+    material_type = models.ForeignKey(StudyMaterial, on_delete=models.DO_NOTHING)
 
 
-class OtherMaterials(StudyMaterial):
+class OtherMaterials(StudyMaterialEdition):
     """"Use if material is any material other than a scientific article or a book"""
     pass
 
 
-class Book(StudyMaterial):
+class Book(StudyMaterialEdition):
     ISBN = models.CharField(null=False, unique=True, verbose_name=_("ISBN 13, used if book is from after 2007"),
                             max_length=13)
     author = models.CharField(null=False, blank=False, verbose_name=_(
         "Author names, these should be added automatically based on the ISBN search"), max_length=1000)
+    img = models.URLField()
     year_of_publishing = models.IntegerField(max_length=4)
 
     def validate_ISBN(self, ISBN):
@@ -109,7 +119,7 @@ class Book(StudyMaterial):
             raise ValueError("ISBN does not match either known lengths")
 
 
-class ScientificArticle(StudyMaterial):
+class ScientificArticle(StudyMaterialEdition):
     DOI = models.CharField(null=False, blank=True, verbose_name=_(
         "Digital Object Identifier used for most Scientific Articles. Unique per article, if it has one (conference proceedings don't tend to have one)"),
                            max_length=255)
@@ -118,9 +128,8 @@ class ScientificArticle(StudyMaterial):
     year_of_publishing = models.IntegerField(max_length=4)
 
 
-class MaterialCourse(models.Model):
-    class Meta:
-        unique_together = (('material', 'course'),)
-
-    material = models.ForeignKey(StudyMaterial, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+class MaterialSelectionProcess(models.Model):
+    osiris_specified_material = models.ForeignKey(StudyMaterialEdition, null=True, on_delete=SET_NULL, related_name='process_in_osiris')
+    available_materials = models.ManyToManyField(StudyMaterialEdition, related_name='process_is_available')
+    approved_material = models.ForeignKey(StudyMaterialEdition, null=True, on_delete=SET_NULL, related_name='process_is_approved')
+    reason = models.CharField(max_length=255, verbose_name=_("Reason why there is a difference between Osiris and availability"), null=True)
