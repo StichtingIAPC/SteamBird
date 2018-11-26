@@ -44,12 +44,12 @@ class Teacher(models.Model):
     titles = models.CharField(max_length=50)
     initials = models.CharField(max_length=15)
     first_name = models.CharField(max_length=50)
-    surname_prefix = models.CharField(max_length=50)
+    surname_prefix = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
     active = models.BooleanField(verbose_name=_("Is the teacher still active at the UT?"), default=True, )
     retired = models.BooleanField(verbose_name=_("Is the teacher retried?"), default=False)
-    last_login = models.DateTimeField(verbose_name=_("Last Login"))
+    last_login = models.DateTimeField(verbose_name=_("Last Login"), null=True, blank=True)
 
 
 class Module(models.Model):
@@ -80,6 +80,9 @@ class Study(models.Model):
     study_type = models.CharField(max_length=5, choices=[(study_type, study_type.value) for study_type in StudyType])
     courses = models.ManyToManyField(Course, through='StudyCourse', through_fields=('study', 'course'))
 
+    class Meta:
+        verbose_name_plural = "studies"
+
 
 class StudyCourse(models.Model):
     class Meta:
@@ -96,10 +99,10 @@ class StudyMaterial(models.Model):
 
 class StudyMaterialEdition(PolymorphicModel):
     name = models.CharField(null=False, blank=False, max_length=255)
-    material_type = models.ForeignKey(StudyMaterial, on_delete=models.DO_NOTHING)
+    material_type = models.ForeignKey(StudyMaterial, on_delete=models.DO_NOTHING, null=True)
 
 
-class OtherMaterials(StudyMaterialEdition):
+class OtherMaterial(StudyMaterialEdition):
     """"Use if material is any material other than a scientific article or a book"""
     pass
 
