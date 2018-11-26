@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db import models
 from django.db.models import SET_NULL
 from django.utils.translation import ugettext_lazy as _
@@ -41,44 +40,72 @@ class Period(Enum):
 
 
 class Teacher(models.Model):
-    titles = models.CharField(max_length=50)
-    initials = models.CharField(max_length=15)
-    first_name = models.CharField(max_length=50)
-    surname_prefix = models.CharField(max_length=50, null=True, blank=True)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField()
-    active = models.BooleanField(verbose_name=_("Is the teacher still active at the UT?"), default=True, )
-    retired = models.BooleanField(verbose_name=_("Is the teacher retried?"), default=False)
-    last_login = models.DateTimeField(verbose_name=_("Last Login"), null=True, blank=True)
+    titles = models.CharField(max_length=50, verbose_name=_("Academic titles"))
+    initials = models.CharField(max_length=15, verbose_name=_("Initials"))
+    first_name = models.CharField(max_length=50, verbose_name=_("First name"))
+    surname_prefix = models.CharField(
+        max_length=50, null=True, blank=True,
+        verbose_name=_("Surname prefix"))
+    last_name = models.CharField(max_length=50, verbose_name=_("Last name"))
+    email = models.EmailField(verbose_name=_("Email"))
+    active = models.BooleanField(default=True, verbose_name=_("Active"))
+    retired = models.BooleanField(default=False, verbose_name=_("Retired"))
+    last_login = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Time of last login"))
 
 
 class Module(models.Model):
     name = models.CharField(max_length=80, verbose_name=_("Name of module"))
-    course_code = models.IntegerField(verbose_name=_("Course code of module, references Osiris"), unique=True)
-    coordinator = models.ForeignKey(Teacher, on_delete=SET_NULL, null=True,
-                                    verbose_name=_("Coordinator reference for a module, references the Teacher"))
-    module_moment = models.CharField(max_length=5, choices=[(moment, moment.value) for moment in ModuleMoment])
+    course_code = models.IntegerField(
+        unique=True,
+        verbose_name=_("Course code of module, references Osiris"))
+    coordinator = models.ForeignKey(
+        Teacher, on_delete=SET_NULL, null=True,
+        verbose_name=_(
+            "Coordinator reference for a module, references the Teacher"))
+    module_moment = models.CharField(
+        max_length=5,
+        choices=[(moment, moment.value) for moment in ModuleMoment],
+        verbose_name=_("Module quartile"))
 
 
 class Course(models.Model):
     class Meta:
         unique_together = (('course_code', 'year'),)
 
-    module = models.ForeignKey(Module, on_delete=SET_NULL, null=True,
-                               verbose_name=_("Links course to possible module (maths) if needed"))
-    course_code = models.IntegerField(verbose_name=_("Course code of module, references Osiris"), unique=True)
-    teacher = models.ManyToManyField(Teacher)
+    module = models.ForeignKey(
+        Module, on_delete=SET_NULL, null=True,
+        verbose_name=_("Links course to possible module (maths) if needed"))
+    course_code = models.IntegerField(
+        verbose_name=_("Course code of module, references Osiris"), unique=True)
+    teachers = models.ManyToManyField(
+        Teacher, verbose_name=_("List of teachers that teach this course"))
     name = models.CharField(max_length=50, verbose_name=_("Name of Course"))
-    year = models.IntegerField()
-    materials = models.ManyToManyField('MaterialSelectionProcess')
-    updated_teacher = models.BooleanField(default=False, verbose_name=_("Has the course been marked updated by the teacher for this year?"))
-    updated_IAPC = models.BooleanField(default=False, verbose_name=_("Have we already checked this course this year?"))
+    year = models.IntegerField(
+        verbose_name=_("The year this course takes place in"))
+    materials = models.ManyToManyField(
+        'MaterialSelectionProcess',
+        verbose_name=_("The list of materials relevant for this course"))
+    updated_teacher = models.BooleanField(
+        default=False,
+        verbose_name=_(
+            "Has the course been marked updated by the teacher for this year?"))
+    updated_IAPC = models.BooleanField(
+        default=False,
+        verbose_name=_("Have we already checked this course this year?"))
 
 
 class Study(models.Model):
-    name = models.CharField(max_length=100, verbose_name=_("Name of the study, e.g. Creative Technology"))
-    study_type = models.CharField(max_length=5, choices=[(study_type, study_type.value) for study_type in StudyType])
-    courses = models.ManyToManyField(Course, through='StudyCourse', through_fields=('study', 'course'))
+    name = models.CharField(
+        max_length=100,
+        verbose_name=_("Name of the study, e.g. Creative Technology"))
+    study_type = models.CharField(
+        max_length=5,
+        choices=[(study_type, study_type.value) for study_type in StudyType],
+        verbose_name=_("Type of study"))
+    courses = models.ManyToManyField(
+        Course, through='StudyCourse', through_fields=('study', 'course'),
+        verbose_name=_("List of courses"))
 
     class Meta:
         verbose_name_plural = "studies"
@@ -88,9 +115,15 @@ class StudyCourse(models.Model):
     class Meta:
         unique_together = (('course', 'study'),)
 
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    study = models.ForeignKey(Study, on_delete=models.CASCADE)
-    period = models.CharField(max_length=10, choices=[(period, period.value) for period in Period])
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE,
+        verbose_name=_("Course"))
+    study = models.ForeignKey(
+        Study, on_delete=models.CASCADE,
+        verbose_name=_("Study"))
+    period = models.CharField(
+        max_length=10, choices=[(period, period.value) for period in Period],
+        verbose_name=_("Period this relationship is relevant in"))
 
 
 class StudyMaterial(models.Model):
@@ -98,23 +131,42 @@ class StudyMaterial(models.Model):
 
 
 class StudyMaterialEdition(PolymorphicModel):
-    name = models.CharField(null=False, blank=False, max_length=255)
-    material_type = models.ForeignKey(StudyMaterial, on_delete=models.DO_NOTHING, null=True)
+    # Could be derived from either OID or ISBN
+    name = models.CharField(
+        null=False, blank=False, max_length=255,
+        verbose_name=_("Name of the material"))
+
+    # The type if material, e.g. the list of different revisions of the book
+    material_type = models.ForeignKey(
+        StudyMaterial,
+        on_delete=models.DO_NOTHING,
+        null=True,
+        verbose_name=_("Material collection"))
 
 
 class OtherMaterial(StudyMaterialEdition):
-    """"Use if material is any material other than a scientific article or a book"""
+    """"
+    Use if material is any material other than a scientific article or a book
+    """
     pass
 
 
 class Book(StudyMaterialEdition):
-    ISBN = models.CharField(null=False, unique=True, verbose_name=_("ISBN 13, used if book is from after 2007"),
+    ISBN = models.CharField(null=False, unique=True,
+                            verbose_name=_("ISBN 10 or ISBN 13"),
                             max_length=13)
+    # Authors should be derived from the ISBN
     author = models.CharField(null=False, blank=False, verbose_name=_(
-        "Author names, these should be added automatically based on the ISBN search"), max_length=1000)
-    img = models.URLField()
-    year_of_publishing = models.IntegerField(max_length=4)
+        "Author names, comma separated"), max_length=1000)
+    # Cover image of the book, should be derived from ISBN
+    img = models.URLField(verbose_name=_("Link to cover image of book"))
 
+    # Year of publishing, should be derived from ISBN
+    year_of_publishing = models.IntegerField(
+        max_length=4,
+        verbose_name="Year this revision of the book was published.")
+
+    # noinspection PyPep8Naming,PyMethodMayBeStatic
     def validate_ISBN(self, ISBN):
         if len(ISBN) == 10 or len(ISBN) == 13:
             return
@@ -124,15 +176,29 @@ class Book(StudyMaterialEdition):
 
 class ScientificArticle(StudyMaterialEdition):
     DOI = models.CharField(null=False, blank=True, verbose_name=_(
-        "Digital Object Identifier used for most Scientific Articles. Unique per article, if it has one (conference proceedings don't tend to have one)"),
+        "Digital Object Identifier"),
                            max_length=255)
+
+    # List of authors, comma separated, should be derived from DOI
     author = models.CharField(null=False, blank=False, verbose_name=_(
-        "Author names, these should be added automatically based on the DOI search"), max_length=1000)
-    year_of_publishing = models.IntegerField(max_length=4)
+        "Author names, comma separated"), max_length=1000)
+
+    # Year of publishing, should be derived from OID
+    year_of_publishing = models.IntegerField(
+        max_length=4,
+        verbose_name="Year this revision of the book was published.")
 
 
 class MaterialSelectionProcess(models.Model):
-    osiris_specified_material = models.ForeignKey(StudyMaterialEdition, null=True, on_delete=SET_NULL, related_name='process_in_osiris')
-    available_materials = models.ManyToManyField(StudyMaterialEdition, related_name='process_is_available')
-    approved_material = models.ForeignKey(StudyMaterialEdition, null=True, on_delete=SET_NULL, related_name='process_is_approved')
-    reason = models.CharField(max_length=255, verbose_name=_("Reason why there is a difference between Osiris and availability"), null=True)
+    osiris_specified_material = models.ForeignKey(
+        StudyMaterialEdition, null=True, on_delete=SET_NULL,
+        related_name='process_in_osiris')
+    available_materials = models.ManyToManyField(
+        StudyMaterialEdition, related_name='process_is_available')
+    approved_material = models.ForeignKey(
+        StudyMaterialEdition, null=True, on_delete=SET_NULL,
+        related_name='process_is_approved')
+    reason = models.CharField(
+        max_length=255, null=True,
+        verbose_name=_(
+            "Reason why there is a difference between Osiris and availability"))
