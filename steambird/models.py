@@ -53,6 +53,9 @@ class Teacher(models.Model):
     last_login = models.DateTimeField(
         null=True, blank=True, verbose_name=_("Time of last login"))
 
+    def __str__(self):
+        return "{} {} {}".format(self.titles, self.initials, self.last_name)
+
 
 class Module(models.Model):
     name = models.CharField(max_length=80, verbose_name=_("Name of module"))
@@ -65,8 +68,11 @@ class Module(models.Model):
             "Coordinator reference for a module, references the Teacher"))
     module_moment = models.CharField(
         max_length=5,
-        choices=[(moment, moment.value) for moment in ModuleMoment],
+        choices=[(moment.name, moment.value) for moment in ModuleMoment],
         verbose_name=_("Module quartile"))
+
+    def __str__(self):
+        return "{}: {}".format(self.course_code, self.name)
 
 
 class Course(models.Model):
@@ -94,21 +100,28 @@ class Course(models.Model):
         default=False,
         verbose_name=_("Have we already checked this course this year?"))
 
+    def __str__(self):
+        return "{}, {}".format(self.name, self.year)
+
 
 class Study(models.Model):
+    class Meta:
+        verbose_name_plural = "studies"
+
     name = models.CharField(
         max_length=100,
         verbose_name=_("Name of the study, e.g. Creative Technology"))
     study_type = models.CharField(
         max_length=5,
-        choices=[(study_type, study_type.value) for study_type in StudyType],
+        choices=[(study_type.name, study_type.value) for study_type in StudyType],
         verbose_name=_("Type of study"))
+
     courses = models.ManyToManyField(
         Course, through='StudyCourse', through_fields=('study', 'course'),
         verbose_name=_("List of courses"))
 
-    class Meta:
-        verbose_name_plural = "studies"
+    def __str__(self):
+        return "{}".format(self.name)
 
 
 class StudyCourse(models.Model):
@@ -122,8 +135,11 @@ class StudyCourse(models.Model):
         Study, on_delete=models.CASCADE,
         verbose_name=_("Study"))
     period = models.CharField(
-        max_length=10, choices=[(period, period.value) for period in Period],
+        max_length=10, choices=[(period.name, period.value) for period in Period],
         verbose_name=_("Period this relationship is relevant in"))
+
+    def __str__(self):
+        return "{} -> {}".format(self.course, self.study)
 
 
 class StudyMaterial(models.Model):
@@ -143,12 +159,18 @@ class StudyMaterialEdition(PolymorphicModel):
         null=True,
         verbose_name=_("Material collection"))
 
+    def __str__(self):
+        return self.name
+
 
 class OtherMaterial(StudyMaterialEdition):
     """"
     Use if material is any material other than a scientific article or a book
     """
     pass
+
+    def __str__(self):
+        return self.name
 
 
 class Book(StudyMaterialEdition):
@@ -173,6 +195,9 @@ class Book(StudyMaterialEdition):
         else:
             raise ValueError("ISBN does not match either known lengths")
 
+    def __str__(self):
+        return "{}: {}".format(self.ISBN, self.name)
+
 
 class ScientificArticle(StudyMaterialEdition):
     DOI = models.CharField(null=False, blank=True, verbose_name=_(
@@ -188,6 +213,9 @@ class ScientificArticle(StudyMaterialEdition):
         max_length=4,
         verbose_name="Year this revision of the book was published.")
 
+    def __str__(self):
+        return "{}: {}".format(self.DOI, self.name)
+
 
 class MaterialSelectionProcess(models.Model):
     osiris_specified_material = models.ForeignKey(
@@ -202,3 +230,18 @@ class MaterialSelectionProcess(models.Model):
         max_length=255, null=True,
         verbose_name=_(
             "Reason why there is a difference between Osiris and availability"))
+
+    def __str__(self):
+        return "{}".format(self.stage)
+
+    @property
+    def stage(self):
+        if not self.available_materials or len(self.available_materials) == 0\
+            and not self.approved_material:
+            return _("Awaiting upstream check")
+        elif self.approved_material:
+            return _("Approved")
+        elif self.available_materials and len(self.available_materials) != 0:
+            return _("Awaiting approval")
+        else:
+            return _("Unspecified")
