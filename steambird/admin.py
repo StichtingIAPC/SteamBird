@@ -4,11 +4,25 @@ from polymorphic.admin import PolymorphicParentModelAdmin, PolymorphicChildModel
 from .models import StudyMaterialEdition, Book, ScientificArticle, \
     OtherMaterial, Course, Study, StudyCourse, Teacher, Module, StudyMaterial
 
-admin.site.register(Course)
 admin.site.register(StudyCourse)
 admin.site.register(Teacher)
-admin.site.register(Module)
-admin.site.register(StudyMaterial)
+
+
+@admin.register(Module)
+class ModuleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'course_code', 'module_moment')
+    list_filter = ('module_moment', 'course__name')
+
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('name', 'year', 'course_code')
+    list_filter = ('study__name',)
+
+
+@admin.register(StudyMaterial)
+class StudyMaterialAdmin(admin.ModelAdmin):
+    list_display = ('id',)
 
 
 @admin.register(Study)
