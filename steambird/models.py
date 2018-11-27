@@ -80,7 +80,7 @@ class Course(models.Model):
         unique_together = (('course_code', 'year'),)
 
     module = models.ForeignKey(
-        Module, on_delete=SET_NULL, null=True,
+        Module, on_delete=SET_NULL, null=True, blank=True,
         verbose_name=_("Links course to possible module (maths) if needed"))
     course_code = models.IntegerField(
         verbose_name=_("Course code of module, references Osiris"), unique=True)
@@ -91,7 +91,7 @@ class Course(models.Model):
         verbose_name=_("The year this course takes place in"))
     materials = models.ManyToManyField(
         'MaterialSelectionProcess',
-        verbose_name=_("The list of materials relevant for this course"))
+        verbose_name=_("The list of materials relevant for this course"), blank=True, null=True)
     updated_teacher = models.BooleanField(
         default=False,
         verbose_name=_(
@@ -181,7 +181,7 @@ class Book(StudyMaterialEdition):
     author = models.CharField(null=False, blank=False, verbose_name=_(
         "Author names, comma separated"), max_length=1000)
     # Cover image of the book, should be derived from ISBN
-    img = models.URLField(verbose_name=_("Link to cover image of book"))
+    img = models.URLField(verbose_name=_("Link to cover image of book"), blank=True, null=True)
 
     # Year of publishing, should be derived from ISBN
     year_of_publishing = models.IntegerField(
