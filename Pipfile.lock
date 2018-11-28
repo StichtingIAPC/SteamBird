@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e3865ec7e857e4fdf3799e89a5d7f2f77f4e873a8c830cdaf2b4df21b6d6678b"
+            "sha256": "6a4e1c3608fc09e5d835c140c3d4daa33c1b1b18d26f1a680c034f9aa149014f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -73,17 +73,16 @@
         },
         "markdown2": {
             "hashes": [
-                "sha256:48c1fe8fcc0b4d77489e1510f7657d5e9b8ad8f98325f7d8fca8af70b5152830"
+                "sha256:08a124043aa0ad36ba2136239547d5011a2b770278abb11a5609611e0040ea05"
             ],
             "version": "==2.3.6"
         },
         "pysidian-core": {
             "hashes": [
-                "sha256:5b9c5f8c6f627870b4882fcac7c2c6b87aff0b6014e6be4e58d2be6c4901d3b4",
-                "sha256:f27b2b57fe223911cd72e904da55271b0e0476e3bffbd700ccf720b09c10472c"
+                "sha256:f2deeb832d01088abe8236afca943b1c7942d3f5b97c97c7aa05a53c62e8825c"
             ],
             "index": "pypi",
-            "version": "==0.0.2"
+            "version": "==0.0.3"
         },
         "pytz": {
             "hashes": [
@@ -94,7 +93,7 @@
         },
         "rcssmin": {
             "hashes": [
-                "sha256:d9ba0d79a4e202cf50ede362520fae10dd422998b40318829373b7d6a526d9ad"
+                "sha256:ca87b695d3d7864157773a61263e5abb96006e9ff0e021eff90cbe0e1ba18270"
             ],
             "version": "==1.0.6"
         },
@@ -107,7 +106,7 @@
         },
         "rjsmin": {
             "hashes": [
-                "sha256:f10e788c606140cc020b9e2ccb840ace8ac0527f4996a4578d0bd619a6008298"
+                "sha256:dd9591aa73500b08b7db24367f8d32c6470021f39d5ab4e50c7c02e4401386f1"
             ],
             "version": "==1.0.12"
         }
