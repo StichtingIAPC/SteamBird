@@ -16,23 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from pysidian_core.urls import urls
+from pysidian_core.urls import urls as pysidian_core_urls
 
 from steambird import settings
 from steambird.views import HomeView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='index'),
-    path('admin/', admin.site.urls),
-] + urls
+    path('admin', admin.site.urls),
+] + pysidian_core_urls
 
 if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns = [
-                      path('__debug__/', include(debug_toolbar.urls)),
-
-                      # For django versions before 2.0:
-                      # url(r'^__debug__/', include(debug_toolbar.urls)),
-
-                  ] + urlpatterns
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
