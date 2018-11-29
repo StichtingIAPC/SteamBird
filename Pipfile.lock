@@ -79,11 +79,10 @@
         },
         "pysidian-core": {
             "hashes": [
-                "sha256:5b9c5f8c6f627870b4882fcac7c2c6b87aff0b6014e6be4e58d2be6c4901d3b4",
-                "sha256:f27b2b57fe223911cd72e904da55271b0e0476e3bffbd700ccf720b09c10472c"
+                "sha256:6556edb906d27a938048632122f38f72722215d58c84176aa5195e39753d5340"
             ],
             "index": "pypi",
-            "version": "==0.0.2"
+            "version": "==0.0.4"
         },
         "pytz": {
             "hashes": [

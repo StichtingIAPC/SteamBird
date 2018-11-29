@@ -143,7 +143,12 @@ class StudyCourse(models.Model):
 
 
 class StudyMaterial(models.Model):
-    pass
+    name = models.CharField(
+        null=False, blank=False, max_length=255,
+        verbose_name=_('Category name of this article'))
+
+    def __str__(self):
+        return self.name
 
 
 class StudyMaterialEdition(PolymorphicModel):
@@ -155,8 +160,7 @@ class StudyMaterialEdition(PolymorphicModel):
     # The type if material, e.g. the list of different revisions of the book
     material_type = models.ForeignKey(
         StudyMaterial,
-        on_delete=models.DO_NOTHING,
-        null=True,
+        on_delete=models.DO_NOTHING, null=True, blank=True,
         verbose_name=_("Material collection"))
 
     def __str__(self):
