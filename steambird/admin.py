@@ -13,6 +13,7 @@ admin.site.register(StudyCourse)
 class MaterialSelectionProcessAdmin(admin.ModelAdmin):
     search_fields = ('osiris_specified_material__name',
                      'approved_material__name')
+    list_display = ('current_active_book', 'stage')
 
 
 @admin.register(Teacher)
@@ -25,14 +26,14 @@ class TeacherAdmin(admin.ModelAdmin):
 @admin.register(Module)
 class ModuleAdmin(admin.ModelAdmin):
     list_display = ('name', 'course_code', 'module_moment')
-    list_filter = ('module_moment', 'course__name')
+    list_filter = ('module_moment', 'course')
     autocomplete_fields = ('coordinator',)
 
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('name', 'year', 'course_code')
-    list_filter = ('study__name',)
+    list_filter = ('study',)
     autocomplete_fields = ('teachers', 'materials')
 
 

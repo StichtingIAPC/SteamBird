@@ -12,7 +12,7 @@ name = "iapc-releases"
 django = ">=2.1,<2.2"
 django-modeltranslation = "==0.13b1"
 django-polymorphic = "==2.0.3"
-pysidian-core = ">=0.0.4"
+pysidian-core = ">=0.0.5"
 
 [dev-packages]
 django-debug-toolbar = "==1.10.1"

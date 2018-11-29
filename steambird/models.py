@@ -236,16 +236,24 @@ class MaterialSelectionProcess(models.Model):
             "Reason why there is a difference between Osiris and availability"))
 
     def __str__(self):
-        return "{}".format(self.stage)
+        return "{}: {}".format(self.current_active_book.name, self.stage)
+
+    @property
+    def current_active_book(self) -> StudyMaterialEdition:
+        if self.approved_material:
+            return self.approved_material
+        else:
+            return self.osiris_specified_material
 
     @property
     def stage(self):
-        if not self.available_materials or len(self.available_materials) == 0\
-            and not self.approved_material:
+        if not self.available_materials \
+                or self.available_materials.count() == 0 \
+                and not self.approved_material:
             return _("Awaiting upstream check")
         elif self.approved_material:
             return _("Approved")
-        elif self.available_materials and len(self.available_materials) != 0:
+        elif self.available_materials and self.available_materials.count() != 0:
             return _("Awaiting approval")
         else:
             return _("Unspecified")
