@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'polymorphic',
     'modeltranslation',
     'steambird',
+    'rosetta',
     'debug_toolbar',
     'pysidian_core',
 ]
@@ -106,7 +107,18 @@ LANGUAGES = [
 ]
 LANGUAGE_CODE = 'en'
 
-TIME_ZONE = 'UTC'
+# Internationalization
+# https://docs.djangoproject.com/en/2.1/topics/i18n/
+
+LANGUAGES = [
+    ('nl', _('Dutch')),
+    ('en', _('English')),
+]
+
+LANGUAGE_CODE = 'nl'
+
+
+TIME_ZONE = 'Europe/Amsterdam'
 
 USE_I18N = True
 
@@ -114,6 +126,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+# How to generate locale files:
+# https://docs.djangoproject.com/en/2.1/topics/i18n/translation/#localization-how-to-create-language-files
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
