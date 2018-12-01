@@ -1,8 +1,9 @@
 # SteamBird
 
-[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
-[![Django 2.1](https://img.shields.io/badge/django-2.1-336f33.svg)](https://docs.djangoproject.com/en/2.1/releases/2.1/)
-[![Pipenv](https://img.shields.io/badge/pipenv-%E2%9C%94-brightgreen.svg)](https://git.iapc.utwente.nl/www/steambird)
+[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?logo=python)](https://www.python.org/downloads/release/python-370/)
+[![Django 2.1](https://img.shields.io/badge/django-2.1-336f33.svg?logo=django)](https://docs.djangoproject.com/en/2.1/releases/2.1/)
+[![Pipenv](https://img.shields.io/badge/pipenv-%E2%9C%94-brightgreen.svg)](https://pipenv.readthedocs.io/en/latest/)
+[![GitLab](https://img.shields.io/badge/GitLab-IAPC-brightgreen.svg?logo=gitlab)](https://git.iapc.utwente.nl/www/steambird)
 
 Project SteamBird. (SB) is a re-imagined version of the old ABC, for keeping track of StudyBooks
 
