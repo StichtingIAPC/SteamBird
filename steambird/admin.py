@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib import admin
+from django.contrib.admin import forms, widgets
 from polymorphic.admin import PolymorphicParentModelAdmin, \
     PolymorphicChildModelAdmin, PolymorphicChildModelFilter
 
