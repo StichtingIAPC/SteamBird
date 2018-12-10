@@ -1,0 +1,419 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-10 22:14+0100\n"
+"PO-Revision-Date: 2018-12-10 22:13+0020\n"
+"Last-Translator: b'  <>'\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.9.0\n"
+
+#: .\steambird\models.py:43
+msgid "Academic titles"
+msgstr "Academische Titels"
+
+#: .\steambird\models.py:44
+msgid "Initials"
+msgstr "Initialen"
+
+#: .\steambird\models.py:45
+msgid "First name"
+msgstr "Voornaam"
+
+#: .\steambird\models.py:48
+msgid "Surname prefix"
+msgstr "Tussenvoegsels"
+
+#: .\steambird\models.py:49
+msgid "Last name"
+msgstr "Achternaam"
+
+#: .\steambird\models.py:50
+msgid "Email"
+msgstr "Email"
+
+#: .\steambird\models.py:51
+msgid "Active"
+msgstr "Actief"
+
+#: .\steambird\models.py:52
+msgid "Retired"
+msgstr "Met Pensioen"
+
+#: .\steambird\models.py:54
+msgid "Time of last login"
+msgstr "Tijd van Laatste Login"
+
+#: .\steambird\models.py:60
+msgid "Teacher"
+msgstr "Docent"
+
+#: .\steambird\models.py:61
+msgid "Teachers"
+msgstr "Docenten"
+
+#: .\steambird\models.py:65
+msgid "Name of module"
+msgstr "Naam van Module"
+
+#: .\steambird\models.py:68 .\steambird\models.py:96
+msgid "Course code of module, references Osiris"
+msgstr "Course Code, refereert Osiris"
+
+#: .\steambird\models.py:72
+msgid "Coordinator reference for a module, references the Teacher"
+msgstr "Coordinator referentie, refereert Docent"
+
+#: .\steambird\models.py:76
+msgid "Module quartile"
+msgstr "Module kwartiel"
+
+#: .\steambird\models.py:82
+msgid "Module"
+msgstr "Module"
+
+#: .\steambird\models.py:83
+msgid "Modules"
+msgstr "Modules"
+
+#: .\steambird\models.py:89 .\steambird\models.py:148
+msgid "Course"
+msgstr "Vak"
+
+#: .\steambird\models.py:90
+msgid "Courses"
+msgstr "Vakken"
+
+#: .\steambird\models.py:94
+msgid "Links course to possible module (maths) if needed"
+msgstr "Links naar mogelijke sub-modules, zoals wiskunde"
+
+#: .\steambird\models.py:98
+msgid "List of teachers that teach this course"
+msgstr "Lijst van docenten die deze course geven"
+
+#: .\steambird\models.py:99
+msgid "Name of Course"
+msgstr "Naam van de course"
+
+#: .\steambird\models.py:101
+msgid "The year this course takes place in"
+msgstr "Het jaar dat het vak gegeven wordt"
+
+#: .\steambird\models.py:104
+msgid "The list of materials relevant for this course"
+msgstr "De lijst van materialen relevant voor dit vak"
+
+#: .\steambird\models.py:108
+msgid "Has the course been marked updated by the teacher for this year?"
+msgstr "Is de course gemarkeerd als updated door de docent?"
+
+#: .\steambird\models.py:111
+msgid "Have we already checked this course this year?"
+msgstr "Hebben we al het vak nagekeken dit jaar?"
+
+#: .\steambird\models.py:122
+msgid "Name of the study, e.g. Creative Technology"
+msgstr "Naam van de studie, bv Creative Technology"
+
+#: .\steambird\models.py:126
+msgid "Type of study"
+msgstr "Type study"
+
+#: .\steambird\models.py:130
+msgid "List of courses"
+msgstr "Lijst van vakken"
+
+#: .\steambird\models.py:136 .\steambird\models.py:151
+msgid "Study"
+msgstr "Studie"
+
+#: .\steambird\models.py:137
+msgid "Studies"
+msgstr "Studies"
+
+#: .\steambird\models.py:143 .\steambird\models.py:144
+msgid "StudyCourse"
+msgstr "StudieVak"
+
+#: .\steambird\models.py:154
+msgid "Period this relationship is relevant in"
+msgstr "Periode dat deze relatie relevant is"
+
+#: .\steambird\models.py:163
+msgid "Category name of this article"
+msgstr "Categorie naam van dit artikel"
+
+#: .\steambird\models.py:169
+msgid "Study Material"
+msgstr "Studie Materiaal"
+
+#: .\steambird\models.py:170
+msgid "Study Materials"
+msgstr "Study Materialen"
+
+#: .\steambird\models.py:178
+msgid "Name of the material"
+msgstr "Naam van het matriaal"
+
+#: .\steambird\models.py:184
+msgid "Material collection"
+msgstr "Martiaal collectie"
+
+#: .\steambird\models.py:190
+msgid "StudyMaterial Edition"
+msgstr "StudieMateriaal Editie"
+
+#: .\steambird\models.py:191
+msgid "StudyMaterials Editions"
+msgstr "StudyMaterialen Edities"
+
+#: .\steambird\models.py:204
+msgid "Other Material"
+msgstr "Andere Materiaal"
+
+#: .\steambird\models.py:205
+msgid "Other Materials"
+msgstr "Andere Matrialen"
+
+#: .\steambird\models.py:210
+msgid "ISBN 10 or ISBN 13"
+msgstr "ISBN 10 of ISBN 13"
+
+#: .\steambird\models.py:214 .\steambird\models.py:245
+msgid "Author names, comma separated"
+msgstr "Auteursnamen, gesepareerd door komma's"
+
+#: .\steambird\models.py:216
+msgid "Link to cover image of book"
+msgstr "Link naar boekomslag"
+
+#: .\steambird\models.py:235
+msgid "Book"
+msgstr "Boek"
+
+#: .\steambird\models.py:236
+msgid "Books"
+msgstr "Boeken"
+
+#: .\steambird\models.py:240
+msgid "Digital Object Identifier"
+msgstr "Digital Object Identifier (DOI)"
+
+#: .\steambird\models.py:256
+msgid "Scientific Article"
+msgstr "Wetenschappelijk Artikel"
+
+#: .\steambird\models.py:257
+msgid "Scientific Articles"
+msgstr "Wetenschappelijke Artikelen"
+
+#: .\steambird\models.py:272
+msgid "Reason why there is a difference between Osiris and availability"
+msgstr "Reden waarom er een verschil is tussen Osiris en beschikbaar matriaal"
+
+#: .\steambird\models.py:289
+msgid "Awaiting upstream check"
+msgstr "Wachten op goedkeuring op basis van beschikbaarheid"
+
+#: .\steambird\models.py:291
+msgid "Approved"
+msgstr "Goedgekeurd"
+
+#: .\steambird\models.py:293
+msgid "Awaiting approval"
+msgstr "Wachten op goedkeuring"
+
+#: .\steambird\models.py:295
+msgid "Unspecified"
+msgstr "Ongespecifeerd"
+
+#: .\steambird\models.py:298
+msgid "Material Selection Process"
+msgstr "Materiaal Selectie Process"
+
+#: .\steambird\models.py:299
+msgid "Material Selection Processes"
+msgstr "Martiaal Selectie Processen"
+
+#: .\steambird\settings.py:107 .\steambird\settings.py:116
+msgid "Dutch"
+msgstr "Nederlands"
+
+#: .\steambird\settings.py:108 .\steambird\settings.py:117
+msgid "English"
+msgstr "Engels"
+
+#: .\steambird\templates\admin\app_index.html:13
+#: .\steambird\templates\admin\base.html:103
+#: .\steambird\templates\admin\change_form.html:34
+#: .\steambird\templates\admin\change_list.html:31
+#: .\steambird\templates\admin\object_history.html:6
+msgid "Home"
+msgstr "Voorpagina"
+
+#: .\steambird\templates\admin\base.html:58
+msgid "View site"
+msgstr "Bekijk website"
+
+#: .\steambird\templates\admin\base.html:63
+msgid "Documentation"
+msgstr "Documentatie"
+
+#: .\steambird\templates\admin\base.html:68
+msgid "Change password"
+msgstr "Verander wachtwoord"
+
+#: .\steambird\templates\admin\base.html:70
+#: .\steambird\templates\steambird\home.html:21
+msgid "Log out"
+msgstr "Log uit"
+
+#: .\steambird\templates\admin\base_site.html:3
+msgid "Django site admin"
+msgstr "Django Site Admin"
+
+#: .\steambird\templates\admin\base_site.html:6
+msgid "Django administration"
+msgstr "Django Administratie"
+
+#: .\steambird\templates\admin\change_form.html:21
+#: .\steambird\templates\admin\object_history.html:10
+msgid "History"
+msgstr "Geschiedenis"
+
+#: .\steambird\templates\admin\change_form.html:23
+msgid "View on site"
+msgstr "Bekijk op website"
+
+#: .\steambird\templates\admin\change_form.html:37
+#, python-format
+msgid "Add %(name)s"
+msgstr "%(name)s toevoegen"
+
+#: .\steambird\templates\admin\change_form.html:50
+#: .\steambird\templates\admin\change_list.html:53
+msgid "Please correct the error below."
+msgstr "Verbeter de foutmelding die hieronder staat"
+
+#: .\steambird\templates\admin\change_form.html:50
+#: .\steambird\templates\admin\change_list.html:53
+msgid "Please correct the errors below."
+msgstr "Verbeter de foutmeldingen die hieronder staan"
+
+#: .\steambird\templates\admin\change_list.html:64
+msgid "Filter"
+msgstr "Filter"
+
+#: .\steambird\templates\admin\change_list_results.html:17
+msgid "Remove from sorting"
+msgstr "Verwijder uit sortering"
+
+#: .\steambird\templates\admin\change_list_results.html:18
+#, python-format
+msgid "Sorting priority: %(priority_number)s"
+msgstr "Sorteer prioriteit: %(priority_number)s"
+
+#: .\steambird\templates\admin\change_list_results.html:19
+msgid "Toggle sorting"
+msgstr "Switch sortering"
+
+#: .\steambird\templates\admin\iapc\model_list.html:6
+#, python-format
+msgid "Models in the %(name)s application"
+msgstr "Model in the %(name)s applicatie"
+
+#: .\steambird\templates\admin\iapc\model_list.html:18
+msgid "Add"
+msgstr "Toevoegen"
+
+#: .\steambird\templates\admin\iapc\model_list.html:25
+msgid "View"
+msgstr "Bekijk"
+
+#: .\steambird\templates\admin\iapc\model_list.html:27
+msgid "Change"
+msgstr "Verander"
+
+#: .\steambird\templates\admin\iapc\model_list.html:39
+msgid "You don't have permission to view or edit anything."
+msgstr "Je hebt geen rechten om iets te bekijken of aan te passen"
+
+#: .\steambird\templates\admin\index.html:21
+msgid "Recent actions"
+msgstr "Recente acties"
+
+#: .\steambird\templates\admin\index.html:22
+msgid "My actions"
+msgstr "Mijn acties"
+
+#: .\steambird\templates\admin\index.html:26
+msgid "None available"
+msgstr "Geen beschikbaar"
+
+#: .\steambird\templates\admin\index.html:47
+msgid "Unknown content"
+msgstr "Onbekende inhoud"
+
+#: .\steambird\templates\admin\object_history.html:20
+msgid "Date/time"
+msgstr "Datum/tijd"
+
+#: .\steambird\templates\admin\object_history.html:21
+msgid "User"
+msgstr "Gebruiker"
+
+#: .\steambird\templates\admin\object_history.html:22
+msgid "Action"
+msgstr "Actie"
+
+#: .\steambird\templates\admin\object_history.html:36
+msgid ""
+"This object doesn't have a change history. It probably wasn't added via this "
+"admin site."
+msgstr ""
+"Dit object heeft geen aanpassing in zijn geschiedenis. Het was "
+"waarschijnlijk niet toegevoegd via deze admin site"
+
+#: .\steambird\templates\admin\submit_line.html:4
+msgid "Save"
+msgstr "Opslaan"
+
+#: .\steambird\templates\admin\submit_line.html:7
+msgid "Delete"
+msgstr "Verwijder"
+
+#: .\steambird\templates\admin\submit_line.html:9
+msgid "Save as new"
+msgstr "Sla op als nieuw item"
+
+#: .\steambird\templates\admin\submit_line.html:10
+msgid "Save and add another"
+msgstr "Sla op en voeg een nieuwe toe"
+
+#: .\steambird\templates\admin\submit_line.html:11
+msgid "Save and continue editing"
+msgstr "Sla op en ga door met aanpassen"
+
+#: .\steambird\templates\admin\submit_line.html:11
+msgid "Save and view"
+msgstr "Sla op en bekijk"
+
+#: .\steambird\templates\admin\submit_line.html:12
+msgid "Close"
+msgstr "Sluit"
+
+#: .\steambird\templates\steambird\home.html:18
+msgid "Admin"
+msgstr "Admin"

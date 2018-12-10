@@ -56,6 +56,10 @@ class Teacher(models.Model):
     def __str__(self):
         return "{} {} {}".format(self.titles, self.initials, self.last_name)
 
+    class Meta:
+        verbose_name = _('Teacher')
+        verbose_name_plural = _('Teachers')
+
 
 class Module(models.Model):
     name = models.CharField(max_length=80, verbose_name=_("Name of module"))
@@ -74,10 +78,16 @@ class Module(models.Model):
     def __str__(self):
         return "{}: {}".format(self.course_code, self.name)
 
+    class Meta:
+        verbose_name = _('Module')
+        verbose_name_plural = _('Modules')
+
 
 class Course(models.Model):
     class Meta:
         unique_together = (('course_code', 'year'),)
+        verbose_name = _('Course')
+        verbose_name_plural = _('Courses')
 
     module = models.ForeignKey(
         Module, on_delete=SET_NULL, null=True, blank=True,
@@ -105,8 +115,7 @@ class Course(models.Model):
 
 
 class Study(models.Model):
-    class Meta:
-        verbose_name_plural = "studies"
+
 
     name = models.CharField(
         max_length=100,
@@ -123,10 +132,16 @@ class Study(models.Model):
     def __str__(self):
         return "{}".format(self.name)
 
+    class Meta:
+        verbose_name = _("Study")
+        verbose_name_plural = _("Studies")
+
 
 class StudyCourse(models.Model):
     class Meta:
         unique_together = (('course', 'study'),)
+        verbose_name = _("StudyCourse")
+        verbose_name_plural = _("StudyCourse")
 
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE,
@@ -150,6 +165,11 @@ class StudyMaterial(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _("Study Material")
+        verbose_name_plural = _("Study Materials")
+
+
 
 class StudyMaterialEdition(PolymorphicModel):
     # Could be derived from either OID or ISBN
@@ -166,6 +186,10 @@ class StudyMaterialEdition(PolymorphicModel):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _("StudyMaterial Edition")
+        verbose_name_plural = _("StudyMaterials Editions")
+
 
 class OtherMaterial(StudyMaterialEdition):
     """"
@@ -175,6 +199,10 @@ class OtherMaterial(StudyMaterialEdition):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _("Other Material")
+        verbose_name_plural = _("Other Materials")
 
 
 class Book(StudyMaterialEdition):
@@ -203,6 +231,10 @@ class Book(StudyMaterialEdition):
         return "{}: {}".format(self.ISBN, self.name)
 
 
+    class Meta:
+        verbose_name = _("Book")
+        verbose_name_plural = _("Books")
+
 class ScientificArticle(StudyMaterialEdition):
     DOI = models.CharField(null=False, blank=True, verbose_name=_(
         "Digital Object Identifier"),
@@ -219,6 +251,10 @@ class ScientificArticle(StudyMaterialEdition):
 
     def __str__(self):
         return "{}: {}".format(self.DOI, self.name)
+
+    class Meta:
+        verbose_name = _("Scientific Article")
+        verbose_name_plural = _("Scientific Articles")
 
 
 class MaterialSelectionProcess(models.Model):
@@ -257,3 +293,7 @@ class MaterialSelectionProcess(models.Model):
             return _("Awaiting approval")
         else:
             return _("Unspecified")
+
+    class Meta:
+        verbose_name = _("Material Selection Process")
+        verbose_name_plural = _("Material Selection Processes")
