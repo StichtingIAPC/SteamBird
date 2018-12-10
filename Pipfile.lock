@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "49893ecbe5a152204caa9035ff3e798ffdcc1f249b09b0119e521680899790f8"
+            "sha256": "dfb1aec4ff1ff3cb26d4b736df1560552f7265e2e05f92c253177bb68cc71571"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -64,6 +64,14 @@
             "index": "pypi",
             "version": "==2.0.3"
         },
+        "isbnlib": {
+            "hashes": [
+                "sha256:1deca1fae01df5c3552aa9cc15e13bad901a62764cdac74b8f0b237c40cbc6f4",
+                "sha256:84a33ea57804d0329df7875cc48ac5ad2bab5a4c1c8f8bd177bafea10f79917e"
+            ],
+            "index": "pypi",
+            "version": "==3.9.3"
+        },
         "markdown": {
             "hashes": [
                 "sha256:c00429bd503a47ec88d5e30a751e147dcb4c6889663cd3e2ba0afe858e009baa",
@@ -73,7 +81,8 @@
         },
         "markdown2": {
             "hashes": [
-                "sha256:7edaa8ecc2843b4404e1cb754a52d1d135ecf181b475d2f32bbc36a562ef407d"
+                "sha256:7edaa8ecc2843b4404e1cb754a52d1d135ecf181b475d2f32bbc36a562ef407d",
+                "sha256:e65d653173f754f616e0a9ccd4496e38e0fe7def285dd8b495a035b75974aa98"
             ],
             "version": "==2.3.7"
         },
@@ -151,6 +160,7 @@
         },
         "idna": {
             "hashes": [
+                "sha256:c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407",
                 "sha256:ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"
             ],
             "version": "==2.8"
