@@ -17,6 +17,7 @@ pysidian-core = ">=0.0.5"
 [dev-packages]
 django-debug-toolbar = "==1.10.1"
 django-rosetta = "==0.9"
+rosetta = "*"
 
 [requires]
 python_version = "3.7"
