@@ -7,3 +7,4 @@ By adding my name to this document, I agree to the terms laid out in the
 * "Rolf van Kleef"<br/>
   using the additional names:
   * "Rolf H. B. van Kleef"
+* "Martijn Verkleij"
