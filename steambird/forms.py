@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 import isbnlib as i
 
 class ISBNForm(forms.Form):
-    isbn = forms.CharField(label=_('ISBN number'), max_length=13, min_length=10)
+    isbn = forms.CharField(label=_('ISBN number'), max_length=18, min_length=10)
 
     def clean(self):
         cd = self.cleaned_data
