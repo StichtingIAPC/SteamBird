@@ -54,7 +54,10 @@ class Teacher(models.Model):
         null=True, blank=True, verbose_name=_("Time of last login"))
 
     def __str__(self):
-        return "{} {} {}".format(self.titles, self.initials, self.last_name)
+        if self.surname_prefix is not None:
+            return "{} {} {} {}".format(self.titles, self.initials, self.surname_prefix, self.last_name)
+        else:
+            return "{} {} {}".format(self.titles, self.initials, self.last_name)
 
     class Meta:
         verbose_name = _('Teacher')
