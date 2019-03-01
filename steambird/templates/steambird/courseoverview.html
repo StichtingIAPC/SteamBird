@@ -1,6 +1,7 @@
 {% extends 'pysidian_core/base.html' %}
 {% load i18n %}
 
+
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
@@ -8,7 +9,8 @@
             <h2>Project Stoomvogel</h2>
             {#            <div class="textmodule-text">#}
             <div class="col-12">
-                <p>{% blocktrans %}Hello <b>{{ teacher }}</b>, this is the current status of the courses you are assigned to: (according to osiris) {% endblocktrans %}</p>
+                <p>{% blocktrans %}Hello <b>{{ teacher }}</b>, this is the current status of the courses you are
+                    assigned to: (according to osiris) {% endblocktrans %}</p>
             </div>
             <div>
                 {% for course in teacher.course_set.all %}
@@ -17,21 +19,10 @@
                         <ul class="list-group">
                             {% for book in course.materials.all %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ book.osiris_specified_material.name }}
+                                    <a href="{% url 'courseview.details' book.id %}"> {{ book.osiris_specified_material }}</a>
                                     <span class="badge badge-{{ book.stage_bootstrap_tab }} badge-pill">{{ book.stage }}</span>
                                 </li>
 
-
-
-
-{#                                <div class="list-group-item">#}
-{#                                    <div class="col-10">#}
-{##}
-{#                                    </div>#}
-{#                                    <div class="col-2">#}
-{#                                        {{ book.stage }}#}
-{#                                    </div>#}
-{#                                </div>#}
                             {% empty %}
                                 <li class="list-group-item"> {% trans "No books" %}</li>
                             {% endfor %}
@@ -41,13 +32,10 @@
                 {% empty %}
                     <div class="card">
                         <div class="card-header"> {% trans "No courses found" %} </div>
-
-                        {#                                No courses found for Teacher#}
                     </div>
                     <br>
                 {% endfor %}
             </div>
-            {#            </div>#}
         </div>
     </div>
 {% endblock %}
