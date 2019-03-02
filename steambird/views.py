@@ -1,8 +1,9 @@
+from json import dumps
 
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.views.generic import FormView
 from isbnlib.dev import NoDataForSelectorError
 
@@ -37,8 +38,6 @@ class ISBNView(FormView):
 class ISBNDetailView(View):
 
     def get(self, request, isbn):
-
-
         try:
             meta_info = i.meta(isbn)
             # desc = i.desc(isbn)
