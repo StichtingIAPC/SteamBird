@@ -1,5 +1,6 @@
 {% extends 'pysidian_core/base.html' %}
 {% load i18n %}
+{% load render_template_type %}
 {% url 'courseoverview:details' as details %}
 
 {% block content %}
@@ -24,6 +25,11 @@
                         {{ msp.osiris_specified_material }}
                     </ul>
                     {# Probably best to write it out per object type #}
+                    <br>
+                    <b> this is interesting number: </b>
+                    {{ msp.osiris_specified_material.polymorphic_ctype }}
+
+                    {% render_template_type msp.osiris_specified_material "steambird/material_type/{}_template.html" %}
                 </div>
 
 
