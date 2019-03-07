@@ -9,34 +9,45 @@
         <div class="textmodule">
             <h2>{% trans "Item Details" %}</h2>
             <div>
-                {{ msp.osiris_specified_material }}<br><br>
+            Requested Material (according to osiris):
+                {% render_template_type  msp.osiris_specified_material "steambird/material_type/{}_template.html" %}
+{#                {{ msp.osiris_specified_material }}<br><br>#}
+                <br><br>
+            Possible replacement Materials:
                 {% for material in msp.available_materials.all %}
-                    {{ material }}<br>
+                    {% render_template_type  material "steambird/material_type/{}_template.html" %}
+                    <br>
                 {% endfor %}
                 <br>
-                {{ msp.reason }}<br><br>
-                {{ msp.approved_material }}<br>
+                Status: {{ msp.stage }} <br>
+                Why: {{ msp.reason }}<br><br>
+{#                {{ msp.approved_material }}<br>#}
 
-                <div class="card">
-                    <div class="card-header">
-                        {{ msp.osiris_specified_material.name }}
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        {{ msp.osiris_specified_material }}
-                    </ul>
+{#                <div class="card">#}
+{#                    <div class="card-header">#}
+{#                        {{ msp.osiris_specified_material.name }}#}
+{#                    </div>#}
+{#                    <ul class="list-group list-group-flush">#}
+{#                        {{ msp.osiris_specified_material }}#}
+{#                    </ul>#}
+{#                </div>#}
                     {# Probably best to write it out per object type #}
+{#                    <br>#}
+{#                    <b> this is interesting number: </b>#}
+{#                    {{ msp.osiris_specified_material.polymorphic_ctype }}#}
+{#                    <br>#}
                     <br>
-                    <b> this is interesting number: </b>
-                    {{ msp.osiris_specified_material.polymorphic_ctype }}
+                    <br>
 
-                    {% render_template_type msp.osiris_specified_material "steambird/material_type/{}_template.html" %}
+
+            <br>
                 </div>
 
 
             </div>
             {#            </div>#}
         </div>
-    </div>
+
 {% endblock %}
 
 {% block usermenu_dropdown_user %}
