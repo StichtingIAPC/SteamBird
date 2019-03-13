@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-10 22:14+0100\n"
-"PO-Revision-Date: 2018-12-10 22:06+0020\n"
+"POT-Creation-Date: 2019-02-26 18:43+0100\n"
+"PO-Revision-Date: 2019-02-26 18:43+0020\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -18,6 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.9.0\n"
+
+#: .\steambird\forms.py:7
+msgid "ISBN number"
+msgstr "ISBN number"
 
 #: .\steambird\models.py:43
 msgid "Academic titles"
@@ -276,6 +280,8 @@ msgid "Change password"
 msgstr "Change password"
 
 #: .\steambird\templates\admin\base.html:70
+#: .\steambird\templates\steambird\ISBN.html:24
+#: .\steambird\templates\steambird\book.html:25
 #: .\steambird\templates\steambird\home.html:21
 msgid "Log out"
 msgstr "Log out"
@@ -380,11 +386,11 @@ msgstr "Action"
 
 #: .\steambird\templates\admin\object_history.html:36
 msgid ""
-"This object doesn't have a change history. It probably wasn't added via this "
-"admin site."
+"This object doesn't have a change history. It probably wasn't added via this"
+" admin site."
 msgstr ""
-"This object doesn't have a change history. It probably wasn't added via this "
-"admin site."
+"This object doesn't have a change history. It probably wasn't added via this"
+" admin site."
 
 #: .\steambird\templates\admin\submit_line.html:4
 msgid "Save"
@@ -414,6 +420,8 @@ msgstr "Save and view"
 msgid "Close"
 msgstr "Close"
 
+#: .\steambird\templates\steambird\ISBN.html:21
+#: .\steambird\templates\steambird\book.html:22
 #: .\steambird\templates\steambird\home.html:18
 msgid "Admin"
 msgstr "Admin"
