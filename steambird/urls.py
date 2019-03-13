@@ -5,7 +5,7 @@ from django.views.generic import RedirectView
 from pysidian_core.urls import urls as pysidian_core_urls
 
 from steambird import settings
-from steambird.views import HomeView, ISBNView, ISBNDetailView
+from steambird.views import HomeView, ISBNView, ISBNDetailView, CourseView, CourseViewDetail
 
 urlpatterns = [
     path('', HomeView.as_view(), name='index'),
@@ -15,14 +15,14 @@ urlpatterns = [
 
     path('isbn/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
     path('isbn', ISBNView.as_view(), name='isbn'),
-
-
-] + pysidian_core_urls
+                  path('overview', CourseView.as_view(), name='courseview.list'),
+                  path('overview/<int:msp_key>', CourseViewDetail.as_view(), name='courseview.details')
+              ] + pysidian_core_urls
 
 if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-        path('translations/', include('rosetta.urls'))
-    ] + urlpatterns
+                      path('__debug__/', include(debug_toolbar.urls)),
+                      path('translations/', include('rosetta.urls'))
+                  ] + urlpatterns

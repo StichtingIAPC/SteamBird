@@ -54,7 +54,10 @@ class Teacher(models.Model):
         null=True, blank=True, verbose_name=_("Time of last login"))
 
     def __str__(self):
-        return "{} {} {}".format(self.titles, self.initials, self.last_name)
+        if self.surname_prefix is not None:
+            return "{} {} {} {}".format(self.titles, self.initials, self.surname_prefix, self.last_name)
+        else:
+            return "{} {} {}".format(self.titles, self.initials, self.last_name)
 
     class Meta:
         verbose_name = _('Teacher')
@@ -283,16 +286,31 @@ class MaterialSelectionProcess(models.Model):
 
     @property
     def stage(self):
+        """"String representation of what our current stage is"""
         if not self.available_materials \
                 or self.available_materials.count() == 0 \
                 and not self.approved_material:
-            return _("Awaiting upstream check")
-        elif self.approved_material:
-            return _("Approved")
+            return _("No material found")
         elif self.available_materials and self.available_materials.count() != 0:
             return _("Awaiting approval")
+        elif self.approved_material:
+            return _("Approved")
         else:
             return _("Unspecified")
+
+    @property
+    def stage_bootstrap_tab(self):
+        """"Int representation of stage"""
+        if not self.available_materials \
+                or self.available_materials.count() == 0 \
+                and not self.approved_material:
+            return "danger"
+        elif self.available_materials and self.available_materials.count() != 0:
+            return "warning"
+        elif self.approved_material:
+            return "success"
+        else:
+            return "warning"
 
     class Meta:
         verbose_name = _("Material Selection Process")

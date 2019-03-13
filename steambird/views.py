@@ -1,7 +1,8 @@
-
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
+from steambird.models import Teacher, MaterialSelectionProcess as MSP
 from django.http import HttpResponseRedirect
 from django.views.generic import FormView
 from isbnlib.dev import NoDataForSelectorError
@@ -53,3 +54,27 @@ class ISBNDetailView(View):
             return render(self.request, 'steambird/book.html', {'book': meta_info})
         except NoDataForSelectorError:
             return render(self.request, 'steambird/book.html', {'retrieved_data': "No data was found for given ISBN"})
+
+
+class CourseView(View):
+
+    def get(self, request):
+        id = 1
+        # courses = Course.objects.filter(Q(teachers=id)).prefetch_related()
+        teacher = Teacher.objects.get(Q(id=id))
+        # courses = teacher.course_set
+
+        context = {
+            'teacher': teacher
+        }
+        return render(request, "steambird/courseoverview.html", context)
+
+
+class CourseViewDetail(View):
+
+    def get(self, request, msp_key):
+        msp_details = MSP.objects.get(id=msp_key)
+        context = {
+            'msp': msp_details
+        }
+        return render(request, "steambird/courseoverviewdetails.html", context)
