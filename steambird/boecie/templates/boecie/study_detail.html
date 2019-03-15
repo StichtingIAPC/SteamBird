@@ -1,0 +1,57 @@
+{% extends 'pysidian_core/base.html' %}
+{% load i18n %}
+{#Object is a Study group#}
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>{{ study.name }}</h2>
+
+            {#        Todo: Make quick add option available here, preferable like in Admin interface#}
+
+            <h3>Courses to be updated:</h3><br>
+            {% for course in study.courses.all %}
+                {% if not course.updated_IAPC %}
+                    <div class="row">
+                        <div class="col-4">
+                            {{ course.name }} {# TODO: make link to a 'to-be-updated'  #}
+                        </div>
+                        <div class="col-8">
+                            {{ course.teachers.all|join:'; ' }}
+                            {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
+                        </div>
+                    </div>
+                {% endif %}
+                {#                    TODO: Add handling for when after if statements empty#}
+            {% endfor %}
+            <br>
+            <hr>
+            <br>
+            <h3>Courses that are already updated</h3>
+            {% for course in study.courses.all %}
+                {% if course.updated_IAPC %}
+                    <div class="row">
+                        <div class="col-4">
+                            {{ course.name }}
+                        </div>
+                        <div class="col-8">
+                            {% for teacher in course.teachers.all %}
+                                {{ teacher }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {#                    TODO: Add handling for when after if statements empty#}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block usermenu_dropdown_user %}
+    {% if request.user.is_staff %}
+        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+        <div class="dropdown-divider"></div>
+    {% endif %}
+    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
+{% endblock %}

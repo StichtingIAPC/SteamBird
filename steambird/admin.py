@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import forms, widgets
+from django.forms import Textarea
 from polymorphic.admin import PolymorphicParentModelAdmin, \
     PolymorphicChildModelAdmin, PolymorphicChildModelFilter
+from django.db import models
 
 from .models import StudyMaterialEdition, Book, ScientificArticle, \
     OtherMaterial, Course, Study, StudyCourse, Teacher, Module, StudyMaterial, \
@@ -65,8 +67,8 @@ class BookAdmin(StudyMaterialChildAdmin):
     base_model = Book
     show_in_index = True
     fields = StudyMaterialChildAdmin.fields + \
-             ('ISBN', 'author', 'img', 'year_of_publishing')
-    list_display = ('name', 'ISBN', 'author', 'year_of_publishing')
+             ('ISBN', 'author', 'img', 'year_of_publishing', 'edition')
+    list_display = ('name', 'ISBN', 'author', 'year_of_publishing', 'edition')
     list_filter = ('material_type', 'year_of_publishing')
 
 

@@ -116,10 +116,10 @@ class Course(models.Model):
     def __str__(self):
         return "{}, {}".format(self.name, self.year)
 
+    def __repr__(self):
+        return "{}, {}".format(self.name, self.year)
 
 class Study(models.Model):
-
-
     name = models.CharField(
         max_length=100,
         verbose_name=_("Name of the study, e.g. Creative Technology"))
@@ -173,7 +173,6 @@ class StudyMaterial(models.Model):
         verbose_name_plural = _("Study Materials")
 
 
-
 class StudyMaterialEdition(PolymorphicModel):
     # Could be derived from either OID or ISBN
     name = models.CharField(
@@ -216,6 +215,8 @@ class Book(StudyMaterialEdition):
     author = models.CharField(null=False, blank=False, verbose_name=_(
         "Author names, comma separated"), max_length=1000)
     # Cover image of the book, should be derived from ISBN
+    edition = models.CharField(null=True, blank=True, verbose_name=_("Edition of the book (if applicable)"),
+                               max_length=50)
     img = models.URLField(verbose_name=_("Link to cover image of book"), blank=True, null=True)
 
     # Year of publishing, should be derived from ISBN
@@ -233,10 +234,10 @@ class Book(StudyMaterialEdition):
     def __str__(self):
         return "{}: {}".format(self.ISBN, self.name)
 
-
     class Meta:
         verbose_name = _("Book")
         verbose_name_plural = _("Books")
+
 
 class ScientificArticle(StudyMaterialEdition):
     DOI = models.CharField(null=False, blank=True, verbose_name=_(
@@ -264,13 +265,12 @@ class MaterialSelectionProcess(models.Model):
     osiris_specified_material = models.ForeignKey(
         StudyMaterialEdition, null=True, on_delete=SET_NULL,
         related_name='process_in_osiris')
-    available_materials = models.ManyToManyField(
-        StudyMaterialEdition, related_name='process_is_available')
-    approved_material = models.ForeignKey(
-        StudyMaterialEdition, null=True, on_delete=SET_NULL,
-        related_name='process_is_approved')
+    available_materials = models.ManyToManyField(StudyMaterialEdition, null=True, blank=True,
+                                                 related_name='process_is_available')
+    approved_material = models.ForeignKey(StudyMaterialEdition, null=True, blank=True, on_delete=SET_NULL,
+                                          related_name='process_is_approved')
     reason = models.CharField(
-        max_length=255, null=True,
+        max_length=255, null=True, blank=True,
         verbose_name=_(
             "Reason why there is a difference between Osiris and availability"))
 

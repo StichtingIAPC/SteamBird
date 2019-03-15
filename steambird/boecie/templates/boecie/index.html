@@ -1,0 +1,80 @@
+{% extends 'pysidian_core/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>Project SteamBird - Boecie Overview</h2>
+            <br>
+            <div class="col-12">
+                <h3>Bachelors: </h3>
+                <hr>
+                {% for study in studies %}
+                    {% if study.study_type == 'BSc' %}
+                        <div class="row">
+                            <div class="col-3">
+                                <b><a href="{% url 'study.list' study.id %}">{{ study.name }}</a></b><br>
+
+                            </div>
+                            <div class="col-1">
+                                {{ study.courses.count }}
+                            </div>
+                            <div class="col-8">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                         style="width: 33.58%" aria-valuenow="33.58" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
+                                    {#                                    TODO: make this value dependent on progress of teacher/IAPC update#}
+                                </div>
+                            </div>
+
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <br>
+                <hr>
+                <br><br>
+                <h3>Masters:</h3>
+                <hr>
+                {% for study in studies %}
+                    {% if study.study_type == 'MSc' %}
+                        <div class="row">
+                            <div class="col-3">
+                                <b><a href="{% url 'study.list' study.id %}">{{ study.name }}</a></b><br>
+
+                            </div>
+                            <div class="col-1">
+                                {{ study.courses.count }}
+                                {{ study.courses.}}
+                                {% for course in study.courses.all %}
+                                    {{ course.updated_IAPC }} {# TODO: make a count of updated by IAPC/teacher thing #}
+                                {% endfor %}
+                            </div>
+                            <div class="col-8">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                         style="width: 33.58%" aria-valuenow="33.58" aria-valuemin="0"
+                                         aria-valuemax="100"></div>
+                                    {#                                    TODO: make this value dependent on progress of teacher/IAPC update#}
+                                </div>
+                            </div>
+
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+            <div class="spacing"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block usermenu_dropdown_user %}
+    {% if request.user.is_staff %}
+        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+        <div class="dropdown-divider"></div>
+    {% endif %}
+    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
+{% endblock %}
