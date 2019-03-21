@@ -1,3 +1,14 @@
+/**
+ * @callback KeyPressCallback
+ * @param element {HTMLElement}
+ * @param event {Event}
+ */
+
+/**
+ * Triggers fnc when the enter key is pressed.
+ * @param fnc {KeyPressCallback}
+ * @returns {any}
+ */
 $.fn.enterKey = function (fnc) {
 	return this.each(function () {
 		$(this).keypress(function (ev) {
@@ -14,7 +25,7 @@ $.fn.enterKey = function (fnc) {
  */
 function searchIsbn(isbn) {
 	$.ajax({
-		url: "/api/isbn/search",
+		url: "/teacher/api/isbn/search",
 		data: {
 			isbn,
 		},

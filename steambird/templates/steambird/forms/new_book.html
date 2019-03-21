@@ -4,6 +4,7 @@
 </select>
 
 <form style="display: none;" id="book-add" class="form-add" method="post" action="{% url "teacher:msp.new" %}">
+    {% csrf_token %}
     <div class="form-group required">
         <label for="book-add-isbn" class="control-label">ISBN</label>
         <span class="input-group">
@@ -12,6 +13,7 @@
                    onkeyup="this.value=this.value.replace(/[^\d]/g,'')"/>
             <span class="input-group-append">
                 <button id="book-add-isbn-search"
+                        type="button"
                         class="btn btn-success">Search</button>
             </span>
         </span>
@@ -46,4 +48,6 @@
             <img src="#" id="book-add-show-image" alt="Cover image"/>
         </div>
     </div>
+
+    <input type="submit" value="Create" class="btn btn-success" />
 </form>

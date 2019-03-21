@@ -1,9 +1,12 @@
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, \
+    HttpResponseNotFound
 from django.shortcuts import render
 from django.views import View
 
 import isbnlib
 from json import dumps
+
+from isbnlib.dev import ISBNLibDevException
 
 
 class AddMSPView(View):
@@ -15,7 +18,7 @@ class AddMSPView(View):
 
 
 class ISBNSearchApiView(View):
-    def post(self, request):
+    def get(self, request):
         try:
             meta_info = isbnlib.meta(request.GET['isbn'])
             cover = isbnlib.cover(request.GET['isbn'])
@@ -24,3 +27,6 @@ class ISBNSearchApiView(View):
         except isbnlib.ISBNLibException as e:
             return HttpResponseBadRequest(dumps(str(e)),
                                           content_type="application/json")
+        except ISBNLibDevException as e:
+            return HttpResponseNotFound(dumps(str(e)),
+                                        content_type="application/json")

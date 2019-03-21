@@ -17,7 +17,7 @@ urlpatterns = [
 
     path('isbn/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
     path('isbn', ISBNView.as_view(), name='isbn'),
-    path('teacher', include(teacher_urls)),
+    path('teacher/', include(teacher_urls)),
 ] + pysidian_core_urls
 
 if settings.DEBUG:
