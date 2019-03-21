@@ -8,6 +8,7 @@ from steambird import settings
 from steambird.views import HomeView, ISBNView, ISBNDetailView, CourseView, CourseViewDetail
 
 urlpatterns = [
+                  path('select2/', include('django_select2.urls')),
 
                   # Administration pages (beheer app)
                   # path('boecie/', RedirectView.as_view(url=reverse_lazy('admin_index'))),

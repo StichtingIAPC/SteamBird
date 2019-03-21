@@ -14,11 +14,17 @@
                 {% if not course.updated_IAPC %}
                     <div class="row">
                         <div class="col-4">
-                            {{ course.name }} {# TODO: make link to a 'to-be-updated'  #}
+                            <a href="{% url 'course.detail' study.id course.course_code %}">{{ course.name }}</a> {# TODO: make link to a 'to-be-updated'  #}
                         </div>
-                        <div class="col-8">
+                        <div class="col-4">
                             {{ course.teachers.all|join:'; ' }}
                             {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
+                        </div>
+                        <div class="col-2">
+                            {{ course.year }}
+                        </div>
+                        <div class="col-2">
+{#                             TODO: add moment this course is given during set year#}
                         </div>
                     </div>
                 {% endif %}
@@ -32,18 +38,24 @@
                 {% if course.updated_IAPC %}
                     <div class="row">
                         <div class="col-4">
-                            {{ course.name }}
+                            <a href="{% url 'course.detail' study.id course.course_code %}">{{ course.name }}</a>
                         </div>
-                        <div class="col-8">
-                            {% for teacher in course.teachers.all %}
-                                {{ teacher }}
-                            {% endfor %}
+                        <div class="col-4">
+                            {{ course.teachers.all|join:'; ' }}
+                            {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
+                        </div>
+                        <div class="col-2">
+                            {{ course.year }}
+                        </div>
+                        <div class="col-2">
+                            {#                             TODO: add moment this course is given during set year#}
                         </div>
                     </div>
                 {% endif %}
             {% endfor %}
             {#                    TODO: Add handling for when after if statements empty#}
 
+            <div class="spacing"></div>
         </div>
     </div>
 {% endblock %}

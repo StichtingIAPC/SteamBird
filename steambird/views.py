@@ -59,7 +59,7 @@ class ISBNDetailView(View):
 class CourseView(View):
 
     def get(self, request):
-        id = 1
+        id = 5
         # courses = Course.objects.filter(Q(teachers=id)).prefetch_related()
         teacher = Teacher.objects.get(Q(id=id))
         # courses = teacher.course_set

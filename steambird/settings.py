@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rosetta',
     'debug_toolbar',
     'pysidian_core',
+    'django_select2'
 ]
 
 MIDDLEWARE = [

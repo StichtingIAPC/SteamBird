@@ -14,6 +14,7 @@ django-modeltranslation = "==0.13b1"
 django-polymorphic = "==2.0.3"
 pysidian-core = ">=0.0.5"
 isbnlib = "*"
+django_select2 = "*"
 
 [dev-packages]
 django-debug-toolbar = "==1.10.1"
