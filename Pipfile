@@ -13,6 +13,8 @@ django = ">=2.1"
 django-modeltranslation = "==0.13b1"
 django-polymorphic = "==2.0.3"
 pysidian-core = ">=0.0.5"
+isbnlib = "*"
+django_select2 = "*"
 psycopg2 = "*"
 
 [dev-packages]

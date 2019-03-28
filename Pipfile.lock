@@ -64,6 +64,22 @@
             "index": "pypi",
             "version": "==2.0.3"
         },
+        "django-select2": {
+            "hashes": [
+                "sha256:7e5a3da54332cb94174a91e0a03177ce44c152049b0876424ba81fc805dbb89f",
+                "sha256:f93b5b626e5c0e8ced24e1e31027eb4850649216e4132cdc3f3880c0bed241c9"
+            ],
+            "index": "pypi",
+            "version": "==6.3.1"
+        },
+        "isbnlib": {
+            "hashes": [
+                "sha256:5c67d7c6707380f1ceb291f52ce2737e43e24d76b2ff08ba37b0455801922dbf",
+                "sha256:d4ae098cb31d6c678a6eac074a24f8ba4adfe7df65db13b0b2ab7355f28d6e3b"
+            ],
+            "index": "pypi",
+            "version": "==3.9.6"
+        },
         "markdown": {
             "hashes": [
                 "sha256:fc4a6f69a656b8d858d7503bda633f4dd63c2d70cf80abdc6eafa64c4ae8c250",

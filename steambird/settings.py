@@ -32,10 +32,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'polymorphic',
     'modeltranslation',
+
     'steambird',
+    'steambird.boecie',
+
     'rosetta',
     'debug_toolbar',
     'pysidian_core',
+    'django_select2'
 ]
 
 MIDDLEWARE = [
