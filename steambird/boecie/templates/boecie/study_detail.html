@@ -1,4 +1,4 @@
-{% extends 'pysidian_core/base.html' %}
+{% extends 'boecie/base.html' %}
 {% load i18n %}
 {#Object is a Study group#}
 {% block content %}
@@ -14,7 +14,7 @@
                 {% if not course.updated_IAPC %}
                     <div class="row">
                         <div class="col-4">
-                            <a href="{% url 'course.detail' study.id course.course_code %}">{{ course.name }}</a> {# TODO: make link to a 'to-be-updated'  #}
+                            <a href="{% url 'boecie:course.detail' study.id course.course_code %}">{{ course.name }}</a> {# TODO: make link to a 'to-be-updated'  #}
                         </div>
                         <div class="col-4">
                             {{ course.teachers.all|join:'; ' }}
@@ -38,7 +38,7 @@
                 {% if course.updated_IAPC %}
                     <div class="row">
                         <div class="col-4">
-                            <a href="{% url 'course.detail' study.id course.course_code %}">{{ course.name }}</a>
+                            <a href="{% url 'boecie:course.detail' study.id course.course_code %}">{{ course.name }}</a>
                         </div>
                         <div class="col-4">
                             {{ course.teachers.all|join:'; ' }}
@@ -60,10 +60,10 @@
     </div>
 {% endblock %}
 
-{% block usermenu_dropdown_user %}
-    {% if request.user.is_staff %}
-        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
-        <div class="dropdown-divider"></div>
-    {% endif %}
-    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
-{% endblock %}
+{#{% block usermenu_dropdown_user %}#}
+{#    {% if request.user.is_staff %}#}
+{#        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>#}
+{#        <div class="dropdown-divider"></div>#}
+{#    {% endif %}#}
+{#    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>#}
+{#{% endblock %}#}

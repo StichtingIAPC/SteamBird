@@ -1,0 +1,18 @@
+{% extends 'boecie/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>Project SteamBird</h2>
+            {% for teacher in teachers %}
+                <div class="row">
+                    <div class="col-3"> {{ teacher }}</div>
+                    <div class="col-9"> {{ teacher.first_name }} {% if teacher.surname_prefix %}{{ teacher.surname_prefix }}{% endif %} {{ teacher.last_name }}</div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}
