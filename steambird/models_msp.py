@@ -38,6 +38,8 @@ class MSPLine(models.Model):
 
     class Meta:
         ordering = ['time']
+        verbose_name = _("Material Selection Process line")
+        verbose_name_plural = _("Material Selection Process lines")
 
 
 class MSP(models.Model):
@@ -68,3 +70,7 @@ class MSP(models.Model):
 
     def association_can_edit(self, association: StudyAssociation) -> bool:
         return association in self.associations
+
+    class Meta:
+        verbose_name = _("Material Selection Process")
+        verbose_name_plural = _("Material Selection Processes")

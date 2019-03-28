@@ -34,11 +34,19 @@ class Study(models.Model):
         verbose_name=_("Abbreviation of the study association"),
     )
 
+    class Meta:
+        verbose_name = _("Study")
+        verbose_name_plural = _("Studies")
+
 
 class CourseStudy(models.Model):
     study = models.ForeignKey(Study, on_delete=models.CASCADE)
     course = models.ForeignKey('Course', on_delete=models.CASCADE)
     study_year = models.IntegerField()
+
+    class Meta:
+        verbose_name = _("Course-Study relation")
+        verbose_name_plural = _("Course-Study relations")
 
 
 class Course(models.Model):
