@@ -35,7 +35,7 @@ INSTALLED_APPS = [
 
     'steambird',
     'steambird.boecie',
-
+    'steambird.teacher',
     'rosetta',
     'debug_toolbar',
     'pysidian_core',
@@ -59,7 +59,8 @@ ROOT_URLCONF = 'steambird.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['steambird/templates'],
+        'DIRS': [],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -67,10 +68,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ]
         },
     },
 ]

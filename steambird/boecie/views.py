@@ -10,7 +10,7 @@ from steambird.models import Study, Course, Teacher
 
 class HomeView(View):
     def get(self, request):
-        studies = Study.objects.all().order_by('study_type')
+        studies = Study.objects.all().order_by('type')
 
         context = {
             'studies': studies,
@@ -34,7 +34,7 @@ class CourseUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseUpdateView, self).get_context_data()
-        context['has_next'] = Course.objects.filter(study__id=self.kwargs['study'], updated_IAPC=False).exclude(
+        context['has_next'] = Course.objects.filter(studies__id=self.kwargs['study'], updated_associations=False).exclude(
             course_code=self.kwargs['course_code']).first()
         return context
 

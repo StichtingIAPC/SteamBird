@@ -1,19 +1,16 @@
 {% extends 'pysidian_core/base.html' %}
 {% load i18n %}
+{% load active_menu %}
 
+{% block brand_link %}{% url 'teacher:index' %}{% endblock %}
+{% block brand_text %}Steambird Teacher{% endblock %}
 
-{% block content %}
+{% url 'teacher:index' as home %}
 
-    <div class="spacing"></div>
-    <div class="container">
-        <div class="textmodule">
-            <form action="{{ request.path }}" method="post">
-                {% csrf_token %}
-                {{ form }}
-                <input class="btn btn-danger" type="submit" value="Submit">
-            </form>
-        </div>
-    </div>
+{% block nav_items %}
+    <li class="{% active_menu home %}">
+        <a class="nav-link" href="{{ home }}">{% trans "Home" %}</a>
+    </li>
 {% endblock %}
 
 {% block usermenu_dropdown_user %}

@@ -10,11 +10,11 @@
             {#        Todo: Make quick add option available here, preferable like in Admin interface#}
 
             <h3>Courses to be updated:</h3><br>
-            {% for course in study.courses.all %}
+            {% for course in study.course_set.all %}
                 {% if not course.updated_IAPC %}
                     <div class="row">
                         <div class="col-4">
-                            <a href="{% url 'boecie:course.detail' study.id course.course_code %}">{{ course.name }}</a> {# TODO: make link to a 'to-be-updated'  #}
+                            <a href="{% url 'boecie:course.detail' study.pk course.course_code %}">{{ course.name }}</a> {# TODO: make link to a 'to-be-updated'  #}
                         </div>
                         <div class="col-4">
                             {{ course.teachers.all|join:'; ' }}
@@ -34,7 +34,7 @@
             <hr>
             <br>
             <h3>Courses that are already updated</h3>
-            {% for course in study.courses.all %}
+            {% for course in study.course_set.all %}
                 {% if course.updated_IAPC %}
                     <div class="row">
                         <div class="col-4">

@@ -30,9 +30,19 @@ class Study(models.Model):
         choices=[(t.name, t.value) for t in StudyType],
         verbose_name=_("Type of this study"),
     )
-    slug = models.SlugField(
-        verbose_name=_("Abbreviation of the study association"),
+    name = models.CharField(
+        max_length=255,
+        verbose_name=_('Name of study')
     )
+    slug = models.SlugField(
+        verbose_name=_("Abbreviation of the study"),
+    )
+
+    def __str__(self):
+        return '{}, {}'.format(self.name, self.type)
+
+    def __repr__(self):
+        return self.__str__()
 
     class Meta:
         verbose_name = _("Study")
@@ -92,6 +102,18 @@ class Course(models.Model):
     )
     calendar_year = models.IntegerField(
         verbose_name=_("The year in which this course takes place"),
+    )
+    course_code = models.CharField(
+        max_length=64,
+        verbose_name=_('Course Code'),
+    )
+    updated_associations = models.BooleanField(
+        default=False,
+        verbose_name=_('Updated by association?')
+    )
+    updated_teacher = models.BooleanField(
+        default=False,
+        verbose_name=_('Updated by teacher?')
     )
 
     @property

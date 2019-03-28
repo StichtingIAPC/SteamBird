@@ -18,7 +18,10 @@ class Teacher(models.Model):
         null=True, blank=True, verbose_name=_("Time of last login"))
     user = models.ForeignKey(
         User, on_delete=models.PROTECT,
-        verbose_name=_("The user associated to this"))
+        verbose_name=_("The user associated to this"),
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return "{} {} {}".format(self.titles, self.initials, self.last_name)

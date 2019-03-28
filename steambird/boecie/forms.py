@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.forms import widgets
 from django_select2.forms import Select2Widget, Select2MultipleWidget, ModelSelect2MultipleWidget
 
-from steambird.models import Course, MaterialSelectionProcess as MSP, Teacher
+from steambird.models import Course, MSP, Teacher
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -19,7 +19,7 @@ class CourseForm(forms.ModelForm):
 
     class Meta:
         model = Course
-        fields = ['course_code', 'name', 'materials', 'teachers', 'updated_IAPC', 'updated_teacher', 'year']
+        fields = ['course_code', 'name', 'materials', 'teachers', 'updated_associations', 'updated_teacher', 'calendar_year']
         widgets = {
             'materials': Select2MultipleWidget,#     TODO: Make this work on the new MSP selection instead of this old one (therefore, up until then keep it like this)
             'teachers': ModelSelect2MultipleWidget(
