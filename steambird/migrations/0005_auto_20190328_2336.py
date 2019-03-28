@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='study',
             name='name',
-            field=models.CharField(default=1, max_length=255, verbose_name='Name of study'),
+            field=models.CharField(default='', max_length=255, verbose_name='Name of study'),
             preserve_default=False,
         ),
         migrations.AlterField(

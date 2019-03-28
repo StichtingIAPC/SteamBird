@@ -2,7 +2,7 @@ from typing import List
 
 from django.db import models
 from django.db.models import Q
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext as _t
 from enum import Enum
 
 from steambird.models_user import Teacher, StudyAssociation
@@ -81,14 +81,14 @@ class MSP(models.Model):
             last_line = self.mspline_set.last()
 
         if not last_line:
-            return _("Empty MSP")
+            return _t("Empty MSP")
 
         return '{}: {}'.format(last_line.type, ', '.join(map(str, last_line.materials.all())))
 
     def __str__(self):
         last_line: MSPLine = self.mspline_set.last()
         if not last_line:
-            return _("Empty MSP")
+            return _t("Empty MSP")
 
         return '{}: {}'.format(last_line.type, ', '.join(map(str, last_line.materials.all())))
 

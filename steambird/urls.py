@@ -7,6 +7,7 @@ from pysidian_core.urls import urls as pysidian_core_urls
 from steambird import settings
 
 urlpatterns = [
+                  path('select2/', include('django_select2.urls')),
                   path('admin/', admin.site.urls),
                   path('admin', RedirectView.as_view(pattern_name='admin:index',
                                                      permanent=False)),

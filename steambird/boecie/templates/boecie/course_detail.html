@@ -88,7 +88,7 @@
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
-                                            {{ form.year|form_bootstrapify }}
+                                            {{ form.calendar_year|form_bootstrapify }}
 
                                         </div>
                                     </div>
@@ -178,17 +178,17 @@
                         <div class="card-body">
                             {% if form.materials.errors %}
                                 <div class="w-100 col-sm-offset-2 col-sm-10 form-control-static">
-                                                <span class="label label-danger">{% for error in form.updated_IAPC.errors %}
+                                                <span class="label label-danger">{% for error in form.updated_associations.errors %}
                                                     {{ error }} {% endfor %}</span>
                                 </div>
                             {% endif %}
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="{{ form.updated_IAPC.id_for_label }}"
-                                           class="w-100 col-sm-2 control-label">{{ form.updated_IAPC.label }}</label>
+                                    <label for="{{ form.updated_associations.id_for_label }}"
+                                           class="w-100 col-sm-2 control-label">{{ form.updated_associations.label }}</label>
                                     <div class="w-100 col-sm-10">
                                         <div class="form-inline">
-                                            {{ form.updated_IAPC|form_bootstrapify }}
+                                            {{ form.updated_associations|form_bootstrapify }}
                                         </div>
                                     </div>
                                 </div>
