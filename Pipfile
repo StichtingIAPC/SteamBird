@@ -9,10 +9,11 @@ verify_ssl = true
 name = "iapc-releases"
 
 [packages]
-django = ">=2.1,<2.2"
+django = ">=2.1"
 django-modeltranslation = "==0.13b1"
 django-polymorphic = "==2.0.3"
 pysidian-core = ">=0.0.5"
+psycopg2 = "*"
 
 [dev-packages]
 django-debug-toolbar = "==1.10.1"
