@@ -58,7 +58,7 @@ class Course(models.Model):
     )
     name = models.CharField(
         max_length=64,
-        verbose_name=_("Name of this study"),
+        verbose_name=_("Name of this course"),
     )
     materials = models.ManyToManyField(
         'MSP',
@@ -160,4 +160,5 @@ class Course(models.Model):
     def association_can_manage_msp(self, association: StudyAssociation) -> bool:
         return association in self.associations
 
-
+    def __str__(self):
+        return '{} ({}, {})'.format(self.name, self.calendar_year, self.period)

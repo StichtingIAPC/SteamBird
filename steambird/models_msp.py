@@ -1,6 +1,7 @@
 from typing import List
 
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from enum import Enum
 
@@ -70,6 +71,26 @@ class MSP(models.Model):
 
     def association_can_edit(self, association: StudyAssociation) -> bool:
         return association in self.associations
+
+    def teacher_str(self):
+        last_line = self.mspline_set.filter(
+            Q(type=MSPLineType.request_material) |
+            Q(type=MSPLineType.approve_material)).last()
+
+        if not last_line:
+            last_line = self.mspline_set.last()
+
+        if not last_line:
+            return _("Empty MSP")
+
+        return '{}: {}'.format(last_line.type, ', '.join(map(str, last_line.materials.all())))
+
+    def __str__(self):
+        last_line: MSPLine = self.mspline_set.last()
+        if not last_line:
+            return _("Empty MSP")
+
+        return '{}: {}'.format(last_line.type, ', '.join(map(str, last_line.materials.all())))
 
     class Meta:
         verbose_name = _("Material Selection Process")
