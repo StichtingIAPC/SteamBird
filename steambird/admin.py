@@ -4,6 +4,7 @@ from steambird.models import *
 
 admin.site.register(Study)
 admin.site.register(StudyMaterial)
+admin.site.register(Course)
 admin.site.register(CourseStudy)
 admin.site.register(StudyAssociation)
 admin.site.register(Teacher)
