@@ -10,6 +10,9 @@ deploy-docker:
   except:
     - branches
   when: manual
+  environment:
+    name: production
+    url: https://steambird.iapc.utwente.nl/
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
