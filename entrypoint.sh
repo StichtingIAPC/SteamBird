@@ -10,4 +10,4 @@ uwsgi \
     --harakiri=20 \
     --vacuum \
     -b 32768 \
-    --module=bestuur_track.wsgi:application
+    --module=steambird.wsgi:application
