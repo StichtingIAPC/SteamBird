@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g+9hmm0y!48$_vaj=0&=mr%=pdd*c7&i&@8a)t=qow-!fh6vs!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") in ["True", "1", "true"]
 
 INTERNAL_IPS = ('127.0.0.1',)
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'rosetta',
     'debug_toolbar',
     'pysidian_core',
-]
+] + (['django_uwsgi'] if find_loader('django_uwsgi') else [])
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,13 +76,24 @@ WSGI_APPLICATION = 'steambird.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if os.getenv("DB_ENGINE", False):
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv("DB_ENGINE"),
+            'NAME': os.getenv("DB_NAME"),
+            'USER': os.getenv("DB_USERNAME"),
+            'PASSWORD': os.getenv("DB_PASSWORD"),
+            'HOST': os.getenv("DB_HOST"),
+            'PORT': os.getenv("DB_PORT"),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation

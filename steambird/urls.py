@@ -21,3 +21,8 @@ if settings.DEBUG:
         path('__debug__/', include(debug_toolbar.urls)),
         path('translations/', include('rosetta.urls'))
     ] + urlpatterns
+
+if find_loader('django_uwsgi'):
+    urlpatterns = [
+        path('admin/uwsgi/', include('django_uwsgi.urls'))
+    ] + urlpatterns
