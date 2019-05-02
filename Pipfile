@@ -16,6 +16,7 @@ pysidian-core = ">=0.0.5"
 isbnlib = "*"
 django_select2 = "*"
 psycopg2 = "*"
+django-addanother = "*"
 
 [dev-packages]
 django-debug-toolbar = "==1.10.1"

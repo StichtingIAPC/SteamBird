@@ -2,9 +2,10 @@ from django.db import transaction
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
+from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import CourseForm
+from steambird.boecie.forms import CourseForm, TeacherForm
 from steambird.models import Study, Course, Teacher
 
 
@@ -34,7 +35,8 @@ class CourseUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseUpdateView, self).get_context_data()
-        context['has_next'] = Course.objects.filter(studies__id=self.kwargs['study'], updated_associations=False).exclude(
+        context['has_next'] = Course.objects.filter(studies__id=self.kwargs['study'],
+                                                    updated_associations=False).exclude(
             course_code=self.kwargs['course_code']).first()
         return context
 
@@ -42,11 +44,11 @@ class CourseUpdateView(UpdateView):
         return Course.objects.get(course_code=self.kwargs['course_code'])
 
     def get_success_url(self):
-        next_course = Course.objects.filter(study__id=self.kwargs['study'], updated_IAPC=False).first()
+        next_course = Course.objects.filter(studies__id=self.kwargs['study'], updated_associations=False).first()
         if next_course is None:
-            return reverse('study.list', kwargs={'pk': self.kwargs['study']})
+            return reverse('boecie:study.list', kwargs={'pk': self.kwargs['study']})
         else:
-            return reverse('course.detail',
+            return reverse('boecie:course.detail',
                            kwargs={'study': self.kwargs['study'], 'course_code': next_course.course_code})
 
 
@@ -55,3 +57,14 @@ class TeachersListView(ListView):
     queryset = Teacher.objects.all()
     context_object_name = 'teachers'
     # paginate_by =
+
+
+class TeacherDetailView(DetailView):
+    template_name = 'boecie/teacher_detail.html'
+    model = Teacher
+
+
+class TeacherCreateView(CreatePopupMixin, CreateView):
+    model = Teacher
+    form_class = TeacherForm
+    template_name = 'boecie/teacher_create.html'
