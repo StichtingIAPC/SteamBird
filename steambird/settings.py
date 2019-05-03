@@ -1,4 +1,5 @@
 import os
+from importlib import find_loader
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -88,6 +89,7 @@ if os.getenv("DB_ENGINE", False):
             'HOST': os.getenv("DB_HOST"),
             'PORT': os.getenv("DB_PORT"),
         }
+    }
 else:
     DATABASES = {
         'default': {

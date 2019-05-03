@@ -1,0 +1,183 @@
+[
+{
+    "model": "steambird.teacher",
+    "pk": 1,
+    "fields": {
+        "titles": "Dr.",
+        "initials": "A.",
+        "first_name": "Ansgar",
+        "surname_prefix": null,
+        "last_name": "Fehnker",
+        "email": "a.fehnker@utwente.nl",
+        "active": true,
+        "retired": false,
+        "last_login": null,
+        "user": null
+    }
+},
+{
+    "model": "steambird.teacher",
+    "pk": 3,
+    "fields": {
+        "titles": "Dr. Ir.",
+        "initials": "D.",
+        "first_name": "Djoerd",
+        "surname_prefix": null,
+        "last_name": "Hiemstra",
+        "email": "d.hiemstra@utwente.nl",
+        "active": true,
+        "retired": false,
+        "last_login": null,
+        "user": null
+    }
+},
+{
+    "model": "steambird.teacher",
+    "pk": 4,
+    "fields": {
+        "titles": "Dr.",
+        "initials": "H.",
+        "first_name": "Henk",
+        "surname_prefix": "van",
+        "last_name": "Spenk",
+        "email": "h.spenk@utwente.nl",
+        "active": true,
+        "retired": false,
+        "last_login": null,
+        "user": null
+    }
+},
+{
+    "model": "steambird.teacher",
+    "pk": 8,
+    "fields": {
+        "titles": "Prof. Dr. Ir.",
+        "initials": "R.H.B",
+        "first_name": "Rolf",
+        "surname_prefix": "van",
+        "last_name": "Kleef",
+        "email": "rkleef@iapc.nl",
+        "active": true,
+        "retired": false,
+        "last_login": null,
+        "user": null
+    }
+},
+{
+    "model": "steambird.study",
+    "pk": 1,
+    "fields": {
+        "type": "bachelor",
+        "name": "Creative Technology",
+        "slug": "CreaTe"
+    }
+},
+{
+    "model": "steambird.study",
+    "pk": 2,
+    "fields": {
+        "type": "bachelor",
+        "name": "Business & IT",
+        "slug": "BIT"
+    }
+},
+{
+    "model": "steambird.study",
+    "pk": 3,
+    "fields": {
+        "type": "master",
+        "name": "Business Information Technology",
+        "slug": "MBIT"
+    }
+},
+{
+    "model": "steambird.study",
+    "pk": 4,
+    "fields": {
+        "type": "master",
+        "name": "Computer Science",
+        "slug": "M-CS"
+    }
+},
+{
+    "model": "steambird.study",
+    "pk": 5,
+    "fields": {
+        "type": "master",
+        "name": "Embedded Systems",
+        "slug": "M-EMSYS"
+    }
+},
+{
+    "model": "steambird.study",
+    "pk": 6,
+    "fields": {
+        "type": "master",
+        "name": "Interaction Technology",
+        "slug": "ITech"
+    }
+},
+{
+    "model": "steambird.coursestudy",
+    "pk": 1,
+    "fields": {
+        "study": 1,
+        "course": 1,
+        "study_year": 1
+    }
+},
+{
+    "model": "steambird.coursestudy",
+    "pk": 2,
+    "fields": {
+        "study": 6,
+        "course": 2,
+        "study_year": 1
+    }
+},
+{
+    "model": "steambird.course",
+    "pk": 1,
+    "fields": {
+        "name": "Business Information Technology",
+        "coordinator": 1,
+        "period": "Q1",
+        "calendar_year": 2018,
+        "course_code": "2013000011",
+        "updated_associations": true,
+        "updated_teacher": false,
+        "materials": [
+            1
+        ],
+        "sub_courses": [],
+        "teachers": [
+            1
+        ]
+    }
+},
+{
+    "model": "steambird.course",
+    "pk": 2,
+    "fields": {
+        "name": "Advanced Information retrieval",
+        "coordinator": 3,
+        "period": "Q2",
+        "calendar_year": 2018,
+        "course_code": "201600083",
+        "updated_associations": true,
+        "updated_teacher": false,
+        "materials": [],
+        "sub_courses": [],
+        "teachers": []
+    }
+},
+{
+    "model": "steambird.msp",
+    "pk": 1,
+    "fields": {
+        "teachers": [
+            1
+        ]
+    }
+}
+]

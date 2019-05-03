@@ -20,9 +20,11 @@ django-addanother = "*"
 
 [dev-packages]
 django-debug-toolbar = "==1.10.1"
-django-rosetta = "==0.9"
+django-rosetta = ">=0.9"
 rosetta = "*"
 scipy = "*"
+nltk = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"
