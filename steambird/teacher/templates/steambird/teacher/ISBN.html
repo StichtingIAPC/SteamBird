@@ -1,0 +1,25 @@
+{% extends 'steambird/teacher/base.html' %}
+{% load i18n %}
+
+
+{% block content %}
+
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <form action="{{ request.path }}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input class="btn btn-danger" type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block usermenu_dropdown_user %}
+    {% if request.user.is_staff %}
+        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+        <div class="dropdown-divider"></div>
+    {% endif %}
+    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
+{% endblock %}

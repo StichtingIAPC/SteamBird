@@ -1,4 +1,5 @@
 import os
+from importlib import find_loader
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -32,10 +33,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'polymorphic',
     'modeltranslation',
+
     'steambird',
+    'steambird.boecie',
+    'steambird.teacher',
     'rosetta',
     'debug_toolbar',
     'pysidian_core',
+    'django_select2',
+    'django_addanother',
 ] + (['django_uwsgi'] if find_loader('django_uwsgi') else [])
 
 MIDDLEWARE = [
@@ -55,7 +61,8 @@ ROOT_URLCONF = 'steambird.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['steambird/templates'],
+        'DIRS': [],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -63,10 +70,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
-            ]
         },
     },
 ]
@@ -90,8 +93,12 @@ if os.getenv("DB_ENGINE", False):
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'stoomvogel',
+            'USER': 'stoomvogel',
+            'PASSWORD': 'stoomvogel',
+            'HOST': 'localhost',
+            'PORT': '5432',
         }
     }
 

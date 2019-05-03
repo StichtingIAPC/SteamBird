@@ -1,0 +1,49 @@
+{% extends 'pysidian_core/base.html' %}
+{% load i18n %}
+{% load active_menu %}
+{% load static %}
+
+{% block brand_link %}{% url 'index' %}{% endblock %}
+{% block brand_text %}Steambird{% endblock %}
+
+{% block css %}
+    <link href="{% static "steambird.less" %}" rel="stylesheet/less" type="text/css">
+{% endblock %}
+
+
+
+{% block nav_items %}
+    {% url 'index' as home %}
+    {% url 'teacher:index' as teacher_home %}
+    {% url 'boecie:index' as boecie_home %}
+    <li class="{% active_menu home %}">
+        <a class="nav-link" href="{{ home }}">{% trans "Home" %}</a>
+    </li>
+    <li class="{% active_menu teacher_home %}">
+        <a class="nav-link" href="{{ teacher_home }}">{% trans "Teacher" %}</a>
+    </li>
+    <li class="{% active_menu boecie_home %}">
+        <a class="nav-link" href="{{ boecie_home }}">{% trans "Boecie" %}</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>Project SteamBird</h2>
+            <div class="textmodule-text">
+                <p>@Luuk, Deal with it.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block usermenu_dropdown_user %}
+    {% if request.user.is_staff %}
+        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+        <div class="dropdown-divider"></div>
+    {% endif %}
+    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
+{% endblock %}

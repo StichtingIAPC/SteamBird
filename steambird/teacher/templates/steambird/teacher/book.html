@@ -1,16 +1,20 @@
-{% extends 'pysidian_core/base.html' %}
+{% extends 'steambird/teacher/base.html' %}
 {% load i18n %}
 
 {% block content %}
-<div class="spacing"></div>
-<div class="container">
-    <div class="textmodule">
-        <h2>Project Stoomvogel</h2>
-        <div class="textmodule-text">
-            <p>@Luuk, Deal with it.</p>
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>Project Stoomvogel</h2>
+            <p>
+                {{ retrieved_data }}
+                {% for k, v in book.items %}
+                    {{ k }} {{ v }} <br>
+                {% endfor %}
+                <img src="{{ book.img }}"></p>
+
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block usermenu_dropdown_user %}

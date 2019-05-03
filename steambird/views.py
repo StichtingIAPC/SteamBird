@@ -2,6 +2,6 @@ from django.shortcuts import render
 from django.views import View
 
 
-class HomeView(View):
+class IndexView(View):
     def get(self, request):
-        return render(request, "steambird/home.html")
+        return render(request, "steambird/index.html")
