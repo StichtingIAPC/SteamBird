@@ -1,5 +1,5 @@
 import os
-from importlib import find_loader
+from importlib.util import find_spec
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -37,12 +37,17 @@ INSTALLED_APPS = [
     'steambird',
     'steambird.boecie',
     'steambird.teacher',
-    'rosetta',
-    'debug_toolbar',
     'pysidian_core',
     'django_select2',
     'django_addanother',
-] + (['django_uwsgi'] if find_loader('django_uwsgi') else [])
+] + ([
+    'django_uwsgi',
+] if find_spec('django_uwsgi') else [
+]) + ([
+    'rosetta',
+    'debug_toolbar',
+] if DEBUG else [
+])
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
