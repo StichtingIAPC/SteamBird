@@ -19,7 +19,10 @@ SECRET_KEY = 'g+9hmm0y!48$_vaj=0&=mr%=pdd*c7&i&@8a)t=qow-!fh6vs!'
 DEBUG = os.getenv("DEBUG", "True") in ["True", "1", "true"]
 
 INTERNAL_IPS = ('127.0.0.1',)
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ([
+    '127.0.0.1',
+    'localhost'
+] if DEBUG else ['*'])
 
 
 # Application definition
