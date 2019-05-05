@@ -24,9 +24,9 @@ RUN pipenv install --system --deploy
 COPY . /project/
 COPY entrypoint.sh /usr/local/bin/
 
-RUN python manage.py collectstatic --noinput
-
 ENV DEBUG=False
+
+RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
