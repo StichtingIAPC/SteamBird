@@ -58,8 +58,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+] + ([
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-]
+] if DEBUG else [
+])
 
 ROOT_URLCONF = 'steambird.urls'
 
@@ -125,15 +127,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-LANGUAGES = [
-    ('nl', _('Dutch')),
-    ('en', _('English')),
-]
-LANGUAGE_CODE = 'en'
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGES = [
     ('nl', _('Dutch')),
