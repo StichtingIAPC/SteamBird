@@ -1,3 +1,6 @@
+# Author: Rolf van Kleef
+# Licensed under LGPL v2
+
 FROM python:3.7-alpine
 
 RUN mkdir /project
