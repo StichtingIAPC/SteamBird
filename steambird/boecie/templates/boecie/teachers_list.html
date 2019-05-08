@@ -10,12 +10,13 @@
 
             <table class="table table-striped table-hover">
                 <div class="w-100 col-xs-12">
-                <a href="{% url 'boecie:teacher.create' %}">
-                    <button class="btn btn-success btn-block"
-                            type="submit">
-                        {% trans "Create new teacher" %}</button>
+                    <a href="{% url 'boecie:teacher.create' %}">
+                        <button class="btn btn-success btn-block"
+                                type="submit">
+                            {% trans "Create new teacher" %}</button>
+                    </a>
                 </div>
-            <div class="spacing"></div>
+                <div class="spacing"></div>
                 {% for teacher in teachers %}
 
                     <tr class="row" data-href="{% url 'boecie:teacher.detail' teacher.id %}">

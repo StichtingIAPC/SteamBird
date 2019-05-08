@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-1">
                                 {{ study.course_set.count }}
-                                {{ study.courses.}}
+{#                                {{ study.courses. }}#}
                                 {% for course in study.courses.all %}
                                     {{ course.updated_IAPC }} {# TODO: make a count of updated by IAPC/teacher thing #}
                                 {% endfor %}

@@ -28,6 +28,8 @@ class Teacher(models.Model):
         return reverse('boecie:teacher.detail', kwargs={'pk': self.pk})
 
     def __str__(self):
+        if self.surname_prefix:
+            return "{} {} {} {}".format(self.titles, self.initials, self.surname_prefix, self.last_name)
         return "{} {} {}".format(self.titles, self.initials, self.last_name)
 
     class Meta:

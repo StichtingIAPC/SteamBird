@@ -1,9 +1,8 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse
 from django.views import View
 from steambird.models import Teacher, MSP
-from django.http import HttpResponseRedirect
 from django.views.generic import FormView
 from isbnlib.dev import NoDataForSelectorError
 
@@ -20,7 +19,6 @@ class ISBNView(FormView):
     form_class = ISBNForm
     template_name = 'steambird/teacher/ISBN.html'
 
-
     def form_valid(self, form):
         isbn = form.data['isbn']
         return redirect(reverse('teacher:isbndetail', kwargs={'isbn': isbn}))
@@ -32,7 +30,6 @@ class ISBNView(FormView):
 class ISBNDetailView(View):
 
     def get(self, request, isbn):
-
 
         try:
             meta_info = i.meta(isbn)
@@ -47,7 +44,8 @@ class ISBNDetailView(View):
 
             return render(self.request, 'steambird/teacher/book.html', {'book': meta_info})
         except NoDataForSelectorError:
-            return render(self.request, 'steambird/teacher/book.html', {'retrieved_data': "No data was found for given ISBN"})
+            return render(self.request, 'steambird/teacher/book.html',
+                          {'retrieved_data': "No data was found for given ISBN"})
 
 
 class CourseView(View):

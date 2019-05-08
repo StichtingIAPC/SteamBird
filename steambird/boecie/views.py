@@ -1,8 +1,7 @@
-from django.db import transaction
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import ListView, DetailView, UpdateView, CreateView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from django_addanother.views import CreatePopupMixin
 
 from steambird.boecie.forms import CourseForm, TeacherForm
@@ -56,15 +55,29 @@ class TeachersListView(ListView):
     template_name = 'boecie/teachers_list.html'
     queryset = Teacher.objects.all()
     context_object_name = 'teachers'
-    # paginate_by =
 
 
-class TeacherDetailView(DetailView):
-    template_name = 'boecie/teacher_detail.html'
+class TeacherEditView(UpdateView):
+    template_name = 'boecie/teacher_form.html'
     model = Teacher
+    form_class = TeacherForm
+    success_url = reverse_lazy('boecie:teacher.list')
 
 
 class TeacherCreateView(CreatePopupMixin, CreateView):
     model = Teacher
     form_class = TeacherForm
-    template_name = 'boecie/teacher_create.html'
+    template_name = 'boecie/teacher_form.html'
+
+    def form_valid(self, form):
+        teacher = form.save()
+        teacher_pk = teacher.pk
+        return redirect(reverse('boecie:teacher.detail', kwargs={'pk': teacher_pk}))
+
+    def form_invalid(self, form):
+        return render(self.request, 'boecie:teacher.create')
+
+class TeacherDeleteView(DeleteView):
+    model = Teacher
+    success_url = reverse_lazy('boecie:teacher.list')
+    template_name = 'boecie/teacher_confirm_delete.html'

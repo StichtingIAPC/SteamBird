@@ -14,7 +14,8 @@
                 {% if not course.updated_associations %}
                     <div class="row">
                         <div class="col-4">
-                            <a href="{% url 'boecie:course.detail' study.pk course.course_code %}">{{ course.name }}</a> {# TODO: make link to a 'to-be-updated'  #}
+                            <a href="{% url 'boecie:course.detail' study.pk course.course_code %}">{{ course.name }}</a>
+                            {# TODO: make link to a 'to-be-updated'  #}
                         </div>
                         <div class="col-4">
                             {{ course.coordinator }};
@@ -25,7 +26,7 @@
                             {{ course.year }}
                         </div>
                         <div class="col-2">
-{#                             TODO: add moment this course is given during set year#}
+                            {#                             TODO: add moment this course is given during set year#}
                         </div>
                     </div>
                 {% endif %}
