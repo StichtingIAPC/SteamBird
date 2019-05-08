@@ -1,4 +1,6 @@
 #!/bin/sh
+# Author: Rolf van Kleef
+# Licensed under LGPL v2
 
 python manage.py migrate
 
