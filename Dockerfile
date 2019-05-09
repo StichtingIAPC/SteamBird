@@ -1,3 +1,6 @@
+# Author: Rolf van Kleef
+# Licensed under LGPL v2
+
 FROM python:3.7-alpine
 
 RUN mkdir /project
@@ -25,6 +28,8 @@ COPY . /project/
 COPY entrypoint.sh /usr/local/bin/
 
 ENV DEBUG=False
+
+RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
