@@ -1,22 +1,23 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse
 from django.views import View
 from steambird.models import Teacher, MSP
-from django.http import HttpResponseRedirect
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView
 from isbnlib.dev import NoDataForSelectorError
 
+from steambird.perm_utils import IsTeacherMixin
 from .forms import ISBNForm
 import isbnlib as i
 
 
-class HomeView(View):
+class HomeView(IsTeacherMixin, View):
+
     def get(self, request):
         return render(request, "steambird/teacher/home.html")
 
 
-class ISBNView(FormView):
+class ISBNView(IsTeacherMixin, FormView):
     form_class = ISBNForm
     template_name = 'steambird/teacher/ISBN.html'
 
@@ -29,11 +30,9 @@ class ISBNView(FormView):
         return render(self.request, 'steambird/teacher/ISBN.html', {'form': form})
 
 
-class ISBNDetailView(View):
+class ISBNDetailView(IsTeacherMixin, View):
 
     def get(self, request, isbn):
-
-
         try:
             meta_info = i.meta(isbn)
             # desc = i.desc(isbn)
@@ -50,25 +49,19 @@ class ISBNDetailView(View):
             return render(self.request, 'steambird/teacher/book.html', {'retrieved_data': "No data was found for given ISBN"})
 
 
-class CourseView(View):
+class CourseView(IsTeacherMixin, DetailView):
 
-    def get(self, request):
-        id = 1
-        # courses = Course.objects.filter(Q(teachers=id)).prefetch_related()
-        teacher = Teacher.objects.get(Q(id=id))
-        # courses = teacher.course_set
+    template_name = 'steambird/teacher/courseoverview.html'
 
-        context = {
-            'teacher': teacher
-        }
-        return render(request, "steambird/teacher/courseoverview.html", context)
+    def get_queryset(self):
+        return Teacher.objects.get(user=self.request.user)
 
 
-class CourseViewDetail(View):
 
-    def get(self, request, msp_key):
-        msp_details = MSP.objects.get(id=msp_key)
-        context = {
-            'msp': msp_details
-        }
-        return render(request, "steambird/teacher/courseoverviewdetails.html", context)
+class CourseViewDetail(IsTeacherMixin, DetailView):
+
+    template_name = 'steambird/teacher/courseoverviewdetails.html'
+
+    def get_queryset(self):
+        return MSP.objects.filter(Q(course__teachers__user=self.request.user) |
+                           Q(course__coordinator__user=self.request.user), pk=self.request.pk)
