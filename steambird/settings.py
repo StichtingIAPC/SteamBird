@@ -89,29 +89,17 @@ WSGI_APPLICATION = 'steambird.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-if os.getenv("DB_ENGINE", False):
-    DATABASES = {
-        'default': {
-            'ENGINE': os.getenv("DB_ENGINE"),
-            'NAME': os.getenv("DB_NAME"),
-            'USER': os.getenv("DB_USERNAME"),
-            'PASSWORD': os.getenv("DB_PASSWORD"),
-            'HOST': os.getenv("DB_HOST"),
-            'PORT': os.getenv("DB_PORT"),
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'stoomvogel',
-            'USER': 'stoomvogel',
-            'PASSWORD': 'stoomvogel',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
-    }
 
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.getenv('DB_NAME', 'stoomvogel'),
+        'USER': os.getenv('DB_USERNAME', 'stoomvogel'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'stoomvogel'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
