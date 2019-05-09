@@ -1,0 +1,23 @@
+{% extends 'boecie/base.html' %}
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>Project SteamBird</h2>
+            <table class="table table-striped table-hover">
+
+
+                <tr class="row" data-href="{% url 'boecie:teacher.detail' teacher.id %}">
+                    <td class="col-3"> {{ teacher }}</td>
+                    <td class="col-9"> {{ teacher.first_name }} {% if teacher.surname_prefix %}
+                        {{ teacher.surname_prefix }}{% endif %} {{ teacher.last_name }}</td>
+                </tr>
+
+            </table>
+        </div>
+        <div class="spacing"></div>
+
+    </div>
+
+
+{% endblock %}

@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from steambird.models import Teacher, MaterialSelectionProcess as MSP
+from steambird.models import Teacher, MSP
 from django.http import HttpResponseRedirect
 from django.views.generic import FormView
 from isbnlib.dev import NoDataForSelectorError

@@ -1,4 +1,5 @@
 import os
+from importlib.util import find_spec
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -15,10 +16,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g+9hmm0y!48$_vaj=0&=mr%=pdd*c7&i&@8a)t=qow-!fh6vs!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") in ["True", "1", "true"]
 
 INTERNAL_IPS = ('127.0.0.1',)
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ([
+    '127.0.0.1',
+    'localhost'
+] if DEBUG else ['*'])
 
 
 # Application definition
@@ -32,12 +36,21 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'polymorphic',
     'modeltranslation',
+
     'steambird',
+    'steambird.boecie',
     'steambird.teacher',
+    'pysidian_core',
+    'django_select2',
+    'django_addanother',
+] + ([
+    'django_uwsgi',
+] if find_spec('django_uwsgi') else [
+]) + ([
     'rosetta',
     'debug_toolbar',
-    'pysidian_core',
-]
+] if DEBUG else [
+])
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -48,8 +61,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+] + ([
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-]
+] if DEBUG else [
+])
 
 ROOT_URLCONF = 'steambird.urls'
 
@@ -77,11 +92,14 @@ WSGI_APPLICATION = 'steambird.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.getenv('DB_NAME', 'stoomvogel'),
+        'USER': os.getenv('DB_USERNAME', 'stoomvogel'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'stoomvogel'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -100,15 +118,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-LANGUAGES = [
-    ('nl', _('Dutch')),
-    ('en', _('English')),
-]
-LANGUAGE_CODE = 'en'
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
 
 LANGUAGES = [
     ('nl', _('Dutch')),
@@ -134,3 +143,4 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
