@@ -6,10 +6,17 @@
     <div class="container">
         <div class="textmodule">
             <h2>{{ study.name }}</h2>
-
+            <a href="{% url 'boecie:course.create' study.pk %}" class="btn-link">
+                <button class="btn btn-success btn-block"
+                        type="submit">
+                    {% trans "Add new course" %}</button>
+            </a>
+            <hr>
+            <br>
             {#        Todo: Make quick add option available here, preferable like in Admin interface#}
 
             <h3>Courses to be updated:</h3><br>
+
             {% for course in study.course_set.all %}
                 {% if not course.updated_associations %}
                     <div class="row">

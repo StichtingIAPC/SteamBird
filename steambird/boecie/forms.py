@@ -22,7 +22,7 @@ class CourseForm(forms.ModelForm):
         fields = ['course_code', 'name', 'materials', 'teachers', 'updated_associations', 'updated_teacher',
                   'calendar_year', 'coordinator']
         widgets = {
-            'materials': Select2MultipleAddAnother(reverse_lazy('boecie:teachers.list')),
+            'materials': Select2MultipleAddAnother(reverse_lazy('boecie:teacher.list')),
             # TODO: Make this work on the new MSP selection instead of this old one (therefore, up until then keep it like this)
             'teachers': AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
                 model=Teacher,
@@ -35,6 +35,7 @@ class CourseForm(forms.ModelForm):
                                'surname_prefix__icontains', 'last_name__icontains', 'email__icontains']
             )
         }
+
 
 
 class TeacherForm(forms.ModelForm):

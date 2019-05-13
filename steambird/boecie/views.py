@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView, UpdateView, CreateView, D
 from django_addanother.views import CreatePopupMixin
 
 from steambird.boecie.forms import CourseForm, TeacherForm
-from steambird.models import Study, Course, Teacher
+from steambird.models import Study, Course, Teacher, CourseStudy
 
 
 class HomeView(View):
@@ -27,13 +27,14 @@ class StudyDetailView(DetailView):
 class CourseUpdateView(UpdateView):
     model = Course
     form_class = CourseForm
-    template_name = "boecie/course_detail.html"
+    template_name = "boecie/course_form.html"
 
     # success_url = reverse_lazy("study.list")
     # TODO: make the success url a course_check_next function which returns a next course to check (within study)
 
     def get_context_data(self, **kwargs):
         context = super(CourseUpdateView, self).get_context_data()
+        context['is_edit'] = True
         context['has_next'] = Course.objects.filter(studies__id=self.kwargs['study'],
                                                     updated_associations=False).exclude(
             course_code=self.kwargs['course_code']).first()
@@ -49,6 +50,29 @@ class CourseUpdateView(UpdateView):
         else:
             return reverse('boecie:course.detail',
                            kwargs={'study': self.kwargs['study'], 'course_code': next_course.course_code})
+
+
+class CourseCreateView(CreateView):
+    model = Course
+    form_class = CourseForm
+    template_name = 'boecie/course_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseCreateView, self).get_context_data()
+        context['is_edit'] = False
+        return context
+
+    def form_valid(self, form):
+        course = form.save(commit=False)
+        if '_mark_updated' in self.request.POST:
+            course.updated_associations = True  # TODO make this work
+        course.save()
+        study = Study.objects.get(pk=self.kwargs['pk'])
+
+        CourseStudy.objects.create(study=study, course=course, study_year='1').save()  # TODO fix study_year
+        return redirect(reverse('boecie:study.list', kwargs={'pk': self.kwargs['pk']}))
+
+        # automatically add to study, if study pk exists
 
 
 class TeachersListView(ListView):
@@ -76,6 +100,7 @@ class TeacherCreateView(CreatePopupMixin, CreateView):
 
     def form_invalid(self, form):
         return render(self.request, 'boecie:teacher.create')
+
 
 class TeacherDeleteView(DeleteView):
     model = Teacher

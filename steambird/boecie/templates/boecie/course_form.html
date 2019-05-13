@@ -3,12 +3,18 @@
 {% load bootstrapify %}
 
 {% block content %}
+    {% url 'boecie:course.create' as add_url %}
+    {% url 'boecie:course.detail' course.course_code as edit_url %}
     <div class="spacing"></div>
     <div class="container profile">
         <div class="row">
             <div class="col-xs-12 w-100">
                 <h2>
-                    <span>{% blocktrans with o=object %}Edit information of '{{ o }}'{% endblocktrans %}</span>
+                    {% if is_edit %}
+                        <span>{% blocktrans with o=object %}Edit information of '{{ o }}'{% endblocktrans %}</span>
+                    {% else %}
+                        <span>{% trans 'Creating Course' %}</span>
+                    {% endif %}
                 </h2>
             </div>
         </div>
@@ -250,10 +256,24 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="w-100 col-xs-12">
-                                    <button class="btn btn-primary btn-block"
-                                            type="submit">
-                                        {% if has_next %}{% trans 'Save and go to next course' %}{% else %}
-                                            {% trans 'Save and go back to overview' %}{% endif %}</button>
+                                        {% if is_edit %}
+                                            <button class="btn btn-primary btn-block" type="submit">
+                                            {% if has_next %}{% trans 'Save and go to next course' %}{% else %}
+                                                {% trans 'Save and go back to overview' %}{% endif %} </button>
+                                        {% else %}
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <input class="btn btn-primary btn-block" type="submit"
+                                                           value="{% trans 'Save' %}"
+                                                           name="_save"></div>
+                                                <div class="col-6">
+                                                    <input class="btn btn-primary btn-block" type="submit"
+                                                           value="{% trans 'Save and mark as updated' %}"
+                                                           name="_mark_updated">
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {#                                    </button>#}
                                 </div>
                             </div>
                         </div>

@@ -12,7 +12,7 @@ class Teacher(models.Model):
         max_length=50, null=True, blank=True,
         verbose_name=_("Surname prefix"))
     last_name = models.CharField(max_length=50, verbose_name=_("Last name"))
-    email = models.EmailField(verbose_name=_("Email"))
+    email = models.EmailField(verbose_name=_("Email"), unique=True)
     active = models.BooleanField(default=True, verbose_name=_("Active"))
     retired = models.BooleanField(default=False, verbose_name=_("Retired"))
     last_login = models.DateTimeField(
