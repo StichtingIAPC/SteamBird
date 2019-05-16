@@ -37,6 +37,26 @@ class MSPLine(models.Model):
         verbose_name=_("Related study material(s)")
     )
 
+    @property
+    def bootstrap_type(self):
+        if str.upper(self.type) == MSPLineType.request_material.value:
+            return "warning"
+
+        if str.upper(self.type) == MSPLineType.set_available_materials.value:
+            return "warning"
+
+        return "success"
+
+    @property
+    def fa_icon_type(self):
+        if str.upper(self.type) == MSPLineType.request_material.value:
+            return "question"
+
+        if str.upper(self.type) == MSPLineType.set_available_materials.value:
+            return "book"
+
+        return "check-square"
+
     class Meta:
         ordering = ['time']
         verbose_name = _("Material Selection Process line")
@@ -90,7 +110,7 @@ class MSP(models.Model):
         if not last_line:
             return _t("Empty MSP")
 
-        return '{}: {}'.format(last_line.type, ', '.join(map(str, last_line.materials.all())))
+        return ', '.join(map(lambda l: l.name, last_line.materials.all()))
 
     class Meta:
         verbose_name = _("Material Selection Process")

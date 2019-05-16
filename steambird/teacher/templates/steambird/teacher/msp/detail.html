@@ -1,0 +1,30 @@
+{% extends "steambird/teacher/base.html" %}
+{% load i18n %}
+{% load bootstrapify %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static "steambird.less" %}" rel="stylesheet/less" type="text/css">
+    {{ suggest_another.media.css }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{% trans "Material selection process for" %} {{ msp }}</h1>
+
+        {% include "steambird/msp/msp.html" with lines=lines book_url="teacher:material.detail" %}
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">{% trans "Suggest another" %}</span>
+            </div>
+            <form class="card-body">
+                {% csrf_token %}
+                <table>
+                    {{ suggest_another.as_table }}
+                </table>
+                <input type="submit" value="{% trans "Suggest" %}" class="btn btn-success" />
+            </form>
+        </div>
+    </div>
+    {{ suggest_another.media.js }}
+{% endblock %}
