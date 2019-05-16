@@ -19,7 +19,6 @@
                 </h2>
             </div>
         </div>
-
         {% if form.errors or formset.errors %}
             <div class="row">
                 <div class="col-xs-12 w-100">
@@ -81,12 +80,14 @@
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
                                             {{ form.course_code|form_bootstrapify }}
-                                            <div class="ml-3">
-                                                <a href="{% osiris_url course.course_code course.calendar_year %}"
-                                                   target="_blank">
-                                                    <span class="fa fa-external-link-alt"></span>
-                                                </a>
-                                            </div>
+                                            {% if edit_url %}
+                                                <div class="ml-3">
+                                                    <a href="{% osiris_url course.course_code course.calendar_year %}"
+                                                       target="_blank">
+                                                        <span class="fa fa-external-link-alt"></span>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -143,12 +144,14 @@
                                     <div class="w-100 col-sm-10">
                                         <div class="form-inline">
                                             {{ form.coordinator }}
-                                            <div class="ml-3">
-                                                <a href="{% people_utwente course.coordinator.initials course.coordinator.surname_prefix course.coordinator.last_name %}"
-                                                   target="_blank">
-                                                    <span class="fa fa-external-link-alt"></span>
-                                                </a>
-                                            </div>
+                                            {% if edit_url %}
+                                                <div class="ml-3">
+                                                    <a href="{% people_utwente course.coordinator.initials course.coordinator.surname_prefix course.coordinator.last_name %}"
+                                                       target="_blank">
+                                                        <span class="fa fa-external-link-alt"></span>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -269,7 +272,7 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="w-100 col-xs-12">
-{#                                TODO: REALLY think about the exact implementation of what we want to to with the next course/save buttons#}
+                                    {#                                TODO: REALLY think about the exact implementation of what we want to to with the next course/save buttons#}
                                     {% if is_edit %}
                                         <button class="btn btn-primary btn-block" type="submit">
                                             {% if has_next %}{% trans 'Save and go to next course' %}{% else %}

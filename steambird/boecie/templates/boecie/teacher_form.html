@@ -53,12 +53,14 @@
                     <div class="card">
                         <div class="card-header">
                             <h6 class="card-title mb-0">{% trans 'Teacher Information' %}
+                                {% if edit_url %}
                                 <span class="ml-3">
                                 <a href="{% people_utwente teacher.initials teacher.surname_prefix teacher.last_name %}"
                                    target="_blank">
                                     <span class="fa fa-external-link-alt"></span>
                                 </a>
                                 </span>
+                                {% endif %}
                             </h6>
                         </div>
 

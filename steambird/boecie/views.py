@@ -34,7 +34,7 @@ class HomeView(View):
                 'courses_updated_association': courses_updated_associations,
                 'courses_updated_association_p': (courses_updated_associations-courses_updated_teacher) / course_total * 100 if course_total > 0 else 0
             })
-
+        # TODO: Add fixed MSP (not yet finalized by teacher) count (?)
         return render(request, "boecie/index.html", context)
 
 
