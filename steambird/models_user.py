@@ -12,7 +12,7 @@ class Teacher(models.Model):
         max_length=50, null=True, blank=True,
         verbose_name=_("Surname prefix"))
     last_name = models.CharField(max_length=50, verbose_name=_("Last name"))
-    email = models.EmailField(verbose_name=_("Email"))
+    email = models.EmailField(verbose_name=_("Email"), unique=True)
     active = models.BooleanField(default=True, verbose_name=_("Active"))
     retired = models.BooleanField(default=False, verbose_name=_("Retired"))
     last_login = models.DateTimeField(
@@ -28,6 +28,8 @@ class Teacher(models.Model):
         return reverse('boecie:teacher.detail', kwargs={'pk': self.pk})
 
     def __str__(self):
+        if self.surname_prefix:
+            return "{} {} {} {}".format(self.titles, self.initials, self.surname_prefix, self.last_name)
         return "{} {} {}".format(self.titles, self.initials, self.last_name)
 
     class Meta:

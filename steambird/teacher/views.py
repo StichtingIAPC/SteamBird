@@ -1,16 +1,14 @@
 import isbnlib as i
 from django.db.models import Q
-from django.forms import HiddenInput, ChoiceField
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from django.views.generic import FormView, CreateView, TemplateView
-from django_select2.forms import Select2Widget
+from django.views.generic import FormView, TemplateView
 from isbnlib.dev import NoDataForSelectorError
 
 from steambird.models import Teacher, MSP
-from steambird.models_msp import MSPLine, MSPLineType
+from steambird.models_msp import MSPLine
 from .forms import ISBNForm, PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm
 
@@ -36,7 +34,6 @@ class ISBNDetailView(View):
 
     def get(self, request, isbn):
 
-
         try:
             meta_info = i.meta(isbn)
             # desc = i.desc(isbn)
@@ -50,7 +47,8 @@ class ISBNDetailView(View):
 
             return render(self.request, 'steambird/teacher/book.html', {'book': meta_info})
         except NoDataForSelectorError:
-            return render(self.request, 'steambird/teacher/book.html', {'retrieved_data': "No data was found for given ISBN"})
+            return render(self.request, 'steambird/teacher/book.html',
+                          {'retrieved_data': "No data was found for given ISBN"})
 
 
 class CourseView(View):

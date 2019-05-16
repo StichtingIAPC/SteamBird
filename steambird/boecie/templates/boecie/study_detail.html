@@ -4,68 +4,64 @@
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
-        <div class="textmodule">
-            <h2>{{ study.name }}</h2>
+        <h2>{{ study.name }}</h2>
+        <hr>
+        <a href="{% url 'boecie:course.create' study.pk %}" class="btn-link">
+            <button class="btn btn-success btn-block"
+                    type="submit">
+                {% trans "Add new course" %}</button>
+        </a>
+        <hr>
+        <h3>Courses to be updated:</h3><br>
 
-            {#        Todo: Make quick add option available here, preferable like in Admin interface#}
-
-            <h3>Courses to be updated:</h3><br>
-            {% for course in study.course_set.all %}
-                {% if not course.updated_associations %}
-                    <div class="row">
-                        <div class="col-4">
-                            <a href="{% url 'boecie:course.detail' study.pk course.course_code %}">{{ course.name }}</a> {# TODO: make link to a 'to-be-updated'  #}
-                        </div>
-                        <div class="col-4">
-                            {{ course.coordinator }};
-                            {{ course.teachers.all|join:'; ' }}
-                            {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
-                        </div>
-                        <div class="col-2">
-                            {{ course.year }}
-                        </div>
-                        <div class="col-2">
-{#                             TODO: add moment this course is given during set year#}
-                        </div>
+        {% for course in study.course_set.all %}
+            {% if not course.updated_associations %}
+                <div class="row">
+                    <div class="col-4">
+                        <a href="{% url 'boecie:course.detail' study.pk course.course_code %}">{{ course.name }}</a>
+                        {# TODO: make link to a 'to-be-updated'  #}
                     </div>
-                {% endif %}
-                {#                    TODO: Add handling for when after if statements empty#}
-            {% endfor %}
-            <br>
-            <hr>
-            <br>
-            <h3>Courses that are already updated</h3>
-            {% for course in study.course_set.all %}
-                {% if course.updated_associations %}
-                    <div class="row">
-                        <div class="col-4">
-                            <a href="{% url 'boecie:course.detail' study.id course.course_code %}">{{ course.name }}</a>
-                        </div>
-                        <div class="col-4">
-                            {{ course.coordinator }};
-                            {{ course.teachers.all|join:'; ' }}
-                            {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
-                        </div>
-                        <div class="col-2">
-                            {{ course.year }}
-                        </div>
-                        <div class="col-2">
-                            {#                             TODO: add moment this course is given during set year#}
-                        </div>
+                    <div class="col-4">
+                        {{ course.coordinator }};
+                        {{ course.teachers.all|join:'; ' }}
+                        {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
                     </div>
-                {% endif %}
-            {% endfor %}
+                    <div class="col-2">
+                        {{ course.year }}
+                    </div>
+                    <div class="col-2">
+                        {#                             TODO: add moment this course is given during set year#}
+                    </div>
+                </div>
+            {% endif %}
             {#                    TODO: Add handling for when after if statements empty#}
+        {% endfor %}
+        <br>
+        <hr>
+        <br>
+        <h3>Courses that are already updated</h3>
+        {% for course in study.course_set.all %}
+            {% if course.updated_associations %}
+                <div class="row">
+                    <div class="col-4">
+                        <a href="{% url 'boecie:course.detail' study.id course.course_code %}">{{ course.name }}</a>
+                    </div>
+                    <div class="col-4">
+                        {{ course.coordinator }};
+                        {{ course.teachers.all|join:'; ' }}
+                        {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
+                    </div>
+                    <div class="col-2">
+                        {{ course.year }}
+                    </div>
+                    <div class="col-2">
+                        {#                             TODO: add moment this course is given during set year#}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+        {#                    TODO: Add handling for when after if statements empty#}
 
-            <div class="spacing"></div>
-        </div>
+        <div class="spacing"></div>
     </div>
 {% endblock %}
-
-{#{% block usermenu_dropdown_user %}#}
-{#    {% if request.user.is_staff %}#}
-{#        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>#}
-{#        <div class="dropdown-divider"></div>#}
-{#    {% endif %}#}
-{#    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>#}
-{#{% endblock %}#}
