@@ -3,12 +3,18 @@
 {% load bootstrapify %}
 
 {% block content %}
+    {% url 'boecie:course.create' as add_url %}
+    {% url 'boecie:course.detail' course.course_code as edit_url %}
     <div class="spacing"></div>
     <div class="container profile">
         <div class="row">
             <div class="col-xs-12 w-100">
                 <h2>
-                    <span>{% blocktrans with o=object %}Edit information of {{ o }}{% endblocktrans %}</span>
+                    {% if is_edit %}
+                        <span>{% blocktrans with o=object %}Edit information of '{{ o }}'{% endblocktrans %}</span>
+                    {% else %}
+                        <span>{% trans 'Creating Course' %}</span>
+                    {% endif %}
                 </h2>
             </div>
         </div>
@@ -50,20 +56,17 @@
                             {% if form.course_code.errors or form.year.errors or form.name.errors %}
                                 <div class="col-sm-offset-2 col-sm-10 w-100 form-control-static">
                                     {% if form.course_code.errors %}
-                                        <span
-                                                class="label label-danger">{% trans 'Course Code:' %}
+                                        <span class="label label-danger">{% trans 'Course Code:' %}
                                             {% for error in form.course_code.errors %}
                                                 {{ error }} {% endfor %}</span>&nbsp;
                                     {% endif %}
                                     {% if form.year.errors %}
-                                        <span
-                                                class="label label-danger">{% trans 'Year' %}
+                                        <span class="label label-danger">{% trans 'Year' %}
                                             {% for error in form.year.errors %}
                                                 {{ error }} {% endfor %}</span>&nbsp;
                                     {% endif %}
                                     {% if form.name.errors %}
-                                        <span
-                                                class="label label-danger">{% trans 'Name:' %}
+                                        <span class="label label-danger">{% trans 'Name:' %}
                                             {% for error in form.name.errors %}
                                                 {{ error }} {% endfor %}</span>
                                     {% endif %}
@@ -253,10 +256,24 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="w-100 col-xs-12">
-                                    <button class="btn btn-primary btn-block"
-                                            type="submit">
-                                        {% if has_next %}{% trans 'Save and go to next course' %}{% else %}
-                                            {% trans 'Save and go back to overview' %}{% endif %}</button>
+                                        {% if is_edit %}
+                                            <button class="btn btn-primary btn-block" type="submit">
+                                            {% if has_next %}{% trans 'Save and go to next course' %}{% else %}
+                                                {% trans 'Save and go back to overview' %}{% endif %} </button>
+                                        {% else %}
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <input class="btn btn-primary btn-block" type="submit"
+                                                           value="{% trans 'Save' %}"
+                                                           name="_save"></div>
+                                                <div class="col-6">
+                                                    <input class="btn btn-primary btn-block" type="submit"
+                                                           value="{% trans 'Save and mark as updated' %}"
+                                                           name="_mark_updated">
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {#                                    </button>#}
                                 </div>
                             </div>
                         </div>
@@ -269,11 +286,3 @@
     {{ form.media.js }}
 
 {% endblock %}
-
-{#{% block usermenu_dropdown_user %}#}
-{#    {% if request.user.is_staff %}#}
-{#        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>#}
-{#        <div class="dropdown-divider"></div>#}
-{#    {% endif %}#}
-{#    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>#}
-{#{% endblock %}#}

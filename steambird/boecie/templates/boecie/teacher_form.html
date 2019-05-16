@@ -1,0 +1,241 @@
+{% extends 'boecie/base.html' %}
+{% load i18n %}
+{% load bootstrapify %}
+
+{% block content %}
+    {% url 'boecie:teacher.create' as add_url %}
+    {% url 'boecie:teacher.detail' teacher.pk as edit_url %}
+    <div class="spacing"></div>
+    <div class="container profile">
+        <div class="row">
+            <div class="col-xs-12 w-100">
+                <h2>
+                    {% if request.path == edit_url %}
+                        {% trans "Edit Teacher" %}
+                        <a class="btn btn-primary right"
+                           href="{% url 'boecie:teacher.delete' teacher.pk %}">{% trans "Delete" %}</a>
+                    {% else %}
+                        <span>{% trans 'Creating Teacher' %}</span>
+                    {% endif %}
+
+                </h2>
+            </div>
+        </div>
+        {% if form.errors or formset.errors %}
+            <div class="row">
+                <div class="col-xs-12 w-100">
+                    <div class="alert alert-danger"
+                         role="alert">{% trans 'There were some problems with the data you entered. Please see below.' %}</div>
+                </div>
+            </div>
+            {% if form.non_field_errors %}
+                <div class="row">
+                    <div class="col-xs-12 w-100">
+                        <div class="alert alert-danger" role="alert">
+                            <ul>
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <form action="{{ request.path }}" method="post" class="form-horizontal">
+            {% csrf_token %}
+            {{ form.media.css }}
+            <div class="row">
+                <div class="col-xs-12 w-100">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="card-title mb-0">{% trans 'Teacher Information' %}</h6>
+                        </div>
+
+                        <div class="card-body">
+                            {% if form.titles.errors or form.initials.errors or form.first_name.errors or form.surname_prefix.errors or form.last_name.errors or form.email.errors or form.active.errors or form.retired.errors %}
+                                <div class="col-sm-offset-2 col-sm-10 w-100 form-control-static">
+
+                                    {% if form.titles.errors %}
+                                        <span class="label label-danger">{% trans 'Titles' %}
+                                            {% for error in form.titles.errors %}
+                                                {{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if form.initials.errors %}
+                                        <span class="label label-danger">{% trans 'Initials' %}
+                                            {% for error in form.initials.errors %}
+                                                {{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if form.first_name.errors %}
+                                        <span class="label label-danger">{% trans 'First Name' %}
+                                            {% for error in form.first_name.errors %}
+                                                {{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if form.surname_prefix.errors %}
+                                        <span class="label label-danger">{% trans 'Surname Prefix' %}
+                                            {% for error in form.surname_prefix.errors %}
+                                                {{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if form.last_name.errors %}
+                                        <span class="label label-danger">{% trans 'Last name' %}
+                                            {% for error in form.last_name.errors %}
+                                                {{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if form.email.errors %}
+                                        <span class="label label-danger">{% trans 'Email' %}
+                                            {% for error in form.email.errors %}
+                                                {{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if form.active.errors %}
+                                        <span class="label label-danger">{% trans 'Active' %}
+                                            {% for error in form.active.errors %}
+                                                {{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}
+
+                                    {% if form.retired.errors %}
+                                        <span class="label label-danger">{% trans 'Retired' %}
+                                            {% for error in form.retired.errors %}
+                                                {{ error }}{% endfor %}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans 'Title' %}
+                                        <b class="form-required">*</b>
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.titles|form_bootstrapify }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans 'Initials' %}
+                                        <b class="form-required">*</b>
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.initials|form_bootstrapify }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans 'First Name' %}
+                                        <b class="form-required">*</b>
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.first_name|form_bootstrapify }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans 'Surname Prefix' %}
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.surname_prefix|form_bootstrapify }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans 'Last Name' %}
+                                        <b class="form-required">*</b>
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.last_name|form_bootstrapify }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans 'Email' %}
+                                        <b class="form-required">*</b>
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.email|form_bootstrapify }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans 'Active' %}
+                                        <b class="form-required">*</b>
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.active|form_bootstrapify }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans 'Retired' %}
+                                        <b class="form-required">*</b>
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.retired|form_bootstrapify }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 w-100">
+                    <div class="card ">
+                        <div class="card-header">
+                            <h6 class="card-title mb-0">{% trans 'Save profile' %}</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="w-100 col-xs-12">
+                                    <button class="btn btn-primary btn-block"
+                                            type="submit">
+                                        {% trans "Create new teacher" %}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+        <div class="spacing"></div>
+    </div>
+{% endblock %}
+
