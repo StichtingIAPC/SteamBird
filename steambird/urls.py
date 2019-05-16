@@ -6,7 +6,6 @@ from django.views.generic import RedirectView
 from pysidian_core.urls import urls as pysidian_core_urls
 
 from steambird import settings
-from steambird.teacher.views import MSPTestView
 from steambird.views import IndexView
 
 urlpatterns = [
@@ -17,7 +16,6 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('teacher/', include('steambird.teacher.urls', namespace='teacher')),
     path('boecie/', include('steambird.boecie.urls')),
-    path('msp/<int:pk>', MSPTestView.as_view()),
 ] + pysidian_core_urls
 
 if settings.DEBUG:

@@ -4,27 +4,36 @@
 {% load static %}
 
 {% block css %}
-    <link href="{% static "steambird.less" %}" rel="stylesheet/less" type="text/css">
-    {{ suggest_another.media.css }}
+    <link href="{% static "steambird.less" %}" rel="stylesheet/less"
+          type="text/css">
+    {{ form.media.css }}
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>{% trans "Material selection process for" %} {{ msp }}</h1>
 
-        {% include "steambird/msp/msp.html" with lines=lines book_url="teacher:material.detail" %}
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">{% trans "Suggest another" %}</span>
+        <ul class="timeline mb-0 pb-1">
+            {% for line in lines %}
+                {% include "steambird/teacher/msp/mspline.html" with line=line.line meta=line materials=line.materials %}
+            {% endfor %}
+        </ul>
+        {% if not finished %}
+            <div class="card">
+                <div class="card-header">
+                    <span
+                        class="card-title">{% trans "Suggest another" %}</span>
+                </div>
+                <form class="card-body" method="post">
+                    {% csrf_token %}
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+                    <input type="submit" value="{% trans "Suggest" %}"
+                           class="btn btn-success"/>
+                </form>
             </div>
-            <form class="card-body">
-                {% csrf_token %}
-                <table>
-                    {{ suggest_another.as_table }}
-                </table>
-                <input type="submit" value="{% trans "Suggest" %}" class="btn btn-success" />
-            </form>
-        </div>
+        {% endif %}
     </div>
-    {{ suggest_another.media.js }}
+    {{ form.media.js }}
 {% endblock %}

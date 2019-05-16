@@ -1,10 +1,11 @@
 import isbnlib as i
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms import HiddenInput
+from django.forms import HiddenInput, MultipleHiddenInput
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from django_select2.forms import Select2MultipleWidget, \
-    ModelSelect2MultipleWidget
+from django_addanother.widgets import AddAnotherWidgetWrapper
+from django_select2.forms import ModelSelect2MultipleWidget
 
 from steambird.models_materials import StudyMaterialEdition
 from steambird.models_msp import MSPLine
@@ -38,7 +39,7 @@ class PrefilledMSPLineForm(forms.ModelForm):
         widgets = {
             "msp": HiddenInput(),
             "comment": HiddenInput(),
-            "materials": HiddenInput(),
+            "materials": MultipleHiddenInput(),
             "type": HiddenInput(),
         }
 
@@ -55,7 +56,7 @@ class PrefilledSuggestAnotherMSPLineForm(forms.ModelForm):
         widgets = {
             "msp": HiddenInput(),
             "type": HiddenInput(),
-            "materials": ModelSelect2MultipleWidget(
+            "materials": AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
                 queryset=StudyMaterialEdition.objects.all(),
                 search_fields=[
                     "name__icontains",
@@ -66,5 +67,5 @@ class PrefilledSuggestAnotherMSPLineForm(forms.ModelForm):
                     "scientificarticle__author__icontains",
                     "scientificarticle__year_of_publishing__icontains",
                 ]
-            ),
+            ), reverse_lazy('teacher:isbn')),
         }

@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import FormView, TemplateView
 from isbnlib.dev import NoDataForSelectorError
 
-from steambird.models import Teacher, MSP
+from steambird.models import Teacher, MSP, MSPLineType
 from steambird.models_msp import MSPLine
 from .forms import ISBNForm, PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm
@@ -75,8 +75,29 @@ class CourseViewDetail(View):
         return render(request, "steambird/teacher/courseoverviewdetails.html", context)
 
 
-class MSPTestView(TemplateView):
+class MSPDetail(FormView):
     template_name = "steambird/teacher/msp/detail.html"
+    form_class = PrefilledSuggestAnotherMSPLineForm
+
+    def get_success_url(self):
+        return reverse('teacher:msp.detail', kwargs={
+            'pk': self.kwargs.get("pk"),
+        })
+
+    def form_valid(self, form):
+        form.save(commit=True)
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("Form invalid!")
+        return super().form_invalid(form)
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["msp"] = self.kwargs.get("pk")
+        initial["type"] = MSPLineType.request_material.name
+
+        return initial
 
     def get_context_data(self, **kwargs):
         try:
@@ -85,13 +106,22 @@ class MSPTestView(TemplateView):
             raise Http404
 
         data = super().get_context_data(**kwargs)
-
+        data["msp"] = msp
         data["lines"] = []
+        data["finished"] = False
+
+        lastavail = {"lastavail": False}
         for line in msp.mspline_set.all():
             data["lines"].append({
                 "line": line,
                 "materials": [],
             })
+
+            if line.type == MSPLineType.set_available_materials.name:
+                lastavail["lastavail"] = False
+                lastavail = data["lines"][-1]
+                lastavail["lastavail"] = True
+
             for material in line.materials.all():
                 data["lines"][-1]["materials"].append({
                     "material": material
@@ -105,9 +135,12 @@ class MSPTestView(TemplateView):
                             "materials": [material.pk],
                             "type": "approve_material",
                         })
-        data["suggest_another"] = PrefilledSuggestAnotherMSPLineForm({
-            "msp": msp.pk,
-            "type": "request_material"
-        })
+
+                if line.type == MSPLineType.approve_material.name:
+                    data["finished"] = True
+                    data["firstpk"] = line.materials.first().pk
+                else:
+                    data["finished"] = False
+                    data["firstpk"] = None
 
         return data
