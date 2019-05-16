@@ -94,7 +94,7 @@ class ScientificArticle(StudyMaterialEdition):
         verbose_name="Year this revision of the book was published.")
 
     def __str__(self):
-        return "{}: {}".format(self.DOI, self.name)
+        return "{}{}".format(self.name, ' (' + self.DOI + ')' if self.DOI else '')
 
     class Meta:
         verbose_name = _("Scientific Article")

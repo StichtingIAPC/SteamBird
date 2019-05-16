@@ -39,7 +39,7 @@ class Study(models.Model):
     )
 
     def __str__(self):
-        return '{}, {}'.format(self.name, self.type)
+        return '{} ({})'.format(self.name, self.type.capitalize())
 
     def __repr__(self):
         return self.__str__()
@@ -52,12 +52,21 @@ class Study(models.Model):
 class CourseStudy(models.Model):
     study = models.ForeignKey(Study, on_delete=models.CASCADE)
     course = models.ForeignKey('Course', on_delete=models.CASCADE)
-    study_year = models.IntegerField()
+    study_year = models.IntegerField(
+        verbose_name=_('N-th year'),
+        help_text=_('In which year the course is given for this study'))
 
     class Meta:
         verbose_name = _("Course-Study relation")
         verbose_name_plural = _("Course-Study relations")
 
+    def __str__(self):
+        return '{} (Year {}) <-> {} ({})'.format(
+            self.study.name,
+            self.study_year,
+            self.course.name,
+            self.course.course_code
+        )
 
 class Course(models.Model):
     studies = models.ManyToManyField(
