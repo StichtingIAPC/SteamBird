@@ -50,3 +50,7 @@ class StudyAssociation(models.Model):
     class Meta:
         verbose_name = _('Association')
         verbose_name_plural = _('Associations')
+
+    def __str__(self):
+        return '{} ({})'.format(self.name, ', '.join(
+            [study for study in self.studies.values_list('slug', flat=True)]))
