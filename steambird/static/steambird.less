@@ -17,6 +17,10 @@
     text-decoration: none !important;
 }
 
+/***********************************
+ * Cool timeline view for MSPLines *
+ ***********************************/
+
 .timeline {
   list-style: none;
   padding: 20px 0 20px;
@@ -31,6 +35,16 @@
   width: 3px;
   background-color: #eeeeee;
   left: 24px
+}
+
+.timeline:after {
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 3px;
+    background-color: #eeeeee;
+    right: 24px
 }
 
 .timeline > li {
@@ -59,17 +73,18 @@
 }
 
 .timeline > li > .timeline-panel {
-  width: 93%;
-  width: ~"-webkit-calc(100% - 65px)";
-  width: ~"-moz-calc(100% - 65px)";
-  width: ~"calc(100% - 65px)";
+  width: 86%;
+  width: ~"-webkit-calc(100% - 130px)";
+  width: ~"-moz-calc(100% - 130px)";
+  width: ~"calc(100% - 130px)";
   border: 1px solid #d4d4d4;
   border-radius: 2px;
   padding: 20px;
   position: relative;
   -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
-  float: right;
+  float: left;
+  margin-left: 65px;
 }
 
 .timeline > li > .timeline-panel:before {
@@ -102,6 +117,22 @@
   right: auto;
 }
 
+.timeline > li > .timeline-panel-inverted:before {
+    border-left-width: 15px;
+    border-right-width: 0;
+    left: auto;
+    right: -15px;
+    float: right;
+}
+
+.timeline > li > .timeline-panel-inverted:after {
+    border-left-width: 14px;
+    border-right-width: 0;
+    right: -14px;
+    left: auto;
+    float: right;
+}
+
 .timeline > li > .timeline-badge {
   color: #fff;
   width: 50px;
@@ -117,6 +148,11 @@
   border-top-left-radius: 50%;
   border-bottom-right-radius: 50%;
   border-bottom-left-radius: 50%;
+}
+
+.timeline > li > .timeline-badge.timeline-badge-inverted {
+  float: right;
+  right: 0;
 }
 
 .timeline-badge.primary {

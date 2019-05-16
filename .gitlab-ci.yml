@@ -16,6 +16,7 @@ deploy-docker:
     - /^release/.*$/
   except:
     - branches
+  when: manual
   environment:
     name: production
     url: https://steambird.iapc.utwente.nl/
