@@ -28,5 +28,5 @@ if settings.DEBUG:
 
 if find_loader('django_uwsgi'):
     urlpatterns = [
-                      path('admin/uwsgi/', include('django_uwsgi.urls'))
-                  ] + urlpatterns
+        path('admin/uwsgi/', include('django_uwsgi.urls'))
+    ] + urlpatterns

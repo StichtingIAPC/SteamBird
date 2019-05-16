@@ -28,11 +28,11 @@
                     {#                    <li><a href="{% url "teacher:material.detail" material.pk %}">{{ material.name }}</a></li>#}
                     <tr>
                         <td class="align-middle">
-                            <a href="NonFunctio">{{ material.material.name }}</a>
+                            <a href="NonFunctio{# TODO: Add URL to material detail. #}">{{ material.material.name }}</a>
                         </td>
                         {% if material.form %}
                             <td class="text-right">
-                                {% if firstpk != material.material.pk and not finished and meta.lastavail %}
+                                {% if firstpk != material.material.pk and not finished and meta.last_available %}
                                     <form method="post">
                                         {% csrf_token %}
                                         {{ material.form }}
