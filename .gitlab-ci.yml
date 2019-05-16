@@ -3,6 +3,13 @@ stages:
   - build
   - deploy
 
+test-dependencies:
+  stage: test
+  image: python:3.7
+  script:
+    - pip install pipenv
+    - pipenv install -d
+
 deploy-docker:
   stage: deploy
   only:
