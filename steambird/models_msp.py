@@ -42,6 +42,15 @@ class MSPLine(models.Model):
         verbose_name = _("Material Selection Process line")
         verbose_name_plural = _("Material Selection Process lines")
 
+    def __str__(self):
+        if self.type == 'request_material':
+            return "Material request: {}".format(', '.join(self.materials.values_list('name', flat=True)))
+        elif self.type == 'approve_material':
+            return "Material approval: {}".format(', '.join(self.materials.values_list('name', flat=True)))
+        elif self.type == 'set_available_materials':
+            return "Material(s) available: {}".format(', '.join(self.materials.values_list('name', flat=True)))
+        else:
+            return False
 
 class MSP(models.Model):
     teachers = models.ManyToManyField(
