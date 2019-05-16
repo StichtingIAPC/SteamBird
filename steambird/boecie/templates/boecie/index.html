@@ -17,16 +17,34 @@
                                 <b><a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a></b><br>
 
                             </div>
-                            <div class="col-1">
-                                {{ study.course_set.count }}
-                            </div>
-                            <div class="col-8">
+
+                            <div class="col-5">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                                         style="width: 33.58%" aria-valuenow="33.58" aria-valuemin="0"
-                                         aria-valuemax="100"></div>
+                                         style="width: {{ study.courses_updated_teacher_p }}%" aria-valuenow="{{ study.courses_updated_teacher_p }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100" title="{{ study.courses_updated_teacher_p }}%">{{ study.courses_updated_teacher_p }}%
+                                    </div>
                                     {#                                    TODO: make this value dependent on progress of teacher/IAPC update#}
+
+
+                                    <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
+                                         style="width: {{ study.courses_updated_association_p }}%" aria-valuenow="{{ study.courses_updated_association_p }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100" title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
+                                    </div>
                                 </div>
+                                {#                                    TODO: make this value dependent on progress of teacher/IAPC update#}
+
+
+                            </div>
+                            <div class="col-4">
+                                Total: {{ study.courses_total }}, Updated: {{ study.courses_updated_association }}
+                                ({{ study.courses_updated_association_p }}%),
+                                Finalized: {{ study.courses_updated_teacher }} ({{ study.courses_updated_teacher_p }}%)
+                                {% for course in study.courses.all %}
+                                    {{ course.updated_IAPC }} {# TODO: make a count of updated by IAPC/teacher thing #}
+                                {% endfor %}
                             </div>
 
                         </div>
@@ -44,20 +62,34 @@
                                 <b><a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a></b><br>
 
                             </div>
-                            <div class="col-1">
-                                {{ study.course_set.count }}
-{#                                {{ study.courses. }}#}
+
+                            <div class="col-5">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                         style="width: {{ study.courses_updated_teacher_p }}%" aria-valuenow="{{ study.courses_updated_teacher_p }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100" title="{{ study.courses_updated_teacher_p }}%">{{ study.courses_updated_teacher_p }}%
+                                    </div>
+                                    {#                                    TODO: make this value dependent on progress of teacher/IAPC update#}
+
+
+                                <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
+                                     style="width: {{ study.courses_updated_association_p }}%" aria-valuenow="{{ study.courses_updated_association_p }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100" title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
+                                </div>
+                                </div>
+                                {#                                    TODO: make this value dependent on progress of teacher/IAPC update#}
+
+
+                            </div>
+                            <div class="col-4">
+                                Total: {{ study.courses_total }}, Updated: {{ study.courses_updated_association }}
+                                ({{ study.courses_updated_association_p }}%),
+                                Finalized: {{ study.courses_updated_teacher }} ({{ study.courses_updated_teacher_p }}%)
                                 {% for course in study.courses.all %}
                                     {{ course.updated_IAPC }} {# TODO: make a count of updated by IAPC/teacher thing #}
                                 {% endfor %}
-                            </div>
-                            <div class="col-8">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                                         style="width: 33.58%" aria-valuenow="33.58" aria-valuemin="0"
-                                         aria-valuemax="100"></div>
-                                    {#                                    TODO: make this value dependent on progress of teacher/IAPC update#}
-                                </div>
                             </div>
 
                         </div>
