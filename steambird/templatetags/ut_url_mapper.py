@@ -13,4 +13,3 @@ def people_utwente(initials, surname_prefix, surname):
     if surname_prefix is None:
         surname_prefix = ""
     return "https://people.utwente.nl/{}{}{}".format(initials, surname_prefix, surname)
-    pass
