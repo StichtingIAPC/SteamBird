@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <li>
-    <div class="timeline-badge {{ line.bootstrap_type }}{% if line.type == 'set_available_materials' %} timeline-badge-inverted{% endif %}">
+    <div class="timeline-badge bg-{{ line.bootstrap_type }}{% if line.type == 'set_available_materials' %} timeline-badge-inverted{% endif %}">
         <span class="fas fa-{{ line.fa_icon_type }}"></span>
     </div>
     <div class="timeline-panel{% if line.type == 'set_available_materials' %} timeline-panel-inverted{% endif %}">
