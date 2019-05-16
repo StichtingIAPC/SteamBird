@@ -59,6 +59,9 @@ class MSP(models.Model):
         verbose_name=_("Teachers assigned to manage this book process"),
     )
 
+    def resolved(self):
+        return self.mspline_set.last().type == MSPLineType.approve_material.name
+
     @property
     def all_teachers(self) -> List[Teacher]:
         return self.teachers + [

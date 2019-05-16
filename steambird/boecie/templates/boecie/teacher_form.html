@@ -1,6 +1,7 @@
 {% extends 'boecie/base.html' %}
 {% load i18n %}
 {% load bootstrapify %}
+{% load ut_url_mapper %}
 
 {% block content %}
     {% url 'boecie:teacher.create' as add_url %}
@@ -13,7 +14,8 @@
                     {% if request.path == edit_url %}
                         {% trans "Edit Teacher" %}
                         <a class="btn btn-primary right"
-                           href="{% url 'boecie:teacher.delete' teacher.pk %}">{% trans "Delete" %}</a>
+                           href="{% url 'boecie:teacher.delete' teacher.pk %}">
+                            {% trans "Delete" %}</a>
                     {% else %}
                         <span>{% trans 'Creating Teacher' %}</span>
                     {% endif %}
@@ -50,7 +52,16 @@
                 <div class="col-xs-12 w-100">
                     <div class="card">
                         <div class="card-header">
-                            <h6 class="card-title mb-0">{% trans 'Teacher Information' %}</h6>
+                            <h6 class="card-title mb-0">{% trans 'Teacher Information' %}
+                                {% if edit_url %}
+                                <span class="ml-3">
+                                <a href="{% people_utwente teacher.initials teacher.surname_prefix teacher.last_name %}"
+                                   target="_blank">
+                                    <span class="fa fa-external-link-alt"></span>
+                                </a>
+                                </span>
+                                {% endif %}
+                            </h6>
                         </div>
 
                         <div class="card-body">
@@ -224,9 +235,15 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="w-100 col-xs-12">
+                                    {% if edit_url %}
+                                        <button class="btn btn-primary btn-block"
+                                                type="submit">
+                                            {% trans "Save Edit" %}</button>
+                                    {% else %}
                                     <button class="btn btn-primary btn-block"
                                             type="submit">
                                         {% trans "Create new teacher" %}</button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
