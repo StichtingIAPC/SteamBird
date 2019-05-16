@@ -10,12 +10,31 @@ from steambird.models import Study, Course, Teacher, CourseStudy
 
 class HomeView(View):
     def get(self, request):
+        context = {
+            'studies': []
+        }
+
         studies = Study.objects.all().order_by('type')
 
-        context = {
-            'studies': studies,
-            # 'nav_items': ['foo']
-        }
+        for study in studies:
+            course_total = study.course_set.count()
+            courses_updated_teacher = study.course_set.filter(updated_teacher=True).count()
+            courses_updated_associations = study.course_set.filter(updated_associations=True).count()
+            context['studies'].append({
+                'name': study.name,
+                'type': study.type,
+                'id': study.pk,
+                'courses_total': course_total,
+                'courses_updated_teacher': courses_updated_teacher,
+                'courses_updated_teacher_p': courses_updated_teacher / course_total * 100 if course_total > 0 else 0,
+                # 'courses_msp_in_progress': study.course_set.filter(coursestudy__course__materials__resolved=False),
+                # 'courses_updated_associations': study.course_set.filter(
+                #     Q(updated_associations=True) & Q(updated_teacher=False) & ~Q(
+                #         coursestudy__course__materials__resolved=False)).count(),
+                'courses_updated_association': courses_updated_associations,
+                'courses_updated_association_p': (courses_updated_associations-courses_updated_teacher) / course_total * 100 if course_total > 0 else 0
+            })
+        # TODO: Add fixed MSP (not yet finalized by teacher) count (?)
         return render(request, "boecie/index.html", context)
 
 
