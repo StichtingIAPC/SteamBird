@@ -43,11 +43,11 @@ class MSPLine(models.Model):
         verbose_name_plural = _("Material Selection Process lines")
 
     def __str__(self):
-        if self.type == 'request_material':
+        if self.type == MSPLineType.request_material.name:
             return "Material request: {}".format(', '.join(self.materials.values_list('name', flat=True)))
-        elif self.type == 'approve_material':
+        elif self.type == MSPLineType.approve_material.name:
             return "Material approval: {}".format(', '.join(self.materials.values_list('name', flat=True)))
-        elif self.type == 'set_available_materials':
+        elif self.type == MSPLineType.set_available_materials.name:
             return "Material(s) available: {}".format(', '.join(self.materials.values_list('name', flat=True)))
         else:
             return False
