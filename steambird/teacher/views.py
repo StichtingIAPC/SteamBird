@@ -1,24 +1,26 @@
-import isbnlib as i
-from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView
+
 from isbnlib.dev import NoDataForSelectorError
+import isbnlib as i
 
 from steambird.models import Teacher, MSP, MSPLineType
 from steambird.models_msp import MSPLine
+from steambird.perm_utils import IsTeacherMixin
 from .forms import ISBNForm, PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm
 
 
-class HomeView(View):
+class HomeView(IsTeacherMixin, View):
+
     def get(self, request):
         return render(request, "steambird/teacher/home.html")
 
 
-class ISBNView(FormView):
+class ISBNView(IsTeacherMixin, FormView):
     form_class = ISBNForm
     template_name = 'steambird/teacher/ISBN.html'
 
@@ -30,7 +32,7 @@ class ISBNView(FormView):
         return render(self.request, 'steambird/teacher/ISBN.html', {'form': form})
 
 
-class ISBNDetailView(View):
+class ISBNDetailView(IsTeacherMixin, View):
 
     def get(self, request, isbn):
 
@@ -50,21 +52,20 @@ class ISBNDetailView(View):
                           {'retrieved_data': "No data was found for given ISBN"})
 
 
-class CourseView(View):
+class CourseView(IsTeacherMixin, TemplateView):
+    template_name = 'steambird/teacher/courseoverview.html'
 
-    def get(self, request):
-        id = 1
-        # courses = Course.objects.filter(Q(teachers=id)).prefetch_related()
-        teacher = Teacher.objects.get(Q(id=id))
-        # courses = teacher.course_set
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        try:
+            data["teacher"] = Teacher.objects.get(user=self.request.user)
+        except Teacher.DoesNotExist:
+            raise Http404
 
-        context = {
-            'teacher': teacher
-        }
-        return render(request, "steambird/teacher/courseoverview.html", context)
+        return data
 
 
-class MSPDetail(FormView):
+class MSPDetail(IsTeacherMixin, FormView):
     """
     This is quite a complex view. It extends a form view, as its primary action
     is the creation of MSP lines. Even though this view uses multiple forms,
@@ -153,7 +154,7 @@ class MSPDetail(FormView):
                 })
 
                 if line.type == 'set_available_materials':
-                    data["lines"][-1]["materials"][-1]["form"] =\
+                    data["lines"][-1]["materials"][-1]["form"] = \
                         PrefilledMSPLineForm({
                             "msp": msp.pk,
                             "comment": "",
