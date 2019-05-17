@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, TemplateView
 
 from isbnlib.dev import NoDataForSelectorError
 import isbnlib as i
@@ -52,11 +52,17 @@ class ISBNDetailView(IsTeacherMixin, View):
                           {'retrieved_data': "No data was found for given ISBN"})
 
 
-class CourseView(IsTeacherMixin, DetailView):
+class CourseView(IsTeacherMixin, TemplateView):
     template_name = 'steambird/teacher/courseoverview.html'
 
-    def get_queryset(self):
-        return Teacher.objects.get(user=self.request.user)
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        try:
+            data["teacher"] = Teacher.objects.get(user=self.request.user)
+        except Teacher.DoesNotExist:
+            raise Http404
+
+        return data
 
 
 class MSPDetail(IsTeacherMixin, FormView):
