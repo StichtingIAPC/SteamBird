@@ -1,5 +1,6 @@
 {% extends 'boecie/base.html' %}
 {% load i18n %}
+{% load l10n %}
 
 {% block content %}
     <div class="spacing"></div>
@@ -19,15 +20,15 @@
                             <div class="col-5">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                                         style="width: {{ study.courses_updated_teacher_p }}%"
-                                         aria-valuenow="{{ study.courses_updated_teacher_p }}"
+                                         style="width: {{ study.courses_updated_teacher_p|unlocalize }}%"
+                                         aria-valuenow="{{ study.courses_updated_teacher_p|unlocalize }}"
                                          aria-valuemin="0"
                                          aria-valuemax="100"
-                                         title="{{ study.courses_updated_teacher_p }}%">{{ study.courses_updated_teacher_p }}%
+                                         title="{{ study.courses_updated_teacher_p}}%">{{ study.courses_updated_teacher_p }}%
                                     </div>
                                     <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
-                                         style="width: {{ study.courses_updated_association_p }}%"
-                                         aria-valuenow="{{ study.courses_updated_association_p }}"
+                                         style="width: {{ study.courses_updated_association_p|unlocalize }}%"
+                                         aria-valuenow="{{ study.courses_updated_association_p|unlocalize }}"
                                          aria-valuemin="0"
                                          aria-valuemax="100"
                                          title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
@@ -57,15 +58,15 @@
                             <div class="col-5">
                                 <div class="progress">
                                     <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                                         style="width: {{ study.courses_updated_teacher_p }}%"
-                                         aria-valuenow="{{ study.courses_updated_teacher_p }}"
+                                         style="width: {{ study.courses_updated_teacher_p|unlocalize }}%"
+                                         aria-valuenow="{{ study.courses_updated_teacher_p|unlocalize }}"
                                          aria-valuemin="0"
                                          aria-valuemax="100"
-                                         title="{{ study.courses_updated_teacher_p }}%">{{ study.courses_updated_teacher_p }}%
+                                         title="{{ study.courses_updated_teacher_p}}%">{{ study.courses_updated_teacher_p }}%
                                     </div>
                                     <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
-                                         style="width: {{ study.courses_updated_association_p }}%"
-                                         aria-valuenow="{{ study.courses_updated_association_p }}"
+                                         style="width: {{ study.courses_updated_association_p|unlocalize }}%"
+                                         aria-valuenow="{{ study.courses_updated_association_p|unlocalize }}"
                                          aria-valuemin="0"
                                          aria-valuemax="100"
                                          title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
