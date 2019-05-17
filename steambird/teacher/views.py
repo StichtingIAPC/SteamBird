@@ -41,9 +41,8 @@ class ISBNDetailView(View):
             # print(meta_info, cover)
             try:
                 meta_info['img'] = cover['thumbnail']
-            except TypeError:
+            except (TypeError, KeyError):
                 meta_info['img'] = ['']
-            # print(meta_info)
 
             return render(self.request, 'steambird/teacher/book.html', {'book': meta_info})
         except NoDataForSelectorError:
