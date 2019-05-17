@@ -39,6 +39,16 @@
     </div>
 {% endblock %}
 
+{% block footer %}
+    <div class="spacing"></div>
+    {% now 'Y' as year %}
+    &copy; {{ year }} Stichting IAPC
+    &middot; {% trans "KvK 41029973" %}
+    &middot; {% trans "tel. 053 489 3927" %}
+    &middot; <a href="https://www.iapc.nl">{% trans "Store Website" %}</a>
+    &middot; <a href="">{% trans "Privacy Policy" %}</a>
+{% endblock %}
+
 
 {% block usermenu_dropdown_user %}
     {% if request.user.is_staff %}
