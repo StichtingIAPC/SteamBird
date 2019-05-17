@@ -11,8 +11,9 @@
 
 {% block content %}
     <div class="container">
-        <h1>{% trans "Material selection process for" %} {{ msp }}</h1>
-
+        <div class="spacing"></div>
+        <h1>{% trans "Material selection process for" %} <i>{{ msp }}</i></h1>
+        <hr class="mb-0" />
         <ul class="timeline mb-0 pb-1">
             {% for line in lines %}
                 {% include "steambird/teacher/msp/mspline.html" with line=line.line meta=line materials=line.materials %}

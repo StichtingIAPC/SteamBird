@@ -13,13 +13,13 @@
                     assigned to: (according to osiris) {% endblocktrans %}</p>
             </div>
             <div>
-                {% for course in teacher.teaches_courses.all %}
+                {% for course in teacher.all_courses.all %}
                     <div class="card">
                         <div class="card-header">{{ course }}</div>
                         <ul class="list-group">
                             {% for book in course.materials.all %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="{% url 'teacher:courseview.details' book.id %}"> {{ book.teacher_str }}</a>
+                                    <a href="{% url 'teacher:msp.detail' book.id %}"> {{ book.teacher_str }}</a>
                                     <span class="badge badge-{{ book.stage_bootstrap_tab }} badge-pill">{{ book.stage }}</span>
                                 </li>
 
