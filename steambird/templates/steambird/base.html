@@ -49,11 +49,27 @@
     &middot; <a href="">{% trans "Privacy Policy" %}</a>
 {% endblock %}
 
-
+{# If you are already logged in#}
 {% block usermenu_dropdown_user %}
     {% if request.user.is_staff %}
         <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
         <div class="dropdown-divider"></div>
     {% endif %}
     <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
+{% endblock %}
+
+{# Not logged in #}
+{% block usermenu_dropdown_guest %}
+    <form action="{% url 'login' %}?next={{ request.path }}" method="POST" class="pl-4 pl-lg-2 pr-4 pr-lg-2">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="login_username">{% trans 'Username' %}: </label>
+            <input id="login_username" required type="text" class="form-control" name="username" />
+        </div>
+        <div class="form-group">
+            <label for="login_password">{% trans 'Password' %}: </label>
+            <input id="login_password" required type="password" class="form-control" name="password" />
+        </div>
+        <button type="submit" class="btn btn-primary">{% trans 'Login' %}</button>
+    </form>
 {% endblock %}
