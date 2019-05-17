@@ -37,11 +37,40 @@ class MSPLine(models.Model):
         verbose_name=_("Related study material(s)")
     )
 
+    @property
+    def bootstrap_type(self):
+        if str.upper(self.type) == MSPLineType.request_material.value:
+            return "warning"
+
+        if str.upper(self.type) == MSPLineType.set_available_materials.value:
+            return "warning"
+
+        return "success"
+
+    @property
+    def fa_icon_type(self):
+        if str.upper(self.type) == MSPLineType.request_material.value:
+            return "question"
+
+        if str.upper(self.type) == MSPLineType.set_available_materials.value:
+            return "book"
+
+        return "check-square"
+
     class Meta:
         ordering = ['time']
         verbose_name = _("Material Selection Process line")
         verbose_name_plural = _("Material Selection Process lines")
 
+    def __str__(self):
+        if self.type == MSPLineType.request_material.name:
+            return "Material request: {}".format(', '.join(self.materials.values_list('name', flat=True)))
+        elif self.type == MSPLineType.approve_material.name:
+            return "Material approval: {}".format(', '.join(self.materials.values_list('name', flat=True)))
+        elif self.type == MSPLineType.set_available_materials.name:
+            return "Material(s) available: {}".format(', '.join(self.materials.values_list('name', flat=True)))
+        else:
+            return False
 
 class MSP(models.Model):
     teachers = models.ManyToManyField(
@@ -49,6 +78,9 @@ class MSP(models.Model):
         blank=True,
         verbose_name=_("Teachers assigned to manage this book process"),
     )
+
+    def resolved(self):
+        return self.mspline_set.last().type == MSPLineType.approve_material.name
 
     @property
     def all_teachers(self) -> List[Teacher]:
@@ -90,7 +122,7 @@ class MSP(models.Model):
         if not last_line:
             return _t("Empty MSP")
 
-        return '{}: {}'.format(last_line.type, ', '.join(map(str, last_line.materials.all())))
+        return ', '.join(map(lambda l: l.name, last_line.materials.all()))
 
     class Meta:
         verbose_name = _("Material Selection Process")
