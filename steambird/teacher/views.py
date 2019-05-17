@@ -1,17 +1,17 @@
-import isbnlib as i
-from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from django.views.generic import FormView, TemplateView, DetailView
+from django.views.generic import FormView, DetailView
+
 from isbnlib.dev import NoDataForSelectorError
+import isbnlib as i
 
 from steambird.models import Teacher, MSP, MSPLineType
 from steambird.models_msp import MSPLine
+from steambird.perm_utils import IsTeacherMixin
 from .forms import ISBNForm, PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm
-from steambird.perm_utils import IsTeacherMixin
 
 
 class HomeView(IsTeacherMixin, View):
@@ -53,15 +53,10 @@ class ISBNDetailView(IsTeacherMixin, View):
 
 
 class CourseView(IsTeacherMixin, DetailView):
-
     template_name = 'steambird/teacher/courseoverview.html'
 
     def get_queryset(self):
         return Teacher.objects.get(user=self.request.user)
-
-
-
-class CourseViewDetail(IsTeacherMixin, DetailView):
 
 
 class MSPDetail(IsTeacherMixin, FormView):
@@ -153,7 +148,7 @@ class MSPDetail(IsTeacherMixin, FormView):
                 })
 
                 if line.type == 'set_available_materials':
-                    data["lines"][-1]["materials"][-1]["form"] =\
+                    data["lines"][-1]["materials"][-1]["form"] = \
                         PrefilledMSPLineForm({
                             "msp": msp.pk,
                             "comment": "",
