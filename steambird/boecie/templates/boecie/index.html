@@ -9,82 +9,42 @@
             <h2>Project SteamBird - Boecie Overview</h2>
             <br>
             <div class="col-12">
-                <h3>Bachelors: </h3>
-                <hr>
-                {% for study in studies %}
-                    {% if study.type == 'bachelor' %}
-                        <div class="row">
-                            <div class="col-3">
-                                <b><a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a></b><br>
-                            </div>
-                            <div class="col-5">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                                         style="width: {{ study.courses_updated_teacher_p|unlocalize }}%"
-                                         aria-valuenow="{{ study.courses_updated_teacher_p|unlocalize }}"
-                                         aria-valuemin="0"
-                                         aria-valuemax="100"
-                                         title="{{ study.courses_updated_teacher_p}}%">{{ study.courses_updated_teacher_p }}%
-                                    </div>
-                                    <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
-                                         style="width: {{ study.courses_updated_association_p|unlocalize }}%"
-                                         aria-valuenow="{{ study.courses_updated_association_p|unlocalize }}"
-                                         aria-valuemin="0"
-                                         aria-valuemax="100"
-                                         title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
-                                    </div>
+                {% for type, studies in types.items %}
+                    <h3>{{ type|capfirst }}: </h3>
+                    <hr>
+                    {% for study in studies %}
+                    <div class="row">
+                        <div class="col-3">
+                            <b><a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a></b><br>
+                        </div>
+                        <div class="col-5">
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                     style="width: {{ study.courses_updated_teacher_p|unlocalize }}%"
+                                     aria-valuenow="{{ study.courses_updated_teacher_p|unlocalize }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"
+                                     title="{{ study.courses_updated_teacher_p}}%">{{ study.courses_updated_teacher_p }}%
+                                </div>
+                                <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
+                                     style="width: {{ study.courses_updated_association_p|unlocalize }}%"
+                                     aria-valuenow="{{ study.courses_updated_association_p|unlocalize }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"
+                                     title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
                                 </div>
                             </div>
-                            <div class="col-4">
-                                Total: {{ study.courses_total }}, Updated: {{ study.courses_updated_association }}
-                                ({{ study.courses_updated_association_p }}%),
-                                Finalized: {{ study.courses_updated_teacher }} ({{ study.courses_updated_teacher_p }}%)
-                            </div>
-
                         </div>
-                    {% endif %}
-                {% endfor %}
-                <br>
-                <hr>
-                <br><br>
-                <h3>Masters:</h3>
-                <hr>
-                {% for study in studies %}
-                    {% if study.type == 'master' %}
-                        <div class="row">
-                            <div class="col-3">
-                                <b><a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a></b><br>
-                            </div>
-                            <div class="col-5">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                                         style="width: {{ study.courses_updated_teacher_p|unlocalize }}%"
-                                         aria-valuenow="{{ study.courses_updated_teacher_p|unlocalize }}"
-                                         aria-valuemin="0"
-                                         aria-valuemax="100"
-                                         title="{{ study.courses_updated_teacher_p}}%">{{ study.courses_updated_teacher_p }}%
-                                    </div>
-                                    <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
-                                         style="width: {{ study.courses_updated_association_p|unlocalize }}%"
-                                         aria-valuenow="{{ study.courses_updated_association_p|unlocalize }}"
-                                         aria-valuemin="0"
-                                         aria-valuemax="100"
-                                         title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                Total: {{ study.courses_total }}, Updated: {{ study.courses_updated_association }}
-                                ({{ study.courses_updated_association_p }}%),
-                                Finalized: {{ study.courses_updated_teacher }} ({{ study.courses_updated_teacher_p }}%)
-                            </div>
-
+                        <div class="col-4">
+                            Total: {{ study.courses_total }}, Updated: {{ study.courses_updated_association }}
+                            ({{ study.courses_updated_association_p }}%),
+                            Finalized: {{ study.courses_updated_teacher }} ({{ study.courses_updated_teacher_p }}%)
                         </div>
-                    {% endif %}
+                    </div>
+                    {% endfor %}
+                    <div class="spacing"></div>
                 {% endfor %}
-
             </div>
-            <div class="spacing"></div>
         </div>
     </div>
 

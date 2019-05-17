@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -11,7 +13,7 @@ from steambird.models import Study, Course, Teacher, CourseStudy
 class HomeView(View):
     def get(self, request):
         context = {
-            'studies': []
+            'types': defaultdict(list)
         }
 
         studies = Study.objects.all().order_by('type')
@@ -20,7 +22,7 @@ class HomeView(View):
             course_total = study.course_set.count()
             courses_updated_teacher = study.course_set.filter(updated_teacher=True).count()
             courses_updated_associations = study.course_set.filter(updated_associations=True).count()
-            context['studies'].append({
+            context['types'][study.type].append({
                 'name': study.name,
                 'type': study.type,
                 'id': study.pk,
@@ -34,6 +36,8 @@ class HomeView(View):
                 'courses_updated_association': courses_updated_associations,
                 'courses_updated_association_p': (courses_updated_associations-courses_updated_teacher) / course_total * 100 if course_total > 0 else 0
             })
+        context["types"] = dict(context["types"])
+        
         # TODO: Add fixed MSP (not yet finalized by teacher) count (?)
         return render(request, "boecie/index.html", context)
 
