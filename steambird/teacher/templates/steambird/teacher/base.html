@@ -2,8 +2,12 @@
 {% load i18n %}
 {% load active_menu %}
 
-{% block brand_link %}{% url 'teacher:index' %}{% endblock %}
-{% block brand_text %}Steambird Teacher{% endblock %}
+{% block brand_link %}
+    {% url 'teacher:index' %}
+{% endblock %}
+{% block brand_text %}
+    Steambird Teacher
+{% endblock %}
 
 
 {% block nav_items %}
@@ -23,14 +27,4 @@
            href="{{ courseview }}">{% trans "Course Overview" %}</a>
     </li>
 
-
-
-{% endblock %}
-
-{% block usermenu_dropdown_user %}
-    {% if request.user.is_staff %}
-        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
-        <div class="dropdown-divider"></div>
-    {% endif %}
-    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
 {% endblock %}
