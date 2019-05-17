@@ -27,6 +27,9 @@ class Teacher(models.Model):
     def get_absolute_url(self):
         return reverse('boecie:teacher.detail', kwargs={'pk': self.pk})
 
+    def all_courses(self):
+        return self.coordinated_courses.all().union(self.teaches_courses.all())
+
     def __str__(self):
         if self.surname_prefix:
             return "{} {} {} {}".format(self.titles, self.initials, self.surname_prefix, self.last_name)

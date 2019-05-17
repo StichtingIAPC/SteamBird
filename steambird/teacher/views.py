@@ -64,16 +64,6 @@ class CourseView(View):
         return render(request, "steambird/teacher/courseoverview.html", context)
 
 
-class CourseViewDetail(View):
-
-    def get(self, request, msp_key):
-        msp_details = MSP.objects.get(id=msp_key)
-        context = {
-            'msp': msp_details
-        }
-        return render(request, "steambird/teacher/courseoverviewdetails.html", context)
-
-
 class MSPDetail(FormView):
     """
     This is quite a complex view. It extends a form view, as its primary action
