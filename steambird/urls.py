@@ -1,4 +1,4 @@
-from importlib import find_loader
+from pkgutil import find_loader
 
 from django.contrib import admin
 from django.urls import path, include
@@ -8,6 +8,7 @@ from pysidian_core.urls import urls as pysidian_core_urls
 from steambird import settings
 from steambird.views import IndexView
 
+# pylint: disable=invalid-name
 urlpatterns = [
     path('select2/', include('django_select2.urls')),
     path('admin/', admin.site.urls),
@@ -21,12 +22,14 @@ urlpatterns = [
 if settings.DEBUG:
     import debug_toolbar
 
+    # pylint: disable=invalid-name
     urlpatterns = [
-                      path('__debug__/', include(debug_toolbar.urls)),
-                      path('translations/', include('rosetta.urls'))
-                  ] + urlpatterns
+        path('__debug__/', include(debug_toolbar.urls)),
+        path('translations/', include('rosetta.urls'))
+    ] + urlpatterns
 
 if find_loader('django_uwsgi'):
+    # pylint: disable=invalid-name
     urlpatterns = [
         path('admin/uwsgi/', include('django_uwsgi.urls'))
     ] + urlpatterns

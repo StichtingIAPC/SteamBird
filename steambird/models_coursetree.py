@@ -1,8 +1,8 @@
+from enum import Enum
 from typing import List
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from enum import Enum
 
 from steambird.models_user import Teacher, StudyAssociation
 

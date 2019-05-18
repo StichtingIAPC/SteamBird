@@ -16,6 +16,7 @@ from .forms import ISBNForm, PrefilledMSPLineForm, \
 
 class HomeView(IsTeacherMixin, View):
 
+    # pylint: disable=no-self-use
     def get(self, request):
         return render(request, "steambird/teacher/home.html")
 
@@ -34,8 +35,7 @@ class ISBNView(IsTeacherMixin, FormView):
 
 class ISBNDetailView(IsTeacherMixin, View):
 
-    def get(self, request, isbn):
-
+    def get(self, _request, isbn):
         try:
             meta_info = i.meta(isbn)
             # desc = i.desc(isbn)

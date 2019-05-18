@@ -1,9 +1,12 @@
 from django.contrib import admin
 
-from steambird.models import *
+from steambird.models import Book, Course, CourseStudy, MSP, MSPLine, \
+    OtherMaterial, ScientificArticle, Study, StudyAssociation, StudyMaterial, \
+    StudyMaterialEdition, Teacher
 
 admin.site.register(Study)
 admin.site.register(StudyMaterial)
+admin.site.register(StudyMaterialEdition)
 admin.site.register(Course)
 admin.site.register(CourseStudy)
 admin.site.register(StudyAssociation)

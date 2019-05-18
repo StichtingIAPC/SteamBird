@@ -1,17 +1,13 @@
 from django import forms
 from django.urls import reverse_lazy
+# noinspection PyUnresolvedReferences
+# pylint: disable=no-name-in-module
 from django_addanother.contrib.select2 import Select2MultipleAddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
 from steambird.models import Course, Teacher
 
-
-# class MaterialsSelect2MultipleWidgetForm(forms.Form):
-#     materials = forms.ModelMultipleChoiceField(widget=ModelSelect2MultipleWidget(
-#         queryset= Course.ma
-#         search_fields=['title__icontains'],
-#     ), queryset=models.Genre.objects.all(), required=True)
 
 class CourseForm(forms.ModelForm):
     teachers = Course.teachers
@@ -32,8 +28,10 @@ class CourseForm(forms.ModelForm):
         ]
 
         widgets = {
-            'materials': Select2MultipleAddAnother(reverse_lazy('boecie:teacher.list')),
-            # TODO: Make this work on the new MSP selection instead of this old one (therefore, up until then keep it like this)
+            'materials': Select2MultipleAddAnother(
+                reverse_lazy('boecie:teacher.list')),
+            # TODO: Make this work on the new MSP selection instead of this old
+            #  one (therefore, up until then keep it like this)
 
             'teachers': AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
                 model=Teacher,
@@ -64,5 +62,14 @@ class CourseForm(forms.ModelForm):
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = Teacher
-        fields = ['titles', 'initials', 'first_name', 'surname_prefix', 'last_name', 'email', 'active', 'retired',
-                  'user']
+        fields = [
+            'titles',
+            'initials',
+            'first_name',
+            'surname_prefix',
+            'last_name',
+            'email',
+            'active',
+            'retired',
+            'user',
+        ]
