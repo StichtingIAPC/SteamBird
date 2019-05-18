@@ -1,9 +1,9 @@
+from enum import Enum
 from typing import List
 
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _, ugettext as _t
-from enum import Enum
 
 from steambird.models_user import Teacher, StudyAssociation
 
@@ -64,13 +64,19 @@ class MSPLine(models.Model):
 
     def __str__(self):
         if self.type == MSPLineType.request_material.name:
-            return "Material request: {}".format(', '.join(self.materials.values_list('name', flat=True)))
-        elif self.type == MSPLineType.approve_material.name:
-            return "Material approval: {}".format(', '.join(self.materials.values_list('name', flat=True)))
-        elif self.type == MSPLineType.set_available_materials.name:
-            return "Material(s) available: {}".format(', '.join(self.materials.values_list('name', flat=True)))
-        else:
-            return False
+            return "Material request: {}".format(
+                ', '.join(self.materials.values_list('name', flat=True)))
+
+        if self.type == MSPLineType.approve_material.name:
+            return "Material approval: {}".format(
+                ', '.join(self.materials.values_list('name', flat=True)))
+
+        if self.type == MSPLineType.set_available_materials.name:
+            return "Material(s) available: {}".format(
+                ', '.join(self.materials.values_list('name', flat=True)))
+
+        return False
+
 
 class MSP(models.Model):
     teachers = models.ManyToManyField(
@@ -94,12 +100,12 @@ class MSP(models.Model):
     def associations(self) -> List[StudyAssociation]:
         return [
             association
-            for course in self.course_set
+            for course in self.course_set.all()
             for association in course.associations
         ]
 
     def teacher_can_edit(self, teacher: Teacher) -> bool:
-        return teacher in self.teachers
+        return self.teachers.filter(pk=teacher.pk).exists()
 
     def association_can_edit(self, association: StudyAssociation) -> bool:
         return association in self.associations
@@ -115,7 +121,8 @@ class MSP(models.Model):
         if not last_line:
             return _t("Empty MSP")
 
-        return '{}: {}'.format(last_line.type, ', '.join(map(str, last_line.materials.all())))
+        return '{}: {}'.format(
+            last_line.type, ', '.join(map(str, last_line.materials.all())))
 
     def __str__(self):
         last_line: MSPLine = self.mspline_set.last()

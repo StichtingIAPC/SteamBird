@@ -1,5 +1,6 @@
 from django.forms.widgets import Widget
 
+# pylint: disable=invalid-name
 _ba_tmp = Widget.build_attrs
 
 
@@ -16,7 +17,8 @@ def _ba(self, base_attrs, extra_attrs=None):
         extra_attrs['style'] += ';width:auto;display:inline;'
     else:
         base_attrs = base_attrs.copy()
-        base_attrs['style'] = base_attrs.get('style', '') + ';width:auto;display:inline;'
+        base_attrs['style'] = base_attrs.get('style', '') + \
+                              ';width:auto;display:inline;'
 
     return _ba_tmp(self, base_attrs, extra_attrs)
 

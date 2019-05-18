@@ -41,7 +41,6 @@ class OtherMaterial(StudyMaterialEdition):
     """"
     Use if material is any material other than a scientific article or a book
     """
-    pass
 
     def __str__(self):
         return self.name
@@ -52,6 +51,7 @@ class OtherMaterial(StudyMaterialEdition):
 
 
 class Book(StudyMaterialEdition):
+    # pylint: disable=invalid-name
     ISBN = models.CharField(null=False, unique=True,
                             verbose_name=_("ISBN 10 or ISBN 13"),
                             max_length=13)
@@ -66,11 +66,12 @@ class Book(StudyMaterialEdition):
         verbose_name="Year this revision of the book was published.")
 
     # noinspection PyPep8Naming,PyMethodMayBeStatic
+    # pylint: disable=no-self-use,invalid-name
     def validate_ISBN(self, ISBN):
         if len(ISBN) == 10 or len(ISBN) == 13:
             return
-        else:
-            raise ValueError("ISBN does not match either known lengths")
+
+        raise ValueError("ISBN does not match either known lengths")
 
     def __str__(self):
         return "{}: {}".format(self.ISBN, self.name)

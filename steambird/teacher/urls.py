@@ -3,8 +3,10 @@ from django.urls import path
 from steambird.teacher.views import HomeView, ISBNDetailView, ISBNView, \
     CourseView, MSPDetail
 
+# pylint: disable=invalid-name
 app_name = 'teacher'
 
+# pylint: disable=invalid-name
 urlpatterns = [
     path('', HomeView.as_view(), name='index'),
     path('isbn/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
