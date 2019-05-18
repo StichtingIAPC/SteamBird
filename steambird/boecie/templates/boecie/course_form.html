@@ -6,6 +6,7 @@
 {% block content %}
     {% url 'boecie:course.create' as add_url %}
     {% url 'boecie:course.detail' course.course_code as edit_url %}
+    
     <div class="spacing"></div>
     <div class="container profile">
         <div class="row">
@@ -70,6 +71,11 @@
                                             {% for error in form.name.errors %}
                                                 {{ error }} {% endfor %}</span>
                                     {% endif %}
+                                    {% if form.period.errors %}
+                                        <span class="label label-danger">{% trans 'Name:' %}
+                                            {% for error in form.period.errors %}
+                                                {{ error }} {% endfor %}</span>
+                                    {% endif %}
                                 </div>
                             {% endif %}
                             <div class="form-group">
@@ -80,7 +86,7 @@
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
                                             {{ form.course_code|form_bootstrapify }}
-                                            {% if edit_url %}
+                                            {% if is_edit %}
                                                 <div class="ml-3">
                                                     <a href="{% osiris_url course.course_code course.calendar_year %}"
                                                        target="_blank">
@@ -100,6 +106,19 @@
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
                                             {{ form.calendar_year|form_bootstrapify }}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100">{% trans "Year" %}
+                                        <b class="form-required">*</b>
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            {{ form.period|form_bootstrapify }}
 
                                         </div>
                                     </div>
@@ -144,7 +163,7 @@
                                     <div class="w-100 col-sm-10">
                                         <div class="form-inline">
                                             {{ form.coordinator }}
-                                            {% if edit_url %}
+                                            {% if is_edit %}
                                                 <div class="ml-3">
                                                     <a href="{% people_utwente course.coordinator.initials course.coordinator.surname_prefix course.coordinator.last_name %}"
                                                        target="_blank">
