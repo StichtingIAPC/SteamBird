@@ -20,6 +20,7 @@ class Period(Enum):
     Q4 = "Quartile 4"
     Q5 = "Quartile 5 (sad summer students)"
     Q1_HALF = "Quartile 1, half year course"
+    Q2_HALF = "Quartile 2, half year course"
     Q3_HALF = "Quartile 3, half year course"
     FULL_YEAR = "Full year course"
 
