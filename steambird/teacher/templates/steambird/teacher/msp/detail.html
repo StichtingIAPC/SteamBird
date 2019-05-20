@@ -43,13 +43,13 @@
                 </div>
                 <form class="card-body" method="post">
                     {% csrf_token %}
-                    <div class="row">
+                    <div class="row form-group">
                         <label class="col-md-3 col-sm-12 font-weight-bold" for="{{ form.materials.id_for_label }}">
                             {% trans "Materials" %}:
                         </label>
                         <div class="col-md-9 col-sm-12 select2-child-sizing">{{ form.materials }}</div>
                     </div>
-                    <div class="row">
+                    <div class="row form-group">
                         <label class="col-md-3 col-sm-12 font-weight-bold" for="{{ form.materials.id_for_label }}">
                             {% trans "Comment" %}:
                         </label>
