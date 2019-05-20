@@ -33,7 +33,6 @@
     content: " ";
     width: 3px;
     background-color: #eeeeee;
-    left: 24px
 }
 
 .timeline:after {
@@ -43,7 +42,26 @@
     content: " ";
     width: 3px;
     background-color: #eeeeee;
-    right: 24px
+}
+
+@media (min-width: 768px) {
+    .timeline:before {
+        left: 24px;
+    }
+
+    .timeline:after {
+        right: 24px;
+    }
+}
+
+@media (max-width: 767px) {
+    .timeline:before {
+        left:12px;
+    }
+
+    .timeline:after {
+        right: 12px;
+    }
 }
 
 .timeline > li {
@@ -72,10 +90,6 @@
 }
 
 .timeline > li > .timeline-panel {
-    width: 86%;
-    width: ~"-webkit-calc(100% - 130px)";
-    width: ~"-moz-calc(100% - 130px)";
-    width: ~"calc(100% - 130px)";
     border: 1px solid #d4d4d4;
     border-radius: 2px;
     padding: 20px;
@@ -83,7 +97,26 @@
     -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
     float: left;
-    margin-left: 65px;
+}
+
+@media (min-width: 768px) {
+    .timeline > li > .timeline-panel {
+        width: 86%;
+        width: ~"-webkit-calc(100% - 130px)";
+        width: ~"-moz-calc(100% - 130px)";
+        width: ~"calc(100% - 130px)";
+        margin-left: 65px;
+    }
+}
+
+@media (max-width: 767px) {
+    .timeline > li > .timeline-panel {
+        width: 93%;
+        width: ~"-webkit-calc(100% - 65px)";
+        width: ~"-moz-calc(100% - 65px)";
+        width: ~"calc(100% - 65px)";
+        margin-left: 32.5px;
+    }
 }
 
 .timeline > li > .timeline-panel:before {
@@ -132,15 +165,28 @@
     float: right;
 }
 
+@media (max-width: 767px) {
+    .timeline > li > .timeline-panel:before {
+        top: 33.5px;
+        border-top-width: 7.5px;
+        border-left-width: 7.5px;
+        border-bottom-width: 7.5px;
+        border-right-width: 7.5px;
+    }
+
+    .timeline > li > .timeline-panel:after {
+        top: 34px;
+        border-top-width: 7px;
+        border-left-width: 7px;
+        border-bottom-width: 7px;
+        border-right-width: 7px;
+    }
+}
+
 .timeline > li > .timeline-badge {
     color: #fff;
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
-    font-size: 1.4em;
     text-align: center;
     position: absolute;
-    top: 16px;
     background-color: #999999;
     z-index: 100;
     border-top-right-radius: 50%;
@@ -152,6 +198,26 @@
 .timeline > li > .timeline-badge.timeline-badge-inverted {
     float: right;
     right: 0;
+}
+
+@media (min-width: 768px) {
+    .timeline > li > .timeline-badge {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.4em;
+        top: 16px;
+    }
+}
+
+@media (max-width: 767px) {
+    .timeline > li > .timeline-badge {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 1em;
+        top: 28.5px;
+    }
 }
 
 .timeline-title {
