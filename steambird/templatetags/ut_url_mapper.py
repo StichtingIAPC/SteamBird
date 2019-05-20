@@ -17,4 +17,4 @@ def people_utwente(initials, surname_prefix, surname):
         surname_prefix = ""
 
     return "https://people.utwente.nl/{}{}{}" \
-        .format(initials, surname_prefix, surname)
+        .format(initials, surname_prefix, surname).replace(' ', '')
