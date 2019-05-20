@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-07 17:33+0200\n"
-"PO-Revision-Date: 2019-05-07 17:34+0020\n"
+"POT-Creation-Date: 2019-05-20 14:38+0200\n"
+"PO-Revision-Date: 2019-05-20 14:53+0020\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -19,8 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Translated-Using: django-rosetta 0.9.3\n"
 
-#: .\steambird\boecie\templates\boecie\base.html:19
-#: .\steambird\teacher\templates\steambird\teacher\base.html:15
+#: .\steambird\boecie\templates\boecie\base.html:17
+#: .\steambird\teacher\templates\steambird\teacher\base.html:19
 #: .\steambird\templates\admin\app_index.html:13
 #: .\steambird\templates\admin\base.html:103
 #: .\steambird\templates\admin\change_form.html:36
@@ -30,145 +30,225 @@ msgstr ""
 msgid "Home"
 msgstr "Voorpagina"
 
-#: .\steambird\boecie\templates\boecie\base.html:27
-#: .\steambird\models_user.py:35
+#: .\steambird\boecie\templates\boecie\base.html:21
+#: .\steambird\models_user.py:42
 msgid "Teachers"
 msgstr "Docenten"
 
-#: .\steambird\boecie\templates\boecie\base.html:34
-#: .\steambird\teacher\templates\steambird\teacher\ISBN.html:21
-#: .\steambird\teacher\templates\steambird\teacher\base.html:32
-#: .\steambird\teacher\templates\steambird\teacher\book.html:22
-#: .\steambird\teacher\templates\steambird\teacher\courseoverviewdetails.html:46
-#: .\steambird\templates\steambird\base.html:45
-msgid "Admin"
-msgstr "Admin"
-
-#: .\steambird\boecie\templates\boecie\base.html:37
-#: .\steambird\teacher\templates\steambird\teacher\ISBN.html:24
-#: .\steambird\teacher\templates\steambird\teacher\base.html:35
-#: .\steambird\teacher\templates\steambird\teacher\book.html:25
-#: .\steambird\teacher\templates\steambird\teacher\courseoverviewdetails.html:49
-#: .\steambird\templates\admin\base.html:70
-#: .\steambird\templates\steambird\base.html:48
-msgid "Log out"
-msgstr "Log uit"
-
-#: .\steambird\boecie\templates\boecie\course_detail.html:11
+#: .\steambird\boecie\templates\boecie\course_form.html:16
 #, python-format
-#| msgid "Edit information of %(o)s"
 msgid "Edit information of '%(o)s'"
 msgstr "Informatie aanpassen van '%(o)s'"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:20
-#: .\steambird\boecie\templates\boecie\teacher_create.html:20
+#: .\steambird\boecie\templates\boecie\course_form.html:18
+#| msgid "Teacher"
+msgid "Creating Course"
+msgstr "Vak aanmaken"
+
+#: .\steambird\boecie\templates\boecie\course_form.html:27
+#: .\steambird\boecie\templates\boecie\teacher_form.html:30
 msgid "There were some problems with the data you entered. Please see below."
 msgstr ""
+"Er waren wat problemen met de informatie die je had ingevuld, zie hieronder"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:45
+#: .\steambird\boecie\templates\boecie\course_form.html:52
 msgid "General course information"
 msgstr "Algemene informatie over het vak"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:53
-#, fuzzy
+#: .\steambird\boecie\templates\boecie\course_form.html:60
 #| msgid "Course"
 msgid "Course Code:"
-msgstr "Vak"
+msgstr "Vakcode:"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:58
-#: .\steambird\boecie\templates\boecie\course_detail.html:83
+#: .\steambird\boecie\templates\boecie\course_form.html:65
+#: .\steambird\boecie\templates\boecie\course_form.html:103
+#: .\steambird\boecie\templates\boecie\course_form.html:116
 msgid "Year"
-msgstr ""
+msgstr "Jaar"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:63
+#: .\steambird\boecie\templates\boecie\course_form.html:70
+#: .\steambird\boecie\templates\boecie\course_form.html:75
 msgid "Name:"
-msgstr ""
+msgstr "Naam:"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:71
-#: .\steambird\models_coursetree.py:108
-#, fuzzy
+#: .\steambird\boecie\templates\boecie\course_form.html:83
+#: .\steambird\models_coursetree.py:117
 #| msgid "Course"
 msgid "Course Code"
-msgstr "Vak"
+msgstr "Vakcode"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:96
+#: .\steambird\boecie\templates\boecie\course_form.html:129
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:117
-#, fuzzy
+#: .\steambird\boecie\templates\boecie\course_form.html:150
 #| msgid "List of courses"
 msgid "Coordinator of the course"
-msgstr "Lijst van vakken"
+msgstr "Coordinator van dit vak"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:145
-#, fuzzy
+#: .\steambird\boecie\templates\boecie\course_form.html:186
 #| msgid "List of teachers that teach this course"
 msgid "Teachers related to course"
-msgstr "Lijst van docenten die deze course geven"
+msgstr "Docenten gerelateerd aan de module"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:173
-#, fuzzy
+#: .\steambird\boecie\templates\boecie\course_form.html:214
 #| msgid "Material Selection Processes"
 msgid "Materials related to course"
-msgstr "Martiaal Selectie Processen"
+msgstr "Materialen gerelateerd aan het vak"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:201
+#: .\steambird\boecie\templates\boecie\course_form.html:242
 msgid "Updated by info"
-msgstr ""
+msgstr "updated door info"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:248
-#, fuzzy
+#: .\steambird\boecie\templates\boecie\course_form.html:289
+#: .\steambird\boecie\templates\boecie\teacher_form.html:233
 #| msgid "Surname prefix"
 msgid "Save profile"
-msgstr "Tussenvoegsels"
+msgstr "Profiel opslaan"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:255
+#: .\steambird\boecie\templates\boecie\course_form.html:297
 msgid "Save and go to next course"
-msgstr ""
+msgstr "Opslaan en naar volgend vak"
 
-#: .\steambird\boecie\templates\boecie\course_detail.html:256
-#, fuzzy
+#: .\steambird\boecie\templates\boecie\course_form.html:298
 #| msgid "Save and view"
 msgid "Save and go back to overview"
-msgstr "Sla op en bekijk"
+msgstr "Sla op en ga terug naar overzicht"
 
-#: .\steambird\boecie\templates\boecie\teacher_create.html:11
-#, fuzzy
+#: .\steambird\boecie\templates\boecie\course_form.html:303
+#: .\steambird\templates\admin\submit_line.html:4
+msgid "Save"
+msgstr "Opslaan"
+
+#: .\steambird\boecie\templates\boecie\course_form.html:307
+#| msgid "Save and add another"
+msgid "Save and mark as updated"
+msgstr "Sla op en markeer als updated"
+
+#: .\steambird\boecie\templates\boecie\study_detail.html:12
+msgid "Add new course"
+msgstr "Nieuw vak toevoegen"
+
+#: .\steambird\boecie\templates\boecie\teacher_confirm_delete.html:10
+#| msgid "Teacher"
+msgid "Delete Teacher"
+msgstr "Docent Verwijderen"
+
+#: .\steambird\boecie\templates\boecie\teacher_confirm_delete.html:15
+#, python-format
+msgid ""
+"\n"
+"                    Are you sure you want to delete Teacher '%(object)s' ?\n"
+"                "
+msgstr ""
+"\n"
+"Ben je er zeker van dat je Docent '%(object)s' wilt verwijderen?"
+
+#: .\steambird\boecie\templates\boecie\teacher_confirm_delete.html:22
+msgid "Yes"
+msgstr "Ja"
+
+#: .\steambird\boecie\templates\boecie\teacher_confirm_delete.html:23
+msgid "No"
+msgstr "Nee"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:15
+#| msgid "Teacher"
+msgid "Edit Teacher"
+msgstr "Docent Aanpassen"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:18
+#: .\steambird\templates\admin\submit_line.html:7
+msgid "Delete"
+msgstr "Verwijder"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:20
 #| msgid "Teacher"
 msgid "Creating Teacher"
-msgstr "Docent"
+msgstr "Docent Aanmaken"
 
-#: .\steambird\boecie\templates\boecie\teacher_create.html:45
+#: .\steambird\boecie\templates\boecie\teacher_form.html:55
 msgid "Teacher Information"
-msgstr ""
+msgstr "Docent Informatie"
 
-#: .\steambird\boecie\templates\boecie\teacher_create.html:52
-#: .\steambird\boecie\templates\boecie\teacher_create.html:58
-#: .\steambird\boecie\templates\boecie\teacher_create.html:64
-#: .\steambird\boecie\templates\boecie\teacher_create.html:70
-#: .\steambird\boecie\templates\boecie\teacher_create.html:76
-#: .\steambird\boecie\templates\boecie\teacher_create.html:82
-#: .\steambird\boecie\templates\boecie\teacher_create.html:88
-#: .\steambird\boecie\templates\boecie\teacher_create.html:94
+#: .\steambird\boecie\templates\boecie\teacher_form.html:72
 msgid "Titles"
-msgstr ""
+msgstr "Titels"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:79
+#: .\steambird\boecie\templates\boecie\teacher_form.html:143
+#: .\steambird\models_user.py:9
+msgid "Initials"
+msgstr "Initialen"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:86
+#: .\steambird\boecie\templates\boecie\teacher_form.html:155
+#| msgid "First name"
+msgid "First Name"
+msgstr "Voornaam"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:93
+#: .\steambird\boecie\templates\boecie\teacher_form.html:167
+#| msgid "Surname prefix"
+msgid "Surname Prefix"
+msgstr "Tussenvoegsels"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:100
+#: .\steambird\models_user.py:14
+msgid "Last name"
+msgstr "Achternaam"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:107
+#: .\steambird\boecie\templates\boecie\teacher_form.html:190
+#: .\steambird\models_user.py:15
+msgid "Email"
+msgstr "Email"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:114
+#: .\steambird\boecie\templates\boecie\teacher_form.html:202
+#: .\steambird\models_user.py:16
+msgid "Active"
+msgstr "Actief"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:121
+#: .\steambird\boecie\templates\boecie\teacher_form.html:214
+#: .\steambird\models_user.py:17
+msgid "Retired"
+msgstr "Met Pensioen"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:131
+msgid "Title"
+msgstr "Titel"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:178
+#| msgid "Last name"
+msgid "Last Name"
+msgstr "Achternaam"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:241
+#| msgid "Save and view"
+msgid "Save Edit"
+msgstr "Sla op"
+
+#: .\steambird\boecie\templates\boecie\teacher_form.html:245
+#: .\steambird\boecie\templates\boecie\teachers_list.html:16
+#| msgid "Teacher"
+msgid "Create new teacher"
+msgstr "Nieuwe Docent aanmaken"
 
 #: .\steambird\models_coursetree.py:31
-#, fuzzy
 #| msgid "Type of study"
 msgid "Type of this study"
-msgstr "Type study"
+msgstr "Type van deze study"
 
 #: .\steambird\models_coursetree.py:35
-#, fuzzy
 #| msgid "Type of study"
 msgid "Name of study"
-msgstr "Type study"
+msgstr "Naam van de study"
 
 #: .\steambird\models_coursetree.py:38
 msgid "Abbreviation of the study"
-msgstr ""
+msgstr "Afkorting van de studie"
 
 #: .\steambird\models_coursetree.py:48
 msgid "Study"
@@ -178,61 +258,65 @@ msgstr "Studie"
 msgid "Studies"
 msgstr "Studies"
 
-#: .\steambird\models_coursetree.py:58
+#: .\steambird\models_coursetree.py:56
+msgid "N-th year"
+msgstr "N-de jaar"
+
+#: .\steambird\models_coursetree.py:57
+msgid "In which year the course is given for this study"
+msgstr "In welk jaar wordt het vak gegeven voor deze study"
+
+#: .\steambird\models_coursetree.py:60
 msgid "Course-Study relation"
-msgstr ""
+msgstr "Vak - Studie relatie"
 
-#: .\steambird\models_coursetree.py:59
+#: .\steambird\models_coursetree.py:61
 msgid "Course-Study relations"
-msgstr ""
-
-#: .\steambird\models_coursetree.py:67
-msgid "Studies this course belong to"
-msgstr ""
-
-#: .\steambird\models_coursetree.py:71
-#, fuzzy
-#| msgid "Name of Course"
-msgid "Name of this course"
-msgstr "Naam van de course"
+msgstr "Vak - Studie relaties"
 
 #: .\steambird\models_coursetree.py:76
+msgid "Studies this course belong to"
+msgstr "Studies waartoe dit vak behoort"
+
+#: .\steambird\models_coursetree.py:80
+#| msgid "Name of Course"
+msgid "Name of this course"
+msgstr "Naam van dit vak"
+
+#: .\steambird\models_coursetree.py:85
 msgid "Materials that are required by this study"
-msgstr ""
+msgstr "Materialen die verplicht zijn door deze studie"
 
-#: .\steambird\models_coursetree.py:82
+#: .\steambird\models_coursetree.py:91
 msgid "Sub-courses for this course."
-msgstr ""
+msgstr "Sub-vakken voor dit vak"
 
-#: .\steambird\models_coursetree.py:90
+#: .\steambird\models_coursetree.py:99
 msgid "Coordinator of this course"
-msgstr ""
+msgstr "Coordinator voor dit vak"
 
-#: .\steambird\models_coursetree.py:96
-#, fuzzy
+#: .\steambird\models_coursetree.py:105
 #| msgid "List of teachers that teach this course"
 msgid "Teachers of this course"
-msgstr "Lijst van docenten die deze course geven"
+msgstr "Docenten die dit vak geven"
 
-#: .\steambird\models_coursetree.py:101
-#, fuzzy
+#: .\steambird\models_coursetree.py:110
 #| msgid "The list of materials relevant for this course"
 msgid "The period in the year for this course"
-msgstr "De lijst van materialen relevant voor dit vak"
+msgstr "De periode in het jaar voor dit vak"
 
-#: .\steambird\models_coursetree.py:104
-#, fuzzy
+#: .\steambird\models_coursetree.py:113
 #| msgid "The year this course takes place in"
 msgid "The year in which this course takes place"
 msgstr "Het jaar dat het vak gegeven wordt"
 
-#: .\steambird\models_coursetree.py:112
+#: .\steambird\models_coursetree.py:121
 msgid "Updated by association?"
-msgstr ""
+msgstr "Updated door vereniging?"
 
-#: .\steambird\models_coursetree.py:116
+#: .\steambird\models_coursetree.py:125
 msgid "Updated by teacher?"
-msgstr ""
+msgstr "Updated door docent"
 
 #: .\steambird\models_materials.py:10
 msgid "Category name of this article"
@@ -262,11 +346,11 @@ msgstr "StudieMateriaal Editie"
 msgid "StudyMaterials Editions"
 msgstr "StudyMaterialen Edities"
 
-#: .\steambird\models_materials.py:50
+#: .\steambird\models_materials.py:49
 msgid "Other Material"
 msgstr "Andere Materiaal"
 
-#: .\steambird\models_materials.py:51
+#: .\steambird\models_materials.py:50
 msgid "Other Materials"
 msgstr "Andere Matrialen"
 
@@ -274,7 +358,7 @@ msgstr "Andere Matrialen"
 msgid "ISBN 10 or ISBN 13"
 msgstr "ISBN 10 of ISBN 13"
 
-#: .\steambird\models_materials.py:60 .\steambird\models_materials.py:90
+#: .\steambird\models_materials.py:60 .\steambird\models_materials.py:91
 msgid "Author names, comma separated"
 msgstr "Auteursnamen, gesepareerd door komma's"
 
@@ -282,75 +366,68 @@ msgstr "Auteursnamen, gesepareerd door komma's"
 msgid "Link to cover image of book"
 msgstr "Link naar boekomslag"
 
-#: .\steambird\models_materials.py:79
+#: .\steambird\models_materials.py:80
 msgid "Book"
 msgstr "Boek"
 
-#: .\steambird\models_materials.py:80
+#: .\steambird\models_materials.py:81
 msgid "Books"
 msgstr "Boeken"
 
-#: .\steambird\models_materials.py:85
+#: .\steambird\models_materials.py:86
 msgid "Digital Object Identifier"
 msgstr "Digital Object Identifier (DOI)"
 
-#: .\steambird\models_materials.py:100
+#: .\steambird\models_materials.py:101
 msgid "Scientific Article"
 msgstr "Wetenschappelijk Artikel"
 
-#: .\steambird\models_materials.py:101
+#: .\steambird\models_materials.py:102
 msgid "Scientific Articles"
 msgstr "Wetenschappelijke Artikelen"
 
 #: .\steambird\models_msp.py:21
 msgid "Mutation type"
-msgstr ""
+msgstr "Mutatie type"
 
 #: .\steambird\models_msp.py:26
 msgid "Parent of this line"
-msgstr ""
+msgstr "Ouder van deze lijn"
 
 #: .\steambird\models_msp.py:31
 msgid "Comment"
-msgstr ""
+msgstr "Opmerking"
 
 #: .\steambird\models_msp.py:37
-#, fuzzy
 #| msgid "Study Materials"
 msgid "Related study material(s)"
-msgstr "Study Materialen"
+msgstr "Gerelateerde studie Materialen"
 
-#: .\steambird\models_msp.py:42
-#, fuzzy
+#: .\steambird\models_msp.py:62
 #| msgid "Material Selection Processes"
 msgid "Material Selection Process line"
-msgstr "Martiaal Selectie Processen"
+msgstr "Martiaal Selectie Processen lijn"
 
-#: .\steambird\models_msp.py:43
-#, fuzzy
+#: .\steambird\models_msp.py:63
 #| msgid "Material Selection Processes"
 msgid "Material Selection Process lines"
-msgstr "Martiaal Selectie Processen"
+msgstr "Martiaal Selectie Processen lijnen"
 
-#: .\steambird\models_msp.py:50
+#: .\steambird\models_msp.py:85
 msgid "Teachers assigned to manage this book process"
-msgstr ""
+msgstr "Docenten toegewezen aan dit boekenprocess"
 
-#: .\steambird\models_msp.py:96
+#: .\steambird\models_msp.py:135
 msgid "Material Selection Process"
 msgstr "Materiaal Selectie Process"
 
-#: .\steambird\models_msp.py:97
+#: .\steambird\models_msp.py:136
 msgid "Material Selection Processes"
 msgstr "Martiaal Selectie Processen"
 
 #: .\steambird\models_user.py:8
 msgid "Academic titles"
 msgstr "Academische Titels"
-
-#: .\steambird\models_user.py:9
-msgid "Initials"
-msgstr "Initialen"
 
 #: .\steambird\models_user.py:10
 msgid "First name"
@@ -360,75 +437,69 @@ msgstr "Voornaam"
 msgid "Surname prefix"
 msgstr "Tussenvoegsels"
 
-#: .\steambird\models_user.py:14
-msgid "Last name"
-msgstr "Achternaam"
-
-#: .\steambird\models_user.py:15
-msgid "Email"
-msgstr "Email"
-
-#: .\steambird\models_user.py:16
-msgid "Active"
-msgstr "Actief"
-
-#: .\steambird\models_user.py:17
-msgid "Retired"
-msgstr "Met Pensioen"
-
 #: .\steambird\models_user.py:19
 msgid "Time of last login"
 msgstr "Tijd van Laatste Login"
 
 #: .\steambird\models_user.py:22
 msgid "The user associated to this"
-msgstr ""
+msgstr "De geassocieerde gebruiker"
 
-#: .\steambird\models_user.py:34 .\steambird\templates\steambird\base.html:23
+#: .\steambird\models_user.py:41 .\steambird\templates\steambird\base.html:23
 msgid "Teacher"
 msgstr "Docent"
 
-#: .\steambird\models_user.py:40
-#, fuzzy
+#: .\steambird\models_user.py:47
 #| msgid "Name of the material"
 msgid "Name of this association"
-msgstr "Naam van het matriaal"
-
-#: .\steambird\models_user.py:42
-msgid "All the users that can manage books on behalf of this organization"
-msgstr ""
+msgstr "Naam van de vereniging"
 
 #: .\steambird\models_user.py:49
-#, fuzzy
+msgid "All the users that can manage books on behalf of this organization"
+msgstr "Alle gebruikers die boeken kunnen managen voor deze organisatie"
+
+#: .\steambird\models_user.py:56
 #| msgid "Action"
 msgid "Association"
-msgstr "Actie"
+msgstr "Vereniging"
 
-#: .\steambird\models_user.py:50
-#, fuzzy
+#: .\steambird\models_user.py:57
 #| msgid "Action"
 msgid "Associations"
-msgstr "Actie"
+msgstr "Verenigingen"
 
-#: .\steambird\settings.py:135
+#: .\steambird\settings.py:121
 msgid "Dutch"
 msgstr "Nederlands"
 
-#: .\steambird\settings.py:136
+#: .\steambird\settings.py:122
 msgid "English"
 msgstr "Engels"
 
-#: .\steambird\teacher\forms.py:7
+#: .\steambird\teacher\forms.py:15
 msgid "ISBN number"
 msgstr "ISBN nummer"
 
-#: .\steambird\teacher\templates\steambird\teacher\base.html:19
-msgid "ISBN"
-msgstr ""
+#: .\steambird\teacher\templates\steambird\teacher\ISBN.html:21
+#: .\steambird\teacher\templates\steambird\teacher\book.html:22
+#: .\steambird\templates\steambird\base.html:55
+msgid "Admin"
+msgstr "Admin"
+
+#: .\steambird\teacher\templates\steambird\teacher\ISBN.html:24
+#: .\steambird\teacher\templates\steambird\teacher\book.html:25
+#: .\steambird\templates\admin\base.html:70
+#: .\steambird\templates\steambird\base.html:58
+msgid "Log out"
+msgstr "Log uit"
 
 #: .\steambird\teacher\templates\steambird\teacher\base.html:23
+msgid "ISBN"
+msgstr "ISBN"
+
+#: .\steambird\teacher\templates\steambird\teacher\base.html:27
 msgid "Course Overview"
-msgstr ""
+msgstr "Vak overzicht"
 
 #: .\steambird\teacher\templates\steambird\teacher\courseoverview.html:12
 #, python-format
@@ -436,24 +507,39 @@ msgid ""
 "Hello <b>%(teacher)s</b>, this is the current status of the courses you are\n"
 "                    assigned to: (according to osiris) "
 msgstr ""
+"Hallo <b> %(teacher)s </b>, dit is de huidige status van de vakken aan welke"
+" je bent toegewezen volgens Osiris"
 
 #: .\steambird\teacher\templates\steambird\teacher\courseoverview.html:27
-#, fuzzy
 #| msgid "Books"
 msgid "No books"
-msgstr "Boeken"
+msgstr "Geen boeken"
 
 #: .\steambird\teacher\templates\steambird\teacher\courseoverview.html:34
 msgid "No courses found"
-msgstr ""
+msgstr "Geen vakken gevonden"
 
-#: .\steambird\teacher\templates\steambird\teacher\courseoverviewdetails.html:10
-msgid "Item Details"
-msgstr ""
+#: .\steambird\teacher\templates\steambird\teacher\msp\mspline.html:11
+#| msgid "Material Selection Processes"
+msgid "Material requested"
+msgstr "Materiaal aangevraagd"
 
-#: .\steambird\teacher\templates\steambird\teacher\courseoverviewdetails.html:22
-msgid "No replacements needed"
-msgstr ""
+#: .\steambird\teacher\templates\steambird\teacher\msp\mspline.html:13
+msgid "Checked for book availability"
+msgstr "Nagekeken voor beschikbaarheid van het boek"
+
+#: .\steambird\teacher\templates\steambird\teacher\msp\mspline.html:15
+msgid "Book order confirmed"
+msgstr "Boeken order bevestigd"
+
+#: .\steambird\teacher\templates\steambird\teacher\msp\mspline.html:25
+#| msgid "Study Materials"
+msgid "Selected study materials"
+msgstr "Geselecteerde studie matrialen"
+
+#: .\steambird\teacher\templates\steambird\teacher\msp\mspline.html:40
+msgid "Accept"
+msgstr "Accepteer"
 
 #: .\steambird\templates\admin\base.html:58
 msgid "View site"
@@ -573,14 +659,6 @@ msgstr ""
 "Dit object heeft geen aanpassing in zijn geschiedenis. Het was "
 "waarschijnlijk niet toegevoegd via deze admin site"
 
-#: .\steambird\templates\admin\submit_line.html:4
-msgid "Save"
-msgstr "Opslaan"
-
-#: .\steambird\templates\admin\submit_line.html:7
-msgid "Delete"
-msgstr "Verwijder"
-
 #: .\steambird\templates\admin\submit_line.html:9
 msgid "Save as new"
 msgstr "Sla op als nieuw item"
@@ -603,7 +681,37 @@ msgstr "Sluit"
 
 #: .\steambird\templates\steambird\base.html:26
 msgid "Boecie"
-msgstr ""
+msgstr "Boecie"
+
+#: .\steambird\templates\steambird\base.html:46
+msgid "KvK 41029973"
+msgstr "KvK 41029973"
+
+#: .\steambird\templates\steambird\base.html:47
+msgid "tel. 053 489 3927"
+msgstr "Tel. 053 489 3927"
+
+#: .\steambird\templates\steambird\base.html:48
+msgid "Store Website"
+msgstr "Winkel website"
+
+#: .\steambird\templates\steambird\base.html:49
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+#: .\steambird\templates\steambird\base.html:66
+#| msgid "User"
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: .\steambird\templates\steambird\base.html:70
+#| msgid "Change password"
+msgid "Password"
+msgstr "Wachtwoord"
+
+#: .\steambird\templates\steambird\base.html:73
+msgid "Login"
+msgstr "Login"
 
 #~ msgid "Name of module"
 #~ msgstr "Naam van Module"
