@@ -1,5 +1,6 @@
 # SteamBird
 
+[![Pipeline](https://git.iapc.utwente.nl/www/steambird/badges/master/pipeline.svg)](https://git.iapc.utwente.nl/www/steambird/pipelines)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?logo=python)](https://www.python.org/downloads/release/python-370/)
 [![Django 2.1](https://img.shields.io/badge/django-2.1-336f33.svg?logo=django)](https://docs.djangoproject.com/en/2.1/releases/2.1/)
 [![Pipenv](https://img.shields.io/badge/pipenv-%E2%9C%94-brightgreen.svg)](https://pipenv.readthedocs.io/en/latest/)
@@ -17,7 +18,7 @@ To get started with working on this code, you will need to do some installation 
  -  Go to a shell and install pipenv by running: `pip install pipenv`
  - Optionally install pyenv, this is a python version management package. This is currently not recommended for Windows
  - Open a console/shell and run `pipenv --python 3.7`
- - Now we have created a pipenv enviroment, we can use all wonderful pipenv commands. Start by running: `pipenv install` to install all packages for this project
+ - Now we have created a pipenv enviroment, we can use all wonderful pipenv commands. Start by running: `pipenv sync -d` to install all packages for this project
  
  
 ## Goal of this project
