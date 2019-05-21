@@ -5,19 +5,20 @@
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
-        <div class="textmodule">
-            <h2>Project SteamBird - Boecie Overview</h2>
+        <h2>Project SteamBird - Boecie Overview</h2>
             <br>
             <div class="col-12">
                 {% for type, studies in types.items %}
                     <h3>{{ type|capfirst }}: </h3>
                     <hr>
+                    <table class="table table-striped table-hover study-overview">
+                    <tr class="hidden"></tr>
                     {% for study in studies %}
-                    <div class="row">
-                        <div class="col-3">
+                    <tr class="row">
+                        <td class="col-3">
                             <b><a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a></b><br>
-                        </div>
-                        <div class="col-5">
+                        </td>
+                        <td class="col-5">
                             <div class="progress">
                                 <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
                                      style="width: {{ study.courses_updated_teacher_p|unlocalize }}%"
@@ -34,18 +35,18 @@
                                      title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-4">
+                        </td>
+                        <td class="col-4">
                             Total: {{ study.courses_total }}, Updated: {{ study.courses_updated_association }}
                             ({{ study.courses_updated_association_p }}%),
                             Finalized: {{ study.courses_updated_teacher }} ({{ study.courses_updated_teacher_p }}%)
-                        </div>
-                    </div>
+                        </td>
+                    </tr>
                     {% endfor %}
+                    </table>
                     <div class="spacing"></div>
                 {% endfor %}
             </div>
         </div>
-    </div>
 
 {% endblock %}

@@ -4,16 +4,14 @@
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
-        <div class="textmodule">
-            <h2>Project Stoomvogel</h2>
-            <p>
-                {{ retrieved_data }}
-                {% for k, v in book.items %}
-                    {{ k }} {{ v }} <br>
-                {% endfor %}
-                <img src="{{ book.img }}"></p>
+        <h2>Project Stoomvogel</h2>
+        <p>
+            {{ retrieved_data }}
+            {% for k, v in book.items %}
+                {{ k }} {{ v }} <br>
+            {% endfor %}
+            <img src="{{ book.img }}"></p>
 
-        </div>
     </div>
 {% endblock %}
 

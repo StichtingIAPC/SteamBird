@@ -13,7 +13,6 @@
         </a>
         <hr>
         <h3>Courses to be updated:</h3><br>
-
         {% for course in study.course_set.all %}
             {% if not course.updated_associations %}
                 <div class="row">
