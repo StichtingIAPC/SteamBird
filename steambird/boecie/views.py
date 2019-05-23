@@ -96,18 +96,17 @@ class CourseCreateView(CreateView):
         return context
 
     def form_valid(self, form):
-        course = form.save(commit=False)
         if '_mark_updated' in self.request.POST:
-            course.updated_associations = True  # TODO make this work
-        course.save()
-        study = Study.objects.get(pk=self.kwargs['pk'])
+            form.instance.updated_associations = True
+        form.save(commit=True)
 
+        study = Study.objects.get(pk=self.kwargs['pk'])
+        course = Course.objects.get(course_code=form.cleaned_data['course_code'], period=form.cleaned_data['period'])
         CourseStudy.objects.create(study=study, course=course,
                                    study_year='1').save()  # TODO fix study_year
+
         return redirect(
             reverse('boecie:study.list', kwargs={'pk': self.kwargs['pk']}))
-
-        # automatically add to study, if study pk exists
 
 
 class TeachersListView(ListView):
