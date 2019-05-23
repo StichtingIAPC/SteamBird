@@ -7,8 +7,10 @@
     <div class="container">
         <h2>Project Stoomvogel</h2>
         <div class="col-12">
-            <p>{% blocktrans %}Hello <b>{{ teacher }}</b>, this is the current status of the courses you are
-                assigned to: (according to osiris) {% endblocktrans %}</p>
+            <p>
+                {% blocktrans %}Hello <b>{{ teacher }}</b>, this is the current status of the courses you are
+                    assigned to: (according to osiris) {% endblocktrans %}
+            </p>
         </div>
         <div>
             {% for course in teacher.all_courses.all %}
