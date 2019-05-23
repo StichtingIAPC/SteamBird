@@ -32,18 +32,26 @@ function searchIsbn(isbn) {
 	}).done(updateBook);
 }
 
-/** @param book {{
- *    "ISBN-13": string,
- * 	  Title: string,
- *    Authors: [string],
- * 	  Publisher: string,
- * 	  Language: string,
- * 	  Year: string,
- * 	  smallThumbnail: string,
- * 	  thumbnail: string,
+/** @param response {{
+ *    meta: {
+ *      "ISBN-13": string,
+ * 	    Title: string,
+ *      Authors: [string],
+ * 	    Publisher: string,
+ * 	    Language: string,
+ * 	    Year: string,
+ * 	    smallThumbnail: string,
+ * 	    thumbnail: string,
+ * 	    img: string
+ *    },
+ *    desc: string,
+ *    cover: cover,
  *  }}
  */
-function updateBook(book) {
+function updateBook(response) {
+    let book = response.meta;
+
+    $("#material-type").val($('#type-add').val());
 	$("#book-add-isbn").val(book["ISBN-13"]);
 	$("#book-add-title").val(book.Title);
 	$("#book-add-author").val(book.Authors.join(", "));

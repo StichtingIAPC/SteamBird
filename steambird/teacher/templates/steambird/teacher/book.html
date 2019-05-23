@@ -8,11 +8,16 @@
             <h2>Project Stoomvogel</h2>
             <p>
                 {{ retrieved_data }}
-                {% for k, v in book.items %}
-                    {{ k }} {{ v }} <br>
+                {% for k, v in book.meta.items %}
+                    {% if k != 'img' %}
+                        {{ k }} {{ v }} <br>
+                    {% endif %}
                 {% endfor %}
-                <img src="{{ book.img }}"></p>
-
+                {% if book.meta.img %}
+                    <img src="{{ book.meta.img }}" alt=""></p>
+                {% else %}
+                    No image available
+                {% endif %}
         </div>
     </div>
 {% endblock %}

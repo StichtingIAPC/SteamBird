@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget
 
-from steambird.models_materials import StudyMaterialEdition
+from steambird.models_materials import StudyMaterialEdition, Book, ScientificArticle
 from steambird.models_msp import MSPLine
 
 
@@ -23,6 +23,29 @@ class ISBNForm(forms.Form):
                 return True
             raise ValidationError('ISBN does not seem to be a ISBN13 or ISBN10')
         raise ValidationError('ISBN does not seem valid')
+
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = [
+            "name",
+            "ISBN",
+            "author",
+            "img",
+            "year_of_publishing",
+        ]
+
+
+class ScientificPaperForm(forms.ModelForm):
+    class Meta:
+        model = ScientificArticle
+        fields = [
+            "name",
+            "DOI",
+            "author",
+            "year_of_publishing",
+        ]
 
 
 class PrefilledMSPLineForm(forms.ModelForm):

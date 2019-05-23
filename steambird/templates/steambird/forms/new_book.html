@@ -3,8 +3,13 @@
     <option value="book">Book</option>
 </select>
 
+{{ form.errors }}
+
 <form style="display: none;" id="book-add" class="form-add" method="post" action="{% url "teacher:msp.new" %}">
     {% csrf_token %}
+    <input type="text" class="form-control" name="type"
+               id="material-type" value="" hidden/>
+
     <div class="form-group required">
         <label for="book-add-isbn" class="control-label">ISBN</label>
         <span class="input-group">
