@@ -15,39 +15,3 @@ class IndexView(View):
         return render(request, "steambird/index.html")
 
 
-class ISBNView(FormView):
-    form_class = ISBNForm
-
-
-    def get(self, request):
-
-        form = ISBNForm()
-
-        return render(request, 'steambird/ISBN.html', {'form': form})
-
-
-    def form_valid(self, form):
-        isbn = form.data['isbn']
-        return redirect(reverse('isbndetail', kwargs={'isbn': isbn}))
-
-    def form_invalid(self, form):
-        return render(self.request, 'steambird/ISBN.html', {'form': form})
-
-
-class ISBNDetailView(View):
-
-    def get(self, request, isbn):
-        try:
-            meta_info = i.meta(isbn)
-            # desc = i.desc(isbn)
-            cover = i.cover(isbn)
-            # print(meta_info, cover)
-            try:
-                meta_info['img'] = cover['thumbnail']
-            except TypeError:
-                meta_info['img'] = ['']
-            # print(meta_info)
-
-            return render(self.request, 'steambird/book.html', {'book': meta_info})
-        except NoDataForSelectorError:
-            return render(self.request, 'steambird/book.html', {'retrieved_data': "No data was found for given ISBN"})

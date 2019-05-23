@@ -8,7 +8,7 @@ from pysidian_core.urls import urls as pysidian_core_urls
 from steambird import settings
 from steambird.views import IndexView
 
-from steambird.teacher.urls import urls as teacher_urls
+from steambird.teacher.urls import urlpatterns as teacher_urls
 
 # pylint: disable=invalid-name
 urlpatterns = [
@@ -16,8 +16,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('admin',
          RedirectView.as_view(pattern_name='admin:index', permanent=False)),
-    path('isbn/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
-    path('isbn', ISBNView.as_view(), name='isbn'),
     path('teacher/', include(teacher_urls)),
     path('', IndexView.as_view(), name='index'),
     path('teacher/', include('steambird.teacher.urls', namespace='teacher')),

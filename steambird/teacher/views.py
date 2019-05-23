@@ -1,43 +1,12 @@
-from django.http import JsonResponse, HttpResponseBadRequest, \
-    HttpResponseNotFound
-from django.shortcuts import render
-from django.views import View
-
-import isbnlib
 from json import dumps
 
-from isbnlib.dev import ISBNLibDevException
-
-
-class AddMSPView(View):
-    def get(self, request):
-        return render(self.request, 'steambird/new_book.html')
-
-    def post(self, request):
-        pass
-
-
-class ISBNSearchApiView(View):
-    def get(self, request):
-        try:
-            meta_info = isbnlib.meta(request.GET['isbn'])
-            cover = isbnlib.cover(request.GET['isbn'])
-
-            return JsonResponse({**meta_info, **cover})
-        except isbnlib.ISBNLibException as e:
-            return HttpResponseBadRequest(dumps(str(e)),
-                                          content_type="application/json")
-        except ISBNLibDevException as e:
-            return HttpResponseNotFound(dumps(str(e)),
-                                        content_type="application/json")
-from django.http import Http404
+import isbnlib
+from django.http import Http404, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView
-
-from isbnlib.dev import NoDataForSelectorError
-import isbnlib as i
+from isbnlib.dev import NoDataForSelectorError, ISBNLibDevException
 
 from steambird.models import Teacher, MSP, MSPLineType
 from steambird.models_msp import MSPLine
@@ -69,9 +38,9 @@ class ISBNDetailView(IsTeacherMixin, View):
 
     def get(self, _request, isbn):
         try:
-            meta_info = i.meta(isbn)
+            meta_info = isbnlib.meta(isbn)
             # desc = i.desc(isbn)
-            cover = i.cover(isbn)
+            cover = isbnlib.cover(isbn)
             # print(meta_info, cover)
             try:
                 meta_info['img'] = cover['thumbnail']
@@ -82,6 +51,68 @@ class ISBNDetailView(IsTeacherMixin, View):
         except NoDataForSelectorError:
             return render(self.request, 'steambird/teacher/book.html',
                           {'retrieved_data': "No data was found for given ISBN"})
+
+
+
+class ISBNView(FormView):
+    form_class = ISBNForm
+
+
+    def get(self, request):
+
+        form = ISBNForm()
+
+        return render(request, 'steambird/ISBN.html', {'form': form})
+
+
+    def form_valid(self, form):
+        isbn = form.data['isbn']
+        return redirect(reverse('isbndetail', kwargs={'isbn': isbn}))
+
+    def form_invalid(self, form):
+        return render(self.request, 'steambird/ISBN.html', {'form': form})
+
+
+class ISBNDetailView(View):
+
+    def get(self, request, isbn):
+        try:
+            meta_info = isbnlib.meta(isbn)
+            # desc = i.desc(isbn)
+            cover = isbnlib.cover(isbn)
+            # print(meta_info, cover)
+            try:
+                meta_info['img'] = cover['thumbnail']
+            except TypeError:
+                meta_info['img'] = ['']
+            # print(meta_info)
+
+            return render(self.request, 'steambird/book.html', {'book': meta_info})
+        except NoDataForSelectorError:
+            return render(self.request, 'steambird/book.html', {'retrieved_data': "No data was found for given ISBN"})
+
+class AddMSPView(View):
+    def get(self, request):
+        return render(self.request, 'steambird/new_book.html')
+
+    def post(self, request):
+        pass
+
+
+class ISBNSearchApiView(View):
+    def get(self, request):
+        try:
+            meta_info = isbnlib.meta(request.GET['isbn'])
+            cover = isbnlib.cover(request.GET['isbn'])
+
+            return JsonResponse({**meta_info, **cover})
+        except isbnlib.ISBNLibException as e:
+            return HttpResponseBadRequest(dumps(str(e)),
+                                          content_type="application/json")
+        except ISBNLibDevException as e:
+            return HttpResponseNotFound(dumps(str(e)),
+                                        content_type="application/json")
+
 
 
 class CourseView(IsTeacherMixin, TemplateView):
