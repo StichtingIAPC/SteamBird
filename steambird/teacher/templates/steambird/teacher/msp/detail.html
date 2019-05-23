@@ -1,0 +1,65 @@
+{% extends "steambird/teacher/base.html" %}
+{% load i18n %}
+{% load bootstrapify %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static "steambird.less" %}" rel="stylesheet/less"
+          type="text/css">
+    {{ form.media.css }}
+    <style>
+        .input-child-w100 input,
+        .input-child-w100 textarea {
+            width: 100%;
+        }
+
+        .select2-child-sizing .select2-container {
+            width: calc(100% - 25px) !important;
+            width: -webkit-calc(100% - 25px) !important;
+            width: -moz-calc(100% - 25px) !important;
+        }
+
+        .select2-child-sizing .select2-selection {
+            width: 100% !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="spacing"></div>
+        <h1>{% trans "Material selection process for" %} <i>{{ msp }}</i></h1>
+        <hr class="mb-0" />
+        <ul class="timeline mb-0 pb-1">
+            {% for line in lines %}
+                {% include "steambird/teacher/msp/mspline.html" with line=line.line meta=line materials=line.materials %}
+            {% endfor %}
+        </ul>
+        {% if not finished %}
+            <div class="card">
+                <div class="card-header">
+                    <span
+                        class="card-title">{% trans "Suggest another" %}</span>
+                </div>
+                <form class="card-body" method="post">
+                    {% csrf_token %}
+                    <div class="row form-group">
+                        <label class="col-md-3 col-sm-12 font-weight-bold" for="{{ form.materials.id_for_label }}">
+                            {% trans "Materials" %}:
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12 select2-child-sizing">{{ form.materials }}</div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 col-sm-12 font-weight-bold" for="{{ form.materials.id_for_label }}">
+                            {% trans "Comment" %}:
+                        </label>
+                        <div class="col-lg-6 col-md-9 col-sm-12 input-child-w100">{{ form.comment }}</div>
+                    </div>
+                    <input type="submit" value="{% trans "Suggest" %}"
+                           class="btn btn-success"/>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+    {{ form.media.js }}
+{% endblock %}
