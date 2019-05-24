@@ -45,9 +45,10 @@ class ISBNDetailView(IsTeacherMixin, View):
 
 
 class AddMSPView(IsTeacherMixin, View):
-    def get(self, request):
+    def get(self, _request):
         return render(self.request, 'steambird/new_book.html')
 
+    # pylint: disable=no-self-use
     def post(self, request):
         material_type = request.POST.get('type')
 
@@ -59,8 +60,8 @@ class AddMSPView(IsTeacherMixin, View):
         # Set all paper related variables
         elif material_type == 'paper':
             form = ScientificPaperForm(request.POST)
-            reverse_url = 'teacher:isbndetail' # TODO: Replace by ScientificArticle URL
-            kwargs = {'isbn': request.POST.get('doi')} # TODO: Replace by ScientificArticle URL
+            reverse_url = 'teacher:isbndetail'  # TODO: Replace by ScientificArticle URL
+            kwargs = {'isbn': request.POST.get('doi')}  # TODO: Replace by ScientificArticle URL
         # Type is not supported
         else:
             return HttpResponseBadRequest()
@@ -73,6 +74,7 @@ class AddMSPView(IsTeacherMixin, View):
 
 
 class ISBNSearchApiView(View):
+    # pylint: disable=no-self-use
     def get(self, request):
         isbn = request.GET['isbn']
         isbn_data = isbn_lookup(isbn)
