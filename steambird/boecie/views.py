@@ -101,7 +101,8 @@ class CourseCreateView(CreateView):
         form.save(commit=True)
 
         study = Study.objects.get(pk=self.kwargs['pk'])
-        course = Course.objects.get(course_code=form.cleaned_data['course_code'], period=form.cleaned_data['period'])
+        course = Course.objects.get(course_code=form.cleaned_data['course_code'],
+                                    period=form.cleaned_data['period'])
         CourseStudy.objects.create(study=study, course=course,
                                    study_year='1').save()  # TODO fix study_year
 
