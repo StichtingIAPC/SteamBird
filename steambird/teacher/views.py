@@ -1,17 +1,17 @@
-from django.http import Http404
+from json import dumps
+
+from django.http import Http404, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
-from isbnlib.dev import NoDataForSelectorError
-import isbnlib as i
-
 from steambird.models import Teacher, MSP, MSPLineType
 from steambird.models_msp import MSPLine
 from steambird.perm_utils import IsTeacherMixin
+from steambird.teacher.tools import isbn_lookup
 from .forms import ISBNForm, PrefilledMSPLineForm, \
-    PrefilledSuggestAnotherMSPLineForm
+    PrefilledSuggestAnotherMSPLineForm, BookForm, ScientificPaperForm
 
 
 class HomeView(IsTeacherMixin, View):
@@ -34,22 +34,58 @@ class ISBNView(IsTeacherMixin, FormView):
 
 
 class ISBNDetailView(IsTeacherMixin, View):
-
     def get(self, _request, isbn):
-        try:
-            meta_info = i.meta(isbn)
-            # desc = i.desc(isbn)
-            cover = i.cover(isbn)
-            # print(meta_info, cover)
-            try:
-                meta_info['img'] = cover['thumbnail']
-            except (TypeError, KeyError):
-                meta_info['img'] = ['']
+        isbn_data = isbn_lookup(isbn)
+        result = {'book': isbn_data}
 
-            return render(self.request, 'steambird/teacher/book.html', {'book': meta_info})
-        except NoDataForSelectorError:
-            return render(self.request, 'steambird/teacher/book.html',
-                          {'retrieved_data': "No data was found for given ISBN"})
+        if isbn_data is None:
+            result = {'retrieved_data': "No data was found for given ISBN"}
+
+        return render(self.request, 'steambird/teacher/book.html', result)
+
+
+class AddMSPView(IsTeacherMixin, View):
+    def get(self, _request):
+        return render(self.request, 'steambird/new_book.html')
+
+    # pylint: disable=no-self-use
+    def post(self, request):
+        material_type = request.POST.get('type')
+
+        # Set all book related variables
+        if material_type == 'book':
+            form = BookForm(request.POST)
+            reverse_url = 'teacher:isbndetail'
+            kwargs = {'isbn': request.POST.get('ISBN')}
+        # Set all paper related variables
+        elif material_type == 'paper':
+            form = ScientificPaperForm(request.POST)
+            reverse_url = 'teacher:isbndetail'  # TODO: Replace by ScientificArticle URL
+            kwargs = {'isbn': request.POST.get('doi')}  # TODO: Replace by ScientificArticle URL
+        # Type is not supported
+        else:
+            return HttpResponseBadRequest()
+
+        if form.is_valid():
+            form.save()
+            return redirect(reverse(reverse_url, kwargs=kwargs))
+
+        return render(request, 'steambird/new_book.html', {'form': form})
+
+
+class ISBNSearchApiView(View):
+    # pylint: disable=no-self-use
+    def get(self, request):
+        isbn = request.GET['isbn']
+        isbn_data = isbn_lookup(isbn)
+
+        if isbn_data is None:
+            return HttpResponseNotFound(
+                dumps(str("No data was found for given ISBN")),
+                content_type="application/json",
+            )
+
+        return JsonResponse(isbn_data)
 
 
 class CourseView(IsTeacherMixin, TemplateView):
