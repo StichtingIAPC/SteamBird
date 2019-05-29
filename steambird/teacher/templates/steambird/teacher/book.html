@@ -4,21 +4,19 @@
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
-        <div class="textmodule">
-            <h2>Project Stoomvogel</h2>
-            <p>
-                {{ retrieved_data }}
-                {% for k, v in book.meta.items %}
-                    {% if k != 'img' %}
-                        {{ k }} {{ v }} <br>
-                    {% endif %}
-                {% endfor %}
-                {% if book.meta.img %}
-                    <img src="{{ book.meta.img }}" alt=""></p>
-                {% else %}
-                    No image available
+        <h2>Project Stoomvogel</h2>
+        <p>
+            {{ retrieved_data }}
+            {% for k, v in book.meta.items %}
+                {% if k != 'img' %}
+                    {{ k }} {{ v }} <br>
                 {% endif %}
-        </div>
+            {% endfor %}
+            {% if book.meta.img %}
+                <img src="{{ book.meta.img }}" alt=""></p>
+            {% else %}
+                No image available
+            {% endif %}
     </div>
 {% endblock %}
 
