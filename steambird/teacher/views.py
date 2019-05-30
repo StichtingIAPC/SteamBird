@@ -18,19 +18,19 @@ class HomeView(IsTeacherMixin, View):
 
     # pylint: disable=no-self-use
     def get(self, request):
-        return render(request, "steambird/teacher/home.html")
+        return render(request, "teacher/home.html")
 
 
 class ISBNView(IsTeacherMixin, FormView):
     form_class = ISBNForm
-    template_name = 'steambird/teacher/ISBN.html'
+    template_name = 'teacher/ISBN.html'
 
     def form_valid(self, form):
         isbn = form.data['isbn']
         return redirect(reverse('teacher:isbndetail', kwargs={'isbn': isbn}))
 
     def form_invalid(self, form):
-        return render(self.request, 'steambird/teacher/ISBN.html', {'form': form})
+        return render(self.request, 'teacher/ISBN.html', {'form': form})
 
 
 class ISBNDetailView(IsTeacherMixin, View):
@@ -41,12 +41,12 @@ class ISBNDetailView(IsTeacherMixin, View):
         if isbn_data is None:
             result = {'retrieved_data': "No data was found for given ISBN"}
 
-        return render(self.request, 'steambird/teacher/book.html', result)
+        return render(self.request, 'teacher/book.html', result)
 
 
 class AddMSPView(IsTeacherMixin, View):
     def get(self, _request):
-        return render(self.request, 'steambird/new_book.html')
+        return render(self.request, 'teacher/new_book.html')
 
     # pylint: disable=no-self-use
     def post(self, request):
@@ -70,7 +70,7 @@ class AddMSPView(IsTeacherMixin, View):
             form.save()
             return redirect(reverse(reverse_url, kwargs=kwargs))
 
-        return render(request, 'steambird/new_book.html', {'form': form})
+        return render(request, 'teacher/new_book.html', {'form': form})
 
 
 class ISBNSearchApiView(View):
@@ -89,7 +89,7 @@ class ISBNSearchApiView(View):
 
 
 class CourseView(IsTeacherMixin, TemplateView):
-    template_name = 'steambird/teacher/courseoverview.html'
+    template_name = 'teacher/courseoverview.html'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -109,7 +109,7 @@ class MSPDetail(IsTeacherMixin, FormView):
     view concern the same data-structure.
     """
 
-    template_name = "steambird/teacher/msp/detail.html"
+    template_name = "steambird/templates/teacher/templates/msp/detail.html"
     form_class = PrefilledSuggestAnotherMSPLineForm
 
     def get_success_url(self):

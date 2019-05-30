@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <select id="type-add">
     <option value selected>Select type...</option>
     <option value="book">Book</option>
@@ -8,10 +10,12 @@
 <form style="display: none;" id="book-add" class="form-add" method="post" action="{% url "teacher:msp.new" %}">
     {% csrf_token %}
     <input type="text" class="form-control" name="type"
-               id="material-type" value="" hidden/>
+           id="material-type" value="" hidden/>
 
     <div class="form-group required">
-        <label for="book-add-isbn" class="control-label">ISBN</label>
+        <label for="book-add-isbn" class="control-label">
+            {% trans 'ISBN' %}
+        </label>
         <span class="input-group">
             <input type="text" class="form-control" name="ISBN"
                    id="book-add-isbn"
@@ -25,34 +29,48 @@
     </div>
 
     <div class="form-group required">
-        <label for="book-add-title" class="control-label">Title</label>
-        <input type="text" class="form-control" name="name"
+        <label for="book-add-title" class="control-label">
+            {% trans 'Title' %}
+        </label>
+        <input type="text" class="form-control"
+               name="name"
                id="book-add-title"/>
     </div>
 
     <div class="form-group required">
-        <label for="book-add-author" class="control-label">Author(s)</label>
-        <input type="text" class="form-control" name="author"
+        <label for="book-add-author" class="control-label">
+            {% trans 'Author(s)' %}
+        </label>
+        <input type="text" class="form-control"
+               name="author"
                id="book-add-author"/>
     </div>
 
     <div class="form-group required">
-        <label for="book-add-year" class="control-label">Publishing year</label>
-        <input type="text" class="form-control" name="year_of_publishing"
+        <label for="book-add-year" class="control-label">
+            {% trans 'Publishing year' %}
+        </label>
+        <input type="text" class="form-control"
+               name="year_of_publishing"
                id="book-add-year"/>
     </div>
 
     <div class="row">
         <div class="form-group col-md-8 col-sm-12">
-            <label for="book-add-image" class="control-label">Image link</label>
-            <input type="text" class="form-control" name="img"
+            <label for="book-add-image" class="control-label">
+                {% trans 'Image link' %}
+            </label>
+            <input type="text" class="form-control"
+                   name="img"
                    id="book-add-image"/>
         </div>
 
         <div class="col-md-4 col-sm-12">
-            <img src="#" id="book-add-show-image" alt="Cover image"/>
+            <img src="#"
+                 id="book-add-show-image" 
+                 alt="Cover image"/>
         </div>
     </div>
 
-    <input type="submit" value="Create" class="btn btn-success" />
+    <input type="submit" value="Create" class="btn btn-success"/>
 </form>
