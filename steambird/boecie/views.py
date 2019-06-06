@@ -4,10 +4,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, \
-    DeleteView
+    DeleteView, FormView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import CourseForm, TeacherForm
+from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm
 from steambird.models import Study, Course, Teacher, CourseStudy
 
 
@@ -139,3 +139,9 @@ class TeacherDeleteView(DeleteView):
     model = Teacher
     success_url = reverse_lazy('boecie:teacher.list')
     template_name = 'boecie/teacher_confirm_delete.html'
+
+
+class StudyCourseView(FormView):
+    form_class = StudyCourseForm
+    template_name = 'boecie/studycourse_add.html'
+

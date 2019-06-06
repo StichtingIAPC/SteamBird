@@ -1,12 +1,13 @@
 from django import forms
 from django.urls import reverse_lazy
+from django.utils.translation import ugettext_lazy as _
 # noinspection PyUnresolvedReferences
 # pylint: disable=no-name-in-module
-from django_addanother.contrib.select2 import Select2MultipleAddAnother
+from django_addanother.contrib.select2 import Select2MultipleAddAnother, ModelSelect2AddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher
+from steambird.models import Course, Teacher, Study, CourseStudy
 
 
 class CourseForm(forms.ModelForm):
@@ -45,7 +46,7 @@ class CourseForm(forms.ModelForm):
                 ]
             ), reverse_lazy('boecie:teacher.create')),
 
-            'coordinator': ModelSelect2Widget(
+            'coordinator': AddAnotherWidgetWrapper(ModelSelect2Widget(
                 model=Teacher,
                 search_fields=[
                     'titles__icontains',
@@ -55,7 +56,7 @@ class CourseForm(forms.ModelForm):
                     'last_name__icontains',
                     'email__icontains'
                 ]
-            )
+            ), reverse_lazy('boecie:teacher.create'))
         }
 
 
@@ -73,3 +74,22 @@ class TeacherForm(forms.ModelForm):
             'retired',
             'user',
         ]
+
+
+class StudyCourseForm(forms.ModelForm):
+
+    class Meta:
+        model = CourseStudy
+        fields = [
+            'course'
+        ]
+
+        widgets = {
+            'course': AddAnotherWidgetWrapper(ModelSelect2Widget(
+                model=Course,
+                search_fields=[
+                    'name__icontains',
+                    'course_code__icontains'
+                ]
+            ), reverse_lazy('boecie:course.create'))
+        }
