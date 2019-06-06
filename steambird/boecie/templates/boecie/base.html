@@ -3,11 +3,6 @@
 {% load active_menu %}
 
 
-{% block brand_link %}
-    {% url 'boecie:index' %}
-{% endblock %}
-
-
 {% block nav_items %}
     {% url 'boecie:index' as home %}
     {% url 'boecie:teacher.list' as teacher_list %}
