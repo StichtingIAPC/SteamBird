@@ -65,6 +65,9 @@ class Book(StudyMaterialEdition):
     year_of_publishing = models.IntegerField(
         verbose_name="Year this revision of the book was published.")
 
+    # The edition of the book, ISBN-lib doesn't supply this, but it is useful for the Book-committee
+    edition = models.CharField(null=False, blank=False, verbose_name=_('Edition of the book'), max_length=256)
+
     # noinspection PyPep8Naming,PyMethodMayBeStatic
     # pylint: disable=no-self-use,invalid-name
     def validate_ISBN(self, ISBN):
