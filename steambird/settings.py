@@ -146,3 +146,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Login URL
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
+
+try:
+    from .local import *
+except ImportError:
+    print("Failed to import local.py. It is recommended to add them.")
+
