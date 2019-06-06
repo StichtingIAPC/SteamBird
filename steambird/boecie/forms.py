@@ -6,7 +6,7 @@ from django_addanother.contrib.select2 import Select2MultipleAddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher
+from steambird.models import Course, Teacher, Period
 
 
 class CourseForm(forms.ModelForm):
@@ -73,3 +73,8 @@ class TeacherForm(forms.ModelForm):
             'retired',
             'user',
         ]
+
+class LmlExportForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        [self.__setattr__(period.value, period) for period in Period]
+        super(LmlExportForm, self).__init__(self, *args, **kwargs)
