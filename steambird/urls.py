@@ -1,12 +1,19 @@
 from pkgutil import find_loader
 
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import path, include
 from django.views.generic import RedirectView
 from pysidian_core.urls import urls as pysidian_core_urls
 
 from steambird import settings
 from steambird.views import IndexView
+
+
+def test(request):
+    from steambird.mail.localized_multipart_mailsender import test as test_mail
+    test_mail()
+    return HttpResponse("Done.")
 
 # pylint: disable=invalid-name
 urlpatterns = [
@@ -17,6 +24,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('teacher/', include('steambird.teacher.urls', namespace='teacher')),
     path('boecie/', include('steambird.boecie.urls')),
+    path('test/', test),
 ] + pysidian_core_urls
 
 if settings.DEBUG:

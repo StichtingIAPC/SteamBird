@@ -146,3 +146,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Login URL
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '130.89.148.239'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
