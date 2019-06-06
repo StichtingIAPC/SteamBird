@@ -84,6 +84,10 @@ class MSP(models.Model):
         blank=True,
         verbose_name=_("Teachers assigned to manage this book process"),
     )
+    mandatory = models.BooleanField(
+        default=True,
+        verbose_name=_('Is the material mandatory?')
+    )
 
     def resolved(self):
         return self.mspline_set.last().type == MSPLineType.approve_material.name
