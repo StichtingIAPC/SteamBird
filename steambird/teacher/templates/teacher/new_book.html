@@ -1,0 +1,16 @@
+{% extends 'teacher/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container">
+        <div class="spacing"></div>
+        <h2>{% trans 'Add material' %}</h2>
+        {% include "teacher/forms/new_book.html" %}
+    </div>
+{% endblock %}
+
+{% block endjs %}
+    <script src="{% static "js/steambird/forms/new_book.js" %}"></script>
+{% endblock %}
+

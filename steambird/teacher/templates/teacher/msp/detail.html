@@ -1,4 +1,4 @@
-{% extends "steambird/teacher/base.html" %}
+{% extends "teacher/base.html" %}
 {% load i18n %}
 {% load bootstrapify %}
 {% load static %}
@@ -32,7 +32,7 @@
         <hr class="mb-0" />
         <ul class="timeline mb-0 pb-1">
             {% for line in lines %}
-                {% include "steambird/teacher/msp/mspline.html" with line=line.line meta=line materials=line.materials %}
+                {% include "steambird/../teacher/msp/mspline.html" with line=line.line meta=line materials=line.materials %}
             {% endfor %}
         </ul>
         {% if not finished %}
