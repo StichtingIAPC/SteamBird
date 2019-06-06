@@ -10,3 +10,5 @@
 *.pyc
 
 *.mo
+
+steambird/local.py
