@@ -109,7 +109,7 @@ class MSPDetail(IsTeacherMixin, FormView):
     view concern the same data-structure.
     """
 
-    template_name = "steambird/templates/teacher/templates/msp/detail.html"
+    template_name = "teacher/msp/detail.html"
     form_class = PrefilledSuggestAnotherMSPLineForm
 
     def get_success_url(self):
