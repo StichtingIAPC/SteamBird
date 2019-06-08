@@ -1,13 +1,12 @@
 from django import forms
 from django.urls import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
 # noinspection PyUnresolvedReferences
 # pylint: disable=no-name-in-module
-from django_addanother.contrib.select2 import Select2MultipleAddAnother, ModelSelect2AddAnother
+from django_addanother.contrib.select2 import Select2MultipleAddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher, Study, CourseStudy
+from steambird.models import Course, Teacher, CourseStudy
 
 
 class CourseForm(forms.ModelForm):
@@ -76,20 +75,41 @@ class TeacherForm(forms.ModelForm):
         ]
 
 
-class StudyCourseForm(forms.ModelForm):
+# class StudyCourseForm(forms.ModelForm):
+#     class Meta:
+#         model = CourseStudy
+#         fields = [
+#             'course',
+#             'study'
+#         ]
+#
+#         widgets = {
+#             'course': AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
+#                 model=Course,
+#                 search_fields=[
+#                     'name__icontains',
+#                     'course_code__icontains'
+#                 ]
+#             ), reverse_lazy('boecie:index')),
+#         }
 
-    class Meta:
-        model = CourseStudy
-        fields = [
-            'course'
-        ]
+# pylint: disable=invalid-name
+def StudyCourseForm(has_course_field: bool = False):
+    class _cls(forms.ModelForm):
+        class Meta:
+            model = CourseStudy
+            fields = [
+                'study_year',
+            ] + (['course'] if has_course_field else ['study'])
 
-        widgets = {
-            'course': AddAnotherWidgetWrapper(ModelSelect2Widget(
-                model=Course,
-                search_fields=[
-                    'name__icontains',
-                    'course_code__icontains'
-                ]
-            ), reverse_lazy('boecie:course.create'))
-        }
+            widgets = {
+                'course': AddAnotherWidgetWrapper(ModelSelect2Widget(
+                    model=Course,
+                    search_fields=[
+                        'name__icontains',
+                        'course_code__icontains'
+                    ]
+                ), reverse_lazy('boecie:index')),
+            }
+
+    return _cls

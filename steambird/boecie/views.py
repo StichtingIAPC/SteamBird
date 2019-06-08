@@ -3,7 +3,7 @@ from collections import defaultdict
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, \
+from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView
 from django_addanother.views import CreatePopupMixin
 
@@ -46,9 +46,15 @@ class HomeView(View):
         return render(request, "boecie/index.html", context)
 
 
-class StudyDetailView(DetailView):
+class StudyDetailView(FormView):
     model = Study
+    form_class = StudyCourseForm(True)
     template_name = "boecie/study_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['study'] = Study.objects.get(pk=self.kwargs['pk'])
+        return context
 
 
 class CourseUpdateView(UpdateView):
@@ -142,6 +148,5 @@ class TeacherDeleteView(DeleteView):
 
 
 class StudyCourseView(FormView):
-    form_class = StudyCourseForm
-    template_name = 'boecie/studycourse_add.html'
-
+    form_class = StudyCourseForm(True)
+    template_name = 'boecie/studycourse_form.html'

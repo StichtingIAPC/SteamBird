@@ -11,6 +11,10 @@
                     type="submit">
                 {% trans "Add new course" %}</button>
         </a>
+        <br>
+
+
+        {% include 'boecie/studycourse_form.html' %}
         <hr>
         <h3>Courses to be updated:</h3><br>
         {% for course in study.course_set.all %}
@@ -51,7 +55,7 @@
                         {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
                     </div>
                     <div class="col-1">
-                        {{ course.calendar_year}}
+                        {{ course.calendar_year }}
                     </div>
                     <div class="col-1">
                         {{ course.period }}{#                             TODO: add moment this course is given during set year#}

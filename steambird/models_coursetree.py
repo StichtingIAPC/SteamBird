@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, IntEnum
 from typing import List
 
 from django.db import models
@@ -23,6 +23,13 @@ class Period(Enum):
     Q2_HALF = "Quartile 2, half year course"
     Q3_HALF = "Quartile 3, half year course"
     FULL_YEAR = "Full year course"
+
+
+class StudyYear(IntEnum):
+    Y1 = 1
+    Y2 = 2
+    Y3 = 3
+    Y4 = 4
 
 
 class Study(models.Model):
@@ -54,8 +61,11 @@ class CourseStudy(models.Model):
     study = models.ForeignKey(Study, on_delete=models.CASCADE)
     course = models.ForeignKey('Course', on_delete=models.CASCADE)
     study_year = models.IntegerField(
-        verbose_name=_('N-th year'),
-        help_text=_('In which year the course is given for this study'))
+        choices=[(t.name, t.value) for t in StudyYear],
+        verbose_name=_("The year of (nominal) study this course is given"),
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = _("Course-Study relation")
@@ -68,6 +78,7 @@ class CourseStudy(models.Model):
             self.course.name,
             self.course.course_code
         )
+
 
 class Course(models.Model):
     studies = models.ManyToManyField(

@@ -1,20 +1,21 @@
-{% extends 'boecie/base.html' %}
-{% load i18n %}
+{#{% extends 'boecie/base.html' %}#}
+{#{% load i18n %}#}
 {#{% load bootstrapify %}#}
 {#{% load ut_url_mapper %}#}
 
-{% block content %}
-        <div class="spacing"></div>
+{#{% block content %}#}
+    <div class="spacing"></div>
     <div class="container profile">
         {{ form.media.css }}
         <div class="row">
             <form>
                 {% csrf_token %}
                 {{ form.as_p }}
+{#                TODO: challenge: make this work for both versions of the form at the same time#}
             </form>
         </div>
 
         <div class="spacing"></div>
     </div>
     {{ form.media.js }}
-{% endblock %}
+{#{% endblock %}#}
