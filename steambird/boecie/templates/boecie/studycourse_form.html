@@ -1,21 +1,58 @@
 {#{% extends 'boecie/base.html' %}#}
-{#{% load i18n %}#}
-{#{% load bootstrapify %}#}
+{% load i18n %}
+{% load bootstrapify %}
 {#{% load ut_url_mapper %}#}
 
 {#{% block content %}#}
-    <div class="spacing"></div>
-    <div class="container profile">
+<div class="spacing"></div>
+<div class="profile">
+    <form>
         {{ form.media.css }}
-        <div class="row">
-            <form>
-                {% csrf_token %}
-                {{ form.as_p }}
-{#                TODO: challenge: make this work for both versions of the form at the same time#}
-            </form>
-        </div>
+        {% csrf_token %}
+        <div class="form-group">
+            <div class="row">
 
-        <div class="spacing"></div>
-    </div>
-    {{ form.media.js }}
+                <label class="col-2 control-label w-100">
+                    {% trans 'Study Year' %}
+                </label>
+                <div class="col-2 w-100">
+                    <div class="form-inline">
+                        {{ form.study_year|form_bootstrapify }}
+                    </div>
+                </div>
+
+                {% if form.study %}
+                    {# If adding Studyies, Course is set, show only study part extra#}
+                    <label class="col-1 control-label w-100">
+                        {% trans 'Study' %}
+                    </label>
+                    <div class="col-3 w-100">
+                        <div class="form-inline">
+                            {{ form.study }}
+                        </div>
+                    </div>
+
+                {% elif form.course %}
+                    {# If adding courses, Study is set, show only course part extra#}
+                    <label class="col-1 control-label w-100">
+                        {% trans 'Course' %}
+                    </label>
+                    <div class="col-5 w-100">
+                        <div class="form-inline">
+                            {{ form.course }}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="col-2">
+                    <button class="btn btn-outline-success right" type="submit">
+                        {% trans 'Add course to study' %}
+                    </button>
+                </div>
+            </div>
+        </div>
+        {#                TODO: challenge: make this work for both versions of the form at the same time#}
+    </form>
+    <div class="spacing"></div>
+</div>
+{{ form.media.js }}
 {#{% endblock %}#}
