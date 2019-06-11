@@ -3,6 +3,15 @@ stages:
   - build
   - deploy
 
+Validate contributors file:
+  stage: test
+  image: debian:latest
+  before_script:
+    - apt update -y && apt install -y git
+  script:
+    - 'git log --format=%aN | sort | uniq | while read line; do if ! grep --color=never "\"$line\"" CONTRIBUTORS.md > /dev/null; then echo "ERROR: $line"; fi; done'
+    - 'git log --format=%aN | sort | uniq | while read line; do if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null; then exit 1; fi; done'
+
 Test dependencies:
   stage: test
   image: python:3.7
