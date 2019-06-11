@@ -1,15 +1,13 @@
-{#{% extends 'boecie/base.html' %}#}
 {% load i18n %}
 {% load bootstrapify %}
-{#{% load ut_url_mapper %}#}
 
-{#{% block content %}#}
 <div class="spacing"></div>
-<div class="profile">
-    <form>
+    <form method="post">
+    {{ form.form_name }}
         {{ form.media.css }}
         {% csrf_token %}
         <div class="form-group">
+            {{ form.errors }}
             <div class="row">
 
                 <label class="col-2 control-label w-100">
@@ -22,7 +20,7 @@
                 </div>
 
                 {% if form.study %}
-                    {# If adding Studyies, Course is set, show only study part extra#}
+                    {# If adding Studies, Course is set, show only study part extra#}
                     <label class="col-1 control-label w-100">
                         {% trans 'Study' %}
                     </label>
@@ -50,9 +48,5 @@
                 </div>
             </div>
         </div>
-        {#                TODO: challenge: make this work for both versions of the form at the same time#}
     </form>
-    <div class="spacing"></div>
-</div>
 {{ form.media.js }}
-{#{% endblock %}#}

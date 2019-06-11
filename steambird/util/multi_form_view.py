@@ -12,8 +12,10 @@ class MultiFormView(views.generic.TemplateView):
     shown on this page.
     """
 
-    form_name_field_name: ClassVar[str] = '__form_name'
+    form_name_field_name: ClassVar[str] = 'form_name'
 
+    # pylint: disable=unused-argument, no-self-use
+    # noinspection PyUnusedLocal
     def get_object_for(self,
                        form_name: str,
                        request: HttpRequest) -> Optional[Any]:
@@ -24,26 +26,33 @@ class MultiFormView(views.generic.TemplateView):
         :param request:
         :return:
         """
+        return False
 
-    def form_valid(self, request: HttpRequest, form: Form, form_name: str):
+    # pylint: disable=unused-argument, no-self-use
+    # noinspection PyUnusedLocal
+    def form_valid(self, request: HttpRequest, form: Form, form_name: str) -> Optional[Any]:
         """
         Callback for a post request that sent valid form data.
 
         :param request: The request that was received.
         :param form: The form that was valid.
         :param form_name: The name of the form that was filled out.
-        :return: Nothing
+        :return: Nothing or a response
         """
+        return False
 
-    def form_invalid(self, request: HttpRequest, form: Form, form_name: str):
+    # pylint: disable=unused-argument, no-self-use
+    # noinspection PyUnusedLocal
+    def form_invalid(self, request: HttpRequest, form: Form, form_name: str) -> Optional[Any]:
         """
         Callback for a post request that sent invalid data.
 
         :param request: The request that was received.
         :param form: The form that was invalid.
         :param form_name: The name of the form that was filled out.
-        :return: Nothing
+        :return: Nothing or a response
         """
+        return False
 
     def get_forms_classes(self) -> Dict[str, Type[Form]]:
         """
@@ -76,40 +85,41 @@ class MultiFormView(views.generic.TemplateView):
         """
         post_data = request.POST or None
 
-        rv = {}
+        return_value = {}
 
         for name, form in forms.items():
             if with_data:
                 obj = self.get_object_for(name, request)
                 if obj:
-                    rv[name] = form(post_data, prefix=name, instance=obj)
+                    return_value[name] = form(post_data, instance=obj)
                     continue
-            rv[name] = form(post_data, prefix=name)
+            return_value[name] = form(post_data)
 
-        return rv
+        self._set_form_meta_fields(return_value)
+        return return_value
 
-    def handle_post_forms(self, request, forms):
+    def handle_post_forms(self, request, forms) -> Optional[Any]:
         """
         Fork to the validation functions in case of form submissions.
 
         :param request: The POST request that was received with form data.
         :param forms: The forms that were shown on this page.
-        :return: Nothing
+        :return: Nothing or a response
         """
         if not request.POST:
-            return
+            return None
 
         form_name = request.POST[self.__class__.form_name_field_name]
         form = forms[form_name]
 
         if not form:
-            return
+            return None
 
         if form.is_valid():
-            self.form_valid(request, form, form_name)
-        else:
-            self.form_invalid(request, form, form_name)
+            return self.form_valid(request, form, form_name)
+        return self.form_invalid(request, form, form_name)
 
+    # pylint: disable=arguments-differ
     def get_context_data(self, forms=None, **kwargs):
         if not forms:
             forms = self.get_form_instances(
@@ -122,11 +132,14 @@ class MultiFormView(views.generic.TemplateView):
 
         return context
 
-    def post(self, request):
+    def post(self, request, **_kwargs):
         forms = self.get_form_instances(self.get_forms_classes(), request)
         context = self.get_context_data(forms=forms)
 
-        self.handle_post_forms(request, forms)
+        response = self.handle_post_forms(request, forms)
+
+        if response:
+            return response
 
         return self.render_to_response(context)
 

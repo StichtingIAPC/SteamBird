@@ -13,7 +13,8 @@ urlpatterns = [
     path('study/<int:pk>/create', CourseCreateView.as_view(),
          name='course.create'),
     # TODO: make courseview_detail work on CourseCode instead of pk
-    path('study/<int:study>/course_detail/<int:course_code>/',
+    #  so it is a human readable-ish url
+    path('study/<int:study>/course_detail/<int:pk>/',
          CourseUpdateView.as_view(), name='course.detail'),
 
     path('teachers/', TeachersListView.as_view(), name='teacher.list'),

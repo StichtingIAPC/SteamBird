@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import HiddenInput
 from django.urls import reverse_lazy
 # noinspection PyUnresolvedReferences
 # pylint: disable=no-name-in-module
@@ -16,6 +17,7 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = [
+            'id',
             'course_code',
             'name',
             'materials',
@@ -28,6 +30,8 @@ class CourseForm(forms.ModelForm):
         ]
 
         widgets = {
+            'id': HiddenInput(),
+
             'materials': Select2MultipleAddAnother(
                 reverse_lazy('boecie:teacher.list')),
             # TODO: Make this work on the new MSP selection instead of this old
@@ -75,6 +79,7 @@ class TeacherForm(forms.ModelForm):
         ]
 
 
+# pylint: disable=invalid-name
 def StudyCourseForm(has_course_field: bool = False):
     class _cls(forms.ModelForm):
         class Meta:
@@ -83,22 +88,29 @@ def StudyCourseForm(has_course_field: bool = False):
                 'study_year',
                 ] + (['course'] if has_course_field else ['study'])
 
-            widgets = {
-                'course': AddAnotherWidgetWrapper(ModelSelect2Widget(
-                    model=Course,
-                    search_fields=[
-                        'name__icontains',
-                        'course_code__icontains'
-                    ]
-                ), reverse_lazy('boecie:index')),
+            if has_course_field:
+                widgets = {
+                    'course': AddAnotherWidgetWrapper(ModelSelect2Widget(
+                        model=Course,
+                        search_fields=[
+                            'name__icontains',
+                            'course_code__icontains'
+                        ]
+                    ), reverse_lazy('boecie:index')),
 
-                'study': AddAnotherWidgetWrapper(ModelSelect2Widget(
-                    model=Study,
-                    search_fields=[
-                        'name__icontains',
-                        'slug__icontains'
-                    ]
-                ), reverse_lazy('boecie:index')),
-            }
+                    'study': HiddenInput(),
+                }
+            else:
+                widgets = {
+                    'study': AddAnotherWidgetWrapper(ModelSelect2Widget(
+                        model=Study,
+                        search_fields=[
+                            'name__icontains',
+                            'slug__icontains'
+                        ]
+                    ), reverse_lazy('boecie:index')),
+
+                    'course': HiddenInput(),
+                }
 
     return _cls

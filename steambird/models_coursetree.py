@@ -31,6 +31,9 @@ class StudyYear(IntEnum):
     Y3 = 3
     Y4 = 4
 
+    def __str__(self):
+        return _("Year {}").format(self.value)
+
 
 class Study(models.Model):
     type = models.CharField(
@@ -61,7 +64,7 @@ class CourseStudy(models.Model):
     study = models.ForeignKey(Study, on_delete=models.CASCADE)
     course = models.ForeignKey('Course', on_delete=models.CASCADE)
     study_year = models.IntegerField(
-        choices=[(t.name, t.value) for t in StudyYear],
+        choices=[(t.value, str(t)) for t in StudyYear],
         verbose_name=_("The year of (nominal) study this course is given"),
         blank=True,
         null=True,
@@ -70,6 +73,7 @@ class CourseStudy(models.Model):
     class Meta:
         verbose_name = _("Course-Study relation")
         verbose_name_plural = _("Course-Study relations")
+        unique_together = ['study', 'course', 'study_year']
 
     def __str__(self):
         return '{} (Year {}) <-> {} ({})'.format(
