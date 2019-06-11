@@ -25,21 +25,23 @@ class MultiFormView(views.generic.TemplateView):
         :return:
         """
 
-    def form_valid(self, request: HttpRequest, form: Form):
+    def form_valid(self, request: HttpRequest, form: Form, form_name: str):
         """
         Callback for a post request that sent valid form data.
 
         :param request: The request that was received.
         :param form: The form that was valid.
+        :param form_name: The name of the form that was filled out.
         :return: Nothing
         """
 
-    def form_invalid(self, request: HttpRequest, form: Form):
+    def form_invalid(self, request: HttpRequest, form: Form, form_name: str):
         """
         Callback for a post request that sent invalid data.
 
         :param request: The request that was received.
         :param form: The form that was invalid.
+        :param form_name: The name of the form that was filled out.
         :return: Nothing
         """
 
@@ -97,15 +99,16 @@ class MultiFormView(views.generic.TemplateView):
         if not request.POST:
             return
 
-        form = forms[request.POST[self.__class__.form_name_field_name]]
+        form_name = request.POST[self.__class__.form_name_field_name]
+        form = forms[form_name]
 
         if not form:
             return
 
         if form.is_valid():
-            self.form_valid(request, form)
+            self.form_valid(request, form, form_name)
         else:
-            self.form_invalid(request, form)
+            self.form_invalid(request, form, form_name)
 
     def get_context_data(self, forms=None, **kwargs):
         if not forms:
