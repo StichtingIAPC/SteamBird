@@ -22,4 +22,3 @@ urlpatterns = [
     path('api/isbn/search', ISBNSearchApiView.as_view(), name='isbn.search'),
     path('api/doi/search', DOISearchApiView.as_view(), name='doi.search')
 ]
-
