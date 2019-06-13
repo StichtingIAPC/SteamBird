@@ -148,7 +148,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 try:
-    # pylint: disable=wildcard-import
+    # pylint: disable=wildcard-import, unused-wildcard-import
     from .local import *
 except ImportError:
     print("Failed to import local.py. It is recommended to add them.")
