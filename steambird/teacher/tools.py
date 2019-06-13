@@ -1,6 +1,8 @@
 import isbnlib
 from isbnlib.dev import NoDataForSelectorError
 
+from crossref.restful import Works
+
 
 def isbn_lookup(isbn):
     try:
@@ -21,3 +23,10 @@ def isbn_lookup(isbn):
 
     except NoDataForSelectorError:
         return None
+
+
+def doi_lookup(doi):
+    works = Works()
+    info = works.doi(doi)
+
+    return {'info': info}

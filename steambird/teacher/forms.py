@@ -33,6 +33,7 @@ class BookForm(forms.ModelForm):
             "ISBN",
             "author",
             "img",
+            "edition",
             "year_of_publishing",
         ]
 
@@ -45,6 +46,7 @@ class ScientificPaperForm(forms.ModelForm):
             "DOI",
             "author",
             "year_of_publishing",
+            'url'
         ]
 
 

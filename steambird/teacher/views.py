@@ -1,15 +1,16 @@
 from json import dumps
+from urllib.parse import quote, unquote
 
 from django.http import Http404, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, DetailView
 
-from steambird.models import Teacher, MSP, MSPLineType
+from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle
 from steambird.models_msp import MSPLine
 from steambird.perm_utils import IsTeacherMixin
-from steambird.teacher.tools import isbn_lookup
+from steambird.teacher.tools import isbn_lookup, doi_lookup
 from .forms import ISBNForm, PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm, BookForm, ScientificPaperForm
 
@@ -46,7 +47,7 @@ class ISBNDetailView(IsTeacherMixin, View):
 
 class AddMSPView(IsTeacherMixin, View):
     def get(self, _request):
-        return render(self.request, 'teacher/new_book.html')
+        return render(self.request, 'teacher/new_studymaterial.html')
 
     # pylint: disable=no-self-use
     def post(self, request):
@@ -60,8 +61,8 @@ class AddMSPView(IsTeacherMixin, View):
         # Set all paper related variables
         elif material_type == 'paper':
             form = ScientificPaperForm(request.POST)
-            reverse_url = 'teacher:isbndetail'  # TODO: Replace by ScientificArticle URL
-            kwargs = {'isbn': request.POST.get('doi')}  # TODO: Replace by ScientificArticle URL
+            reverse_url = 'teacher:articledetail'
+            kwargs = {'doi': quote(request.POST.get('DOI'), safe='')}
         # Type is not supported
         else:
             return HttpResponseBadRequest()
@@ -70,7 +71,7 @@ class AddMSPView(IsTeacherMixin, View):
             form.save()
             return redirect(reverse(reverse_url, kwargs=kwargs))
 
-        return render(request, 'teacher/new_book.html', {'form': form})
+        return render(request, 'teacher/new_studymaterial.html', {'form': form})
 
 
 class ISBNSearchApiView(View):
@@ -86,6 +87,30 @@ class ISBNSearchApiView(View):
             )
 
         return JsonResponse(isbn_data)
+
+
+class DOISearchApiView(View):
+    # pylint: disable=no-self-use
+    def get(self, request):
+        doi = request.GET['doi']
+        doi_data = doi_lookup(doi)
+
+        if doi_data is None:
+            return HttpResponseNotFound(
+                dumps(str("No data was found for given ISBN")),
+                content_type="application/json",
+            )
+
+        return JsonResponse(doi_data)
+
+class DOIDetailView(IsTeacherMixin, DetailView):
+    model = ScientificArticle
+    template_name = 'teacher/DOI.html'
+
+    def get_object(self, queryset=None):
+        queryset = queryset or ScientificArticle
+        doi = unquote(self.kwargs['doi'])
+        return queryset.objects.get(DOI=doi)
 
 
 class CourseView(IsTeacherMixin, TemplateView):
