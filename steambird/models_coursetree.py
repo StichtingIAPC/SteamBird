@@ -19,9 +19,9 @@ class Period(Enum):
     Q3 = "Quartile 3"
     Q4 = "Quartile 4"
     Q5 = "Quartile 5 (sad summer students)"
-    Q1_HALF = "Quartile 1, half year course"
-    Q2_HALF = "Quartile 2, half year course"
-    Q3_HALF = "Quartile 3, half year course"
+    S1 = "Semester 1, half year course"
+    S2 = "Semester 2, half year course"
+    S3 = "Semester 3, half year course"
     FULL_YEAR = "Full year course"
 
 
@@ -191,6 +191,23 @@ class Course(models.Model):
 
     def association_can_manage_msp(self, association: StudyAssociation) -> bool:
         return association in self.associations
+
+    def falls_in(self, period: Period):
+        if self.period == Period.FULL_YEAR:
+            return True
+
+        if period == self.period:
+            return True
+
+        if period == Period.Q1 or period == Period.Q2:
+            return self.period == Period.S1
+
+        if period == Period.Q3 or period == Period.Q4:
+            return self.period == Period.S2
+
+        if period == Period.Q5:
+            return self.period == Period.S3
+
 
     def __str__(self):
         return '{} ({}, {})'.format(self.name, self.calendar_year, self.period)

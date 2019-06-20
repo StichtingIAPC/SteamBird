@@ -1,3 +1,5 @@
+from enum import Enum, auto
+
 from django import forms
 from django.urls import reverse_lazy
 # noinspection PyUnresolvedReferences
@@ -74,7 +76,15 @@ class TeacherForm(forms.ModelForm):
             'user',
         ]
 
+
+class LmlExportOptions(Enum):
+    YEAR_1 = auto()
+    YEAR_2 = auto()
+    YEAR_3 = auto()
+    MASTER = auto()
+
+
 class LmlExportForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        [self.__setattr__(period.value, period) for period in Period]
-        super(LmlExportForm, self).__init__(self, *args, **kwargs)
+    option = forms.ChoiceField(choices=((i.value, i.name) for i in LmlExportOptions))
+    period = forms.ChoiceField(choices=((i, 'Quartile {}'.format(i) ) for i in range(1,5)))
+
