@@ -123,6 +123,7 @@ class LmlExportOptions(Enum):
     YEAR_2 = auto()
     YEAR_3 = auto()
     MASTER = auto()
+    PREMASTER = auto()
 
 
 class LmlExportForm(forms.Form):

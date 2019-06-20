@@ -213,7 +213,7 @@ class LmlExport(FormView):
                         'vanprijs;korting;opmerking'.split(';'))
 
         if int(form.get('option')) < 4:
-            for study in Study.objects.all():
+            for study in Study.objects.filter(type='bachelor'):
                 for course in [c for c in Course.objects.filter(
                     coursestudy__study_year=int(form.get('option')),
                     calendar_year=form.get('year', datetime.date.today().year)
@@ -240,6 +240,54 @@ class LmlExport(FormView):
                                         '']
                                         )
 
+        elif int(form.get('option')) == 4:
+            for study in Study.objects.filter(type='master'):
+                for course in [c for c in Course.objects.filter(
+                    calendar_year=form.get('year', datetime.date.today().year)
+                ) if c.falls_in(period)]:
+                    for msp in MSP.objects.filter(course=course):
+                        if msp.resolved():
+                            for book in msp.mspline_set.last().materials.all():
+                                if isinstance(book, Book):
+                                    writer.writerow([
+                                        study,
+                                        '{name}'.format(
+                                            name=course.name
+                                        ),
+                                        '',
+                                        book.ISBN,
+                                        '',
+                                        'n',
+                                        'verplicht' if msp.mandatory else 'aanbevolen',
+                                        'koop'
+                                        '',
+                                        '',
+                                        '']
+                                        )
+        elif int(form.get('option')) == 5:
+            for study in Study.objects.filter('premaster'):
+                for course in [c for c in Course.objects.filter(
+                    calendar_year=form.get('year', datetime.date.today().year)
+                ) if c.falls_in(period)]:
+                    for msp in MSP.objects.filter(course=course):
+                        if msp.resolved():
+                            for book in msp.mspline_set.last().materials.all():
+                                if isinstance(book, Book):
+                                    writer.writerow([
+                                        study,
+                                        '{name}'.format(
+                                            name=course.name
+                                        ),
+                                        '',
+                                        book.ISBN,
+                                        '',
+                                        'n',
+                                        'verplicht' if msp.mandatory else 'aanbevolen',
+                                        'koop'
+                                        '',
+                                        '',
+                                        '']
+                                        )
         response = HttpResponse(result.getvalue(), content_type="text/csv")
         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format('foobarbaz')
         return response
