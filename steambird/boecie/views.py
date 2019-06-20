@@ -10,8 +10,8 @@ from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm
-from steambird.models import Study, Course, Teacher, CourseStudy
+from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm, ConfigForm
+from steambird.models import Study, Course, Teacher, CourseStudy, Config
 from steambird.util import MultiFormView
 
 
@@ -179,3 +179,11 @@ class TeacherDeleteView(DeleteView):
 class StudyCourseView(FormView):
     form_class = StudyCourseForm(has_course_field=True)
     template_name = 'boecie/studycourse_form.html'
+
+
+class ConfigView(FormView):
+    template_name = 'boecie/config.html'
+    model = Config
+    form_class = ConfigForm
+    success_url = reverse_lazy('boecie:config')
+
