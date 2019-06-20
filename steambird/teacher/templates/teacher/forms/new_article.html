@@ -1,0 +1,83 @@
+{% load i18n %}
+
+
+{{ form.errors }}
+<form style="display: none;" id="paper-add" class="form-add" method="post" action="{% url "teacher:msp.new" %}">
+    {% csrf_token %}
+    <input type="text"
+           class="form-control"
+           name="type"
+           id="material-type"
+           value="paper"
+           hidden/>
+
+    <div class="form-group required">
+        <label for="paper-add-doi" class="control-label">
+            {% trans 'DOI' %}
+        </label>
+        <span class="input-group">
+            <input type="text"
+                   class="form-control"
+                   name="DOI"
+                   id="paper-add-doi"
+                   placeholder="{% trans 'DOI' %}"/>
+            <span class="input-group-append">
+                <button id="paper-add-doi-search"
+                        type="button"
+                        class="btn btn-success">
+                    {% trans 'Search' %}
+                </button>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group required">
+        <label for="paper-add-title"
+               class="control-label">
+            {% trans 'Title' %}
+        </label>
+        <input type="text" class="form-control"
+               name="name"
+               id="paper-add-title"
+               placeholder="{% trans 'Title' %}"/>
+    </div>
+
+    <div class="form-group required">
+        <label for="paper-add-author"
+               class="control-label">
+            {% trans 'Author(s)' %}
+        </label>
+        <input type="text"
+               class="form-control"
+               name="author"
+               id="paper-add-author"
+               placeholder="{% trans 'Author(s)' %}"/>
+    </div>
+
+    <div class="form-group required">
+        <label for="paper-add-year"
+               class="control-label">
+            {% trans 'Publishing year' %}
+        </label>
+        <input type="text"
+               class="form-control"
+               name="year_of_publishing"
+               id="paper-add-year"
+               placeholder="{% trans 'Year of Publication' %}"/>
+    </div>
+
+    <div class="form-group">
+        <label for="paper-add-url"
+               class="control-label">
+            {% trans 'URL' %}
+        </label>
+        <input type="text"
+               class="form-control"
+               name="url"
+               id="paper-add-url"
+               placeholder="{% trans 'URL' %}"/>
+    </div>
+
+
+    <input type="submit" value="{% trans 'Create' %}" class="btn btn-success"/>
+</form>
