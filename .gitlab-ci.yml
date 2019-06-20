@@ -1,52 +1,17 @@
 stages:
+  - prepare
   - test
   - build
   - deploy
 
-Validate contributors file:
-  stage: test
-  image: debian:latest
-  before_script:
-    - apt update -y && apt install -y git
-  script:
-    - 'git log --format=%aN | sort | uniq | while read line; do if ! grep --color=never "\"$line\"" CONTRIBUTORS.md > /dev/null; then echo "ERROR: $line"; fi; done'
-    - 'git log --format=%aN | sort | uniq | while read line; do if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null; then exit 1; fi; done'
+variables:
+  PIPENV_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pipenv"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-Test dependencies:
-  stage: test
-  image: python:3.7
-  script:
-    - pip install pipenv
-    - pipenv install -d --deploy --system
-
-Run pylint:
-  stage: test
-  image: python:3.7
-  before_script:
-    - pip install pipenv
-    - pipenv install -d --deploy --system
-  script:
-    # Run linter without W0511 warnings to prevent non-zero exit codes for that
-    #  particular warning.
-    - pylint steambird -dfixme
-    # Show just the W0511 warnings, so one can see a list of actions that still
-    #  need to be done.
-    - pylint steambird --exit-zero -dall -efixme
-
-Deploy to container registry:
-  stage: deploy
-  only:
-    - /^release/.*$/
-  except:
-    - branches
-  when: manual
-  environment:
-    name: production
-    url: https://steambird.iapc.utwente.nl/
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
-  script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - export VERSION=$(echo $CI_COMMIT_TAG | cut -d'/' -f2)
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$VERSION --destination CI_REGISTRY_IMAGE:latest
+include:
+  # Validate runs dependency validation, license validation and syntax checks
+  - local: /.gitlab/prepare.yml
+  # Test runs unit tests, browser tests and integration tests
+  - local: /.gitlab/test.yml
+  # Deploy deploys to various hosts
+  - local: /.gitlab/deploy.yml

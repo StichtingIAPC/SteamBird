@@ -1,0 +1,23 @@
+Prepare/check dev dependencies:
+    stage: prepare
+    image: python:3.7
+    cache:
+        key: steambird-dev
+        paths:
+            - .cache/pipenv
+            - .cache/pip
+    script:
+        - pip install pipenv
+        - pipenv install -d --deploy --system
+
+Prepare/check production dependencies:
+    stage: prepare
+    image: python:3.7
+    cache:
+        key: steambird-prod
+        paths:
+            - .cache/pipenv
+            - .cache/pip
+    script:
+        - pip install pipenv
+        - pipenv install --deploy --system
