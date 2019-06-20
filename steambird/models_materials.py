@@ -5,9 +5,10 @@ from polymorphic.models import PolymorphicModel
 
 
 class StudyMaterial(models.Model):
-    name = models.CharField(
-        null=False, blank=False, max_length=255,
-        verbose_name=_('Category name of this article'))
+    name = models.CharField(null=False,
+                            blank=False,
+                            max_length=255,
+                            verbose_name=_('Category name of this article'))
 
     def __str__(self):
         return self.name
@@ -19,9 +20,10 @@ class StudyMaterial(models.Model):
 
 class StudyMaterialEdition(PolymorphicModel):
     # Could be derived from either OID or ISBN
-    name = models.CharField(
-        null=False, blank=False, max_length=255,
-        verbose_name=_("Name of the material"))
+    name = models.CharField(null=False,
+                            blank=False,
+                            max_length=255,
+                            verbose_name=_("Name of the material"))
 
     # The type if material, e.g. the list of different revisions of the book
     material_type = models.ForeignKey(
@@ -52,14 +54,19 @@ class OtherMaterial(StudyMaterialEdition):
 
 class Book(StudyMaterialEdition):
     # pylint: disable=invalid-name
-    ISBN = models.CharField(null=False, unique=True,
+    ISBN = models.CharField(null=False,
+                            unique=True,
                             verbose_name=_("ISBN 10 or ISBN 13"),
                             max_length=13)
     # Authors should be derived from the ISBN
-    author = models.CharField(null=False, blank=False, verbose_name=_(
-        "Author names, comma separated"), max_length=1000)
+    author = models.CharField(null=False,
+                              blank=False,
+                              verbose_name=_("Author names, comma separated"),
+                              max_length=1000)
     # Cover image of the book, should be derived from ISBN
-    img = models.URLField(verbose_name=_("Link to cover image of book"), blank=True, null=True)
+    img = models.URLField(verbose_name=_("Link to cover image of book"),
+                          blank=True,
+                          null=True)
 
     # Year of publishing, should be derived from ISBN
     year_of_publishing = models.IntegerField(
@@ -88,17 +95,26 @@ class Book(StudyMaterialEdition):
 
 
 class ScientificArticle(StudyMaterialEdition):
-    DOI = models.CharField(null=False, blank=True, verbose_name=_(
-        "Digital Object Identifier"),
+    DOI = models.CharField(null=False,
+                           blank=True,
+                           unique=True,
+                           verbose_name=_("Digital Object Identifier"),
                            max_length=255)
 
     # List of authors, comma separated, should be derived from DOI
-    author = models.CharField(null=False, blank=False, verbose_name=_(
-        "Author names, comma separated"), max_length=1000)
+    author = models.CharField(null=False,
+                              blank=False,
+                              verbose_name=_("Author names, comma separated"),
+                              max_length=1000)
 
     # Year of publishing, should be derived from OID
     year_of_publishing = models.IntegerField(
         verbose_name="Year this revision of the book was published.")
+
+    url = models.URLField(null=True,
+                          blank=True,
+                          verbose_name=_("Possible URL to the Article"),
+                          max_length=1000)
 
     def __str__(self):
         return "{}{}".format(self.name, ' (' + self.DOI + ')' if self.DOI else '')

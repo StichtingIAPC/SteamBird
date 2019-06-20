@@ -1,0 +1,24 @@
+{% extends 'teacher/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container">
+        <div class="spacing"></div>
+        <h2>{% trans 'Add material' %}</h2>
+
+        <select id="type-add">
+            <option value selected>Select type...</option>
+            <option value="book">Book</option>
+            <option value="paper">Scientific Article</option>
+        </select>
+
+        {% include "teacher/forms/new_book.html" %}
+        {% include "teacher/forms/new_article.html" %}
+    </div>
+{% endblock %}
+
+{% block endjs %}
+    <script src="{% static "js/steambird/forms/new_studymaterial.js" %}"></script>
+{% endblock %}
+

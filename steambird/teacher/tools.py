@@ -1,6 +1,12 @@
 import isbnlib
 from isbnlib.dev import NoDataForSelectorError
 
+from crossref.restful import Works
+
+
+# pylint: disable=invalid-name
+works = Works()
+
 
 def isbn_lookup(isbn):
     try:
@@ -21,3 +27,10 @@ def isbn_lookup(isbn):
 
     except NoDataForSelectorError:
         return None
+
+
+def doi_lookup(doi):
+
+    info = works.doi(doi)
+
+    return info

@@ -1,6 +1,7 @@
 from enum import Enum, auto
 
 from django import forms
+from django.forms import HiddenInput
 from django.urls import reverse_lazy
 # noinspection PyUnresolvedReferences
 # pylint: disable=no-name-in-module
@@ -8,7 +9,7 @@ from django_addanother.contrib.select2 import Select2MultipleAddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher, Period
+from steambird.models import Course, Teacher, CourseStudy, Study, Period
 
 
 class CourseForm(forms.ModelForm):
@@ -18,6 +19,7 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = [
+            'id',
             'course_code',
             'name',
             'materials',
@@ -30,6 +32,8 @@ class CourseForm(forms.ModelForm):
         ]
 
         widgets = {
+            'id': HiddenInput(),
+
             'materials': Select2MultipleAddAnother(
                 reverse_lazy('boecie:teacher.list')),
             # TODO: Make this work on the new MSP selection instead of this old
@@ -47,7 +51,7 @@ class CourseForm(forms.ModelForm):
                 ]
             ), reverse_lazy('boecie:teacher.create')),
 
-            'coordinator': ModelSelect2Widget(
+            'coordinator': AddAnotherWidgetWrapper(ModelSelect2Widget(
                 model=Teacher,
                 search_fields=[
                     'titles__icontains',
@@ -57,7 +61,7 @@ class CourseForm(forms.ModelForm):
                     'last_name__icontains',
                     'email__icontains'
                 ]
-            )
+            ), reverse_lazy('boecie:teacher.create'))
         }
 
 
@@ -75,6 +79,43 @@ class TeacherForm(forms.ModelForm):
             'retired',
             'user',
         ]
+
+
+# pylint: disable=invalid-name
+def StudyCourseForm(has_course_field: bool = False):
+    class _cls(forms.ModelForm):
+        class Meta:
+            model = CourseStudy
+            fields = [
+                'study_year',
+                ] + (['course'] if has_course_field else ['study'])
+
+            if has_course_field:
+                widgets = {
+                    'course': AddAnotherWidgetWrapper(ModelSelect2Widget(
+                        model=Course,
+                        search_fields=[
+                            'name__icontains',
+                            'course_code__icontains'
+                        ]
+                    ), reverse_lazy('boecie:index')),
+
+                    'study': HiddenInput(),
+                }
+            else:
+                widgets = {
+                    'study': AddAnotherWidgetWrapper(ModelSelect2Widget(
+                        model=Study,
+                        search_fields=[
+                            'name__icontains',
+                            'slug__icontains'
+                        ]
+                    ), reverse_lazy('boecie:index')),
+
+                    'course': HiddenInput(),
+                }
+
+    return _cls
 
 
 class LmlExportOptions(Enum):

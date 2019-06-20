@@ -4,36 +4,38 @@
 {% load ut_url_mapper %}
 
 {% block content %}
-    {% url 'boecie:course.create' as add_url %}
-    {% url 'boecie:course.detail' course.course_code as edit_url %}
-
     <div class="spacing"></div>
     <div class="container profile">
+        {% if is_edit %}
+            <h3>{% trans 'Add course to study' %}</h3>
+            {% include 'boecie/studycourse_form.html' with form=studycourse_form %}
+        {% endif %}
         <div class="row">
             <div class="col-xs-12 w-100">
                 <h2>
                     {% if is_edit %}
-                        <span>{% blocktrans with o=object %}Edit information of '{{ o }}'{% endblocktrans %}</span>
+                        <span>{% blocktrans with o=course_form.instance %}Edit information of '{{ o }}'{% endblocktrans %}</span>
                     {% else %}
                         <span>{% trans 'Creating Course' %}</span>
                     {% endif %}
                 </h2>
             </div>
         </div>
-        {% if form.errors or formset.errors %}
+        {% if course_form.errors or formset.errors %}
             <div class="row">
                 <div class="col-xs-12 w-100">
                     <div class="alert alert-danger" role="alert">
                         {% trans 'There were some problems with the data you entered. Please see below.' %}
+                        {{ course_form.errors }}
                     </div>
                 </div>
             </div>
-            {% if form.non_field_errors %}
+            {% if course_form.non_field_errors %}
                 <div class="row">
                     <div class="col-xs-12 w-100">
                         <div class="alert alert-danger" role="alert">
                             <ul>
-                                {% for error in form.non_field_errors %}
+                                {% for error in course_form.non_field_errors %}
                                     <li>{{ error }}</li>
                                 {% endfor %}
                             </ul>
@@ -45,7 +47,8 @@
 
         <form method="post" class="form-horizontal">
             {% csrf_token %}
-            {{ form.media.css }}
+            {{ course_form.form_name }}
+            {{ course_form.media.css }}
             <div class="row">
                 <div class="col-xs-12 w-100">
                     <div class="card ">
@@ -54,30 +57,30 @@
                         </div>
 
                         <div class="card-body">
-                            {% if form.course_code.errors or form.year.errors or form.name.errors %}
+                            {% if course_form.course_code.errors or course_form.year.errors or course_form.name.errors %}
                                 <div class="col-sm-offset-2 col-sm-10 w-100 form-control-static">
-                                    {% if form.course_code.errors %}
+                                    {% if course_form.course_code.errors %}
                                         <span class="label label-danger">{% trans 'Course Code:' %}
-                                            {% for error in form.course_code.errors %}
+                                            {% for error in course_form.course_code.errors %}
                                                 {{ error }} {% endfor %}</span>&nbsp;
                                     {% endif %}
-                                    {% if form.year.errors %}
+                                    {% if course_form.year.errors %}
                                         <span class="label label-danger">{% trans 'Year' %}
-                                            {% for error in form.year.errors %}
+                                            {% for error in course_form.year.errors %}
                                                 {{ error }}
                                             {% endfor %}
                                         </span>&nbsp;
                                     {% endif %}
-                                    {% if form.name.errors %}
+                                    {% if course_form.name.errors %}
                                         <span class="label label-danger">{% trans 'Name:' %}
-                                            {% for error in form.name.errors %}
+                                            {% for error in course_form.name.errors %}
                                                 {{ error }}
                                             {% endfor %}
                                         </span>
                                     {% endif %}
-                                    {% if form.period.errors %}
+                                    {% if course_form.period.errors %}
                                         <span class="label label-danger">{% trans 'Name:' %}
-                                            {% for error in form.period.errors %}
+                                            {% for error in course_form.period.errors %}
                                                 {{ error }}
                                             {% endfor %}
                                         </span>
@@ -91,10 +94,10 @@
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
-                                            {{ form.course_code|form_bootstrapify }}
+                                            {{ course_form.course_code|form_bootstrapify }}
                                             {% if is_edit %}
                                                 <div class="ml-3">
-                                                    <a href="{% osiris_url course.course_code course.calendar_year %}"
+                                                    <a href="{% osiris_url course_form.instance.course_code course_form.instance.calendar_year %}" {# TODO: make this temp .instance. fix work like a normal django form template_tag #}
                                                        target="_blank">
                                                         <span class="fa fa-external-link-alt"></span>
                                                     </a>
@@ -110,7 +113,7 @@
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
-                                            {{ form.calendar_year|form_bootstrapify }}
+                                            {{ course_form.calendar_year|form_bootstrapify }}
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +123,7 @@
                                     <label class="col-sm-2 control-label w-100">{% trans "Period" %}</label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
-                                            {{ form.period|form_bootstrapify }}
+                                            {{ course_form.period|form_bootstrapify }}
                                         </div>
                                     </div>
                                 </div>
@@ -130,7 +133,7 @@
                                     <label class="col-sm-2 control-label w-100">{% trans "Name" %}</label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
-                                            {{ form.name|form_bootstrapify }}
+                                            {{ course_form.name|form_bootstrapify }}
                                         </div>
                                     </div>
                                 </div>
@@ -146,10 +149,10 @@
                             <h6 class="card-title mb-0">{% trans 'Coordinator of the course' %}</h6>
                         </div>
                         <div class="card-body">
-                            {% if form.teachers.errors %}
+                            {% if course_form.teachers.errors %}
                                 <div class="w-100 col-sm-offset-2 col-sm-10 form-control-static">
                                     <span class="label label-danger">
-                                        {% for error in form.coordinator.errors %}
+                                        {% for error in course_form.coordinator.errors %}
                                             {{ error }}
                                         {% endfor %}
                                     </span>
@@ -157,15 +160,15 @@
                             {% endif %}
                             <div class="form-group required">
                                 <div class="row">
-                                    <label for="{{ form.coordinator.id_for_label }}"
-                                           class="w-100 col-sm-2 control-label">{{ form.coordinator.label }}</label>
+                                    <label for="{{ course_form.coordinator.id_for_label }}"
+                                           class="w-100 col-sm-2 control-label">{{ course_form.coordinator.label }}</label>
                                     <div class="w-100 col-sm-10">
                                         <div class="form-inline">
-                                            {{ form.coordinator }}
+                                            {{ course_form.coordinator }}
                                             {% if is_edit %}
                                                 <div class="ml-3">
-                                                    <a href="{% people_utwente course.coordinator.initials course.coordinator.surname_prefix course.coordinator.last_name %}"
-                                                       target="_blank">
+                                                    <a href="{% people_utwente course_form.instance.coordinator.initials course_form.instance.coordinator.surname_prefix course_form.instance.coordinator.last_name %}"
+                                                       target="_blank"> {# TODO: make this temp .instance. fix work like a normal django form template_tag #}
                                                         <span class="fa fa-external-link-alt"></span>
                                                     </a>
                                                 </div>
@@ -185,10 +188,10 @@
                             <h6 class="card-title mb-0">{% trans 'Teachers related to course' %}</h6>
                         </div>
                         <div class="card-body">
-                            {% if form.teachers.errors %}
+                            {% if course_form.teachers.errors %}
                                 <div class="w-100 col-sm-offset-2 col-sm-10 form-control-static">
                                     <span class="label label-danger">
-                                        {% for error in form.teachers.errors %}
+                                        {% for error in course_form.teachers.errors %}
                                             {{ error }}
                                         {% endfor %}
                                     </span>
@@ -196,11 +199,11 @@
                             {% endif %}
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="{{ form.teachers.id_for_label }}"
-                                           class="w-100 col-sm-2 control-label">{{ form.teachers.label }}</label>
+                                    <label for="{{ course_form.teachers.id_for_label }}"
+                                           class="w-100 col-sm-2 control-label">{{ course_form.teachers.label }}</label>
                                     <div class="w-100 col-sm-10">
                                         <div class="form-inline">
-                                            {{ form.teachers }}
+                                            {{ course_form.teachers }}
                                         </div>
                                     </div>
                                 </div>
@@ -216,10 +219,10 @@
                             <h6 class="card-title mb-0">{% trans 'Materials related to course' %}</h6>
                         </div>
                         <div class="card-body">
-                            {% if form.materials.errors %}
+                            {% if course_form.materials.errors %}
                                 <div class="w-100 col-sm-offset-2 col-sm-10 form-control-static">
                                     <span class="label label-danger">
-                                        {% for error in form.materials.errors %}
+                                        {% for error in course_form.materials.errors %}
                                             {{ error }}
                                         {% endfor %}
                                     </span>
@@ -227,11 +230,11 @@
                             {% endif %}
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="{{ form.materials.id_for_label }}"
-                                           class="w-100 col-sm-2 control-label">{{ form.materials.label }}</label>
+                                    <label for="{{ course_form.materials.id_for_label }}"
+                                           class="w-100 col-sm-2 control-label">{{ course_form.materials.label }}</label>
                                     <div class="w-100 col-sm-10">
                                         <div class="form-inline">
-                                            {{ form.materials }}
+                                            {{ course_form.materials }}
                                         </div>
                                     </div>
                                 </div>
@@ -247,10 +250,10 @@
                             <h6 class="card-title mb-0">{% trans 'Updated by info' %}</h6>
                         </div>
                         <div class="card-body">
-                            {% if form.materials.errors %}
+                            {% if course_form.materials.errors %}
                                 <div class="w-100 col-sm-offset-2 col-sm-10 form-control-static">
                                     <span class="label label-danger">
-                                        {% for error in form.updated_associations.errors %}
+                                        {% for error in course_form.updated_associations.errors %}
                                             {{ error }}
                                         {% endfor %}
                                     </span>
@@ -258,20 +261,20 @@
                             {% endif %}
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="{{ form.updated_associations.id_for_label }}"
-                                           class="w-100 col-sm-2 control-label">{{ form.updated_associations.label }}</label>
+                                    <label for="{{ course_form.updated_associations.id_for_label }}"
+                                           class="w-100 col-sm-2 control-label">{{ course_form.updated_associations.label }}</label>
                                     <div class="w-100 col-sm-10">
                                         <div class="form-inline">
-                                            {{ form.updated_associations|form_bootstrapify }}
+                                            {{ course_form.updated_associations|form_bootstrapify }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            {% if form.updated_teacher.errors %}
+                            {% if course_form.updated_teacher.errors %}
                                 <div class="w-100 col-sm-offset-2 col-sm-10 form-control-static">
                                     <span class="label label-danger">
-                                        {% for error in form.updated_teacher.errors %}
+                                        {% for error in course_form.updated_teacher.errors %}
                                             {{ error }}
                                         {% endfor %}
                                     </span>
@@ -279,11 +282,11 @@
                             {% endif %}
                             <div class="form-group">
                                 <div class="row">
-                                    <label for="{{ form.updated_teacher.id_for_label }}"
-                                           class="w-100 col-sm-2 control-label">{{ form.updated_teacher.label }}</label>
+                                    <label for="{{ course_form.updated_teacher.id_for_label }}"
+                                           class="w-100 col-sm-2 control-label">{{ course_form.updated_teacher.label }}</label>
                                     <div class="w-100 col-sm-10">
                                         <div class="form-inline">
-                                            {{ form.updated_teacher }}
+                                            {{ course_form.updated_teacher }}
                                         </div>
                                     </div>
                                 </div>
@@ -335,6 +338,6 @@
         </form>
 
     </div>
-    {{ form.media.js }}
+    {{ course_form.media.js }}
 
 {% endblock %}
