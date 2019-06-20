@@ -208,20 +208,20 @@ class Course(models.Model):
         return association in self.associations
 
     def falls_in(self, period: Period):
-        if self.period == Period.FULL_YEAR:
+        if Period[self.period] == Period.FULL_YEAR:
             return True
 
-        if period == self.period:
+        if period == Period[self.period]:
             return True
 
         if period == Period.Q1 or period == Period.Q2:
-            return self.period == Period.S1
+            return Period[self.period] == Period.S1
 
         if period == Period.Q3 or period == Period.Q4:
-            return self.period == Period.S2
+            return Period[self.period] == Period.S2
 
         if period == Period.Q5:
-            return self.period == Period.S3
+            return Period[self.period] == Period.S3
 
 
     def __str__(self):

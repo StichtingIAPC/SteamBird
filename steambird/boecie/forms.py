@@ -127,5 +127,5 @@ class LmlExportOptions(Enum):
 
 class LmlExportForm(forms.Form):
     option = forms.ChoiceField(choices=((i.value, i.name) for i in LmlExportOptions))
-    period = forms.ChoiceField(choices=((i, 'Quartile {}'.format(i) ) for i in range(1,5)))
+    period = forms.ChoiceField(choices=(('Q{}'.format(i), 'Quartile {}'.format(i) ) for i in range(1,5)))
 

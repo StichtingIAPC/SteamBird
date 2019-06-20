@@ -20,6 +20,7 @@ from django_addanother.views import CreatePopupMixin
 
 from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm
 from steambird.models import Study, Course, Teacher, CourseStudy
+from steambird.models_msp import MSPLine, MSP
 from steambird.util import MultiFormView
 from steambird.boecie.forms import CourseForm, TeacherForm, LmlExportForm, LmlExportOptions
 from steambird.models import Study, Course, Teacher, CourseStudy, Book
@@ -203,7 +204,7 @@ class LmlExport(FormView):
     def form_valid(self, form):
         form = form.cleaned_data
 
-        period = form.get('period')
+        period = Period[form.get('period')]
 
         result = io.StringIO()
 
@@ -213,31 +214,31 @@ class LmlExport(FormView):
 
         if int(form.get('option')) < 4:
             for study in Study.objects.all():
-                for course in Course.objects.filter(
+                for course in [c for c in Course.objects.filter(
                     coursestudy__study_year=int(form.get('option')),
-                    falls_in=period,
-                    calendar_year=form.get('year')
-                ):
-                    for book in Book.objects.filter(
-                        mspline__msp__course=course,
-                    ).annotate(mandatory='mspline__mandatory'):
-                        writer.writerow([
-                            study,
-                            'Module {year}.{period} - {name}'.format(
-                                year=1,
-                                period=course.period,
-                                name=course.name
-                            ),
-                            '',
-                            book.isbn,
-                            '',
-                            'n',
-                            'verplicht' if book.mandatory else 'aanbevolen',
-                            'koop'
-                            '',
-                            '',
-                            '']
-                            )
+                    calendar_year=form.get('year', datetime.date.today().year)
+                ) if c.falls_in(period)]:
+                    for msp in MSP.objects.filter(course=course):
+                        if msp.resolved():
+                            for book in msp.mspline_set.last().materials.all():
+                                if isinstance(book, Book):
+                                    writer.writerow([
+                                        study,
+                                        'Module {year}.{period} - {name}'.format(
+                                            year=form.get('option'),
+                                            period=course.period[1],
+                                            name=course.name
+                                        ),
+                                        '',
+                                        book.ISBN,
+                                        '',
+                                        'n',
+                                        'verplicht' if msp.mandatory else 'aanbevolen',
+                                        'koop'
+                                        '',
+                                        '',
+                                        '']
+                                        )
 
         response = HttpResponse(result.getvalue(), content_type="text/csv")
         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format('foobarbaz')
