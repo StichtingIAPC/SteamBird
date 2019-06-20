@@ -110,41 +110,39 @@ function searchDoi(doi) {
 }
 
 /**
- * @param response {{
- *     info: {
- *         DOI: string
- *         ISSN: Array of strings
- *         URL: string
- *         'alternative-id': Array of strings
- *         author: {
- *             given: string
- *             family: string
- *         }
- *         'container-title': string Name of journal/book/conference
- *         issue: string
- *         issued: {
- *             'date-parts':{
- *                 0:{
- *                     0 : number year
- *                     1 : number month
- *                 }
- *             }
- *         }
- *         language: string
- *         page: string range of pages
- *         prefix: string DOI prefix
- *         'publish=print': Array
- *         publisher: string
- *         'short-container-title': string often abbreviated title of container
- *         subject: Array of strings
- *         title: Array of strings
- *         type: string type of DOI
- *         volume: string
- *     }
+ * @param article : {{
+ *      DOI: string
+ *      ISSN: Array of strings
+ *      URL: string
+ *      'alternative-id': Array of strings
+ *      author: {
+ *          given: string
+ *          family: string
+ *      }
+ *      'container-title': string Name of journal/book/conference
+ *      issue: string
+ *      issued: {
+ *          'date-parts':{
+ *              0:{
+ *                  0 : number year
+ *                  1 : number month
+ *              }
+ *          }
+ *      }
+ *      language: string
+ *      page: string range of pages
+ *      prefix: string DOI prefix
+ *      'publish=print': Array
+ *      publisher: string
+ *      'short-container-title': string often abbreviated title of container
+ *      subject: Array of strings
+ *      title: Array of strings
+ *      type: string type of DOI
+ *      volume: string
  * }}
  */
-function updateArticle(response) {
-    let article = response.info;
+function updateArticle(article) {
+
 
     const authors = article.author.map(author => {
         if (author.given && author.family) {

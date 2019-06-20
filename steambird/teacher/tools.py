@@ -4,6 +4,10 @@ from isbnlib.dev import NoDataForSelectorError
 from crossref.restful import Works
 
 
+# pylint: disable=invalid-name
+works = Works()
+
+
 def isbn_lookup(isbn):
     try:
         meta_info = isbnlib.meta(isbn)
@@ -26,7 +30,7 @@ def isbn_lookup(isbn):
 
 
 def doi_lookup(doi):
-    works = Works()
+
     info = works.doi(doi)
 
-    return {'info': info}
+    return info
