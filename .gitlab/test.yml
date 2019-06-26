@@ -1,0 +1,78 @@
+Validate contributors file:
+    stage: test
+    image:
+        name: docker:git
+    script:
+        - 'git log --format=%aN | sort | uniq | while read line; do if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null; then echo "ERROR: $line"; fi; done'
+        - 'git log --format=%aN | sort | uniq | while read line; do if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null; then exit 1; fi; done'
+
+Run Python linter:
+    stage: test
+    image: python:3.7
+    cache:
+        key: steambird-dev
+        paths:
+            - .cache/pipenv
+            - .cache/pip
+    before_script:
+        - pip install pipenv
+        - pipenv install -d --deploy --system
+        - pip install --upgrade --force-reinstall django-rosetta
+    script:
+        # Run linter without W0511 warnings to prevent non-zero exit codes for that
+        #  particular warning.
+        - pylint steambird -dfixme
+        # Show just the W0511 warnings, so one can see a list of actions that still
+        #  need to be done.
+        - pylint steambird --exit-zero -dall -efixme
+
+.test:
+    stage: test
+    image: python:3.7
+    cache:
+        key: steambird-dev
+        paths:
+            - .cache/pipenv
+    services:
+        - postgres:latest
+    variables:
+        POSTGRES_USER: runner
+        POSTGRES_PASSWORD: ""
+        DB_HOST: postgres
+        DB_USERNAME: runner
+        DB_PASSWORD: ""
+    before_script:
+        - pip3 install pipenv
+        - pipenv install -d --deploy --system
+
+.browsertest:
+    extends: .test
+    image: docker.iapc.nl/www/build-images/python-selenium
+    variables:
+        SELENIUM_DRIVER: REMOTE
+
+Run browser tests (Chrome):
+    extends: .browsertest
+    variables:
+        SELENIUM_DRIVER: CHROME_LOCAL_HEADLESS
+    services:
+        - postgres:latest
+    script:
+        - python manage.py test steambird --tag=chrome --tag=any-browser
+
+Run browser tests (Firefox):
+    extends: .browsertest
+    variables:
+        SELENIUM_DRIVER: FIREFOX_LOCAL_HEADLESS
+    script:
+        - python manage.py test steambird --tag=firefox --tag=any-browser
+
+Run unit tests:
+    extends: .test
+    script:
+        - python manage.py test steambird --tag=unit
+
+Run integration tests:
+    extends: .test
+    script:
+        - python manage.py test steambird --tag=integ
