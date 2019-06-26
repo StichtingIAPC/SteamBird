@@ -8,10 +8,13 @@
             {% trans "Config" %}
         </h2>
         <form method="post">
-            {{ form }}
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
             <button class="btn btn-warning " type="submit">
-                {% trans 'Change Period' %}
-            </button>
+                    {% trans 'Change Period' %}
+                </button>
         </form>
     </div>
 {% endblock %}

@@ -7,7 +7,7 @@
 {% block nav_items %}
     {% url 'boecie:index' as home %}
     {% url 'boecie:teacher.list' as teacher_list %}
-    {% url 'boecie:config' as config %}
+    {% url 'boecie:config' pk=1 as config %}
 
     <li class="{% active_menu home %}">
         <a class="nav-link"

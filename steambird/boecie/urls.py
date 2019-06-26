@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('test', StudyCourseView.as_view(), name='studycourse'),
 
-    path('config', ConfigView.as_view(), name='config')
+    path('config/<int:pk>', ConfigView.as_view(), name='config')
 ]
 
 # pylint: disable=invalid-name
