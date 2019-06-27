@@ -92,6 +92,54 @@ class StudyDetailView(IsStudyAssociationMixin, FormView):
         return reverse_lazy('boecie:study.list', kwargs={'pk': self.kwargs['pk']})
 
 
+class CoursesListView(IsStudyAssociationMixin, ListView):
+    template_name = "boecie/courses.html"
+    context_object_name = 'study'
+
+    # Todo: Optimise this query
+    def get_queryset(self):
+        result = {'periods':[],
+                  'study': self.kwargs['study']}
+        year = Config.get_system_value('year')
+        study = Study.objects.get(pk=self.kwargs['study'])
+
+        study_years = study.coursestudy_set.filter(course__calendar_year=year)\
+            .values_list('study_year').distinct().order_by('study_year')
+
+        for study_year in study_years:
+            courses = Course.objects.filter(
+                studies=study,
+                coursestudy__study_year=study_year[0],
+                calendar_year=year
+            )
+            for quartile in [Period.Q1, Period.Q2, Period.Q3, Period.Q4]:
+                this_quartile = [course for course in courses if course.falls_in(quartile)]
+                if this_quartile:
+                    result['periods'].append({
+                        'name': 'Period {}'.format(4*(study_year[0] - 1) + int(quartile.name[1])),
+                        'courses': this_quartile
+                    })
+
+        for study_year in study_years:
+            courses = Course.objects.filter(
+                studies=study,
+                coursestudy__study_year=study_year[0],
+                calendar_year=year
+            )
+            for quartile in [Period.Q5]:
+                this_quartile = [course for course in courses if course.falls_in(quartile)]
+                if this_quartile:
+                    result['periods'].append({
+                        'name': 'Period Y{}-Q{}'.format(study_year[0], quartile.name[1]),
+                        'courses': this_quartile
+                    })
+
+
+        return result
+
+
+
+
 class CourseUpdateView(IsStudyAssociationMixin, MultiFormView):
     template_name = "boecie/course_form.html"
     forms = {

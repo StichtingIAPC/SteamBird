@@ -16,7 +16,12 @@
                     {% for study in studies %}
                         <tr class="row">
                             <td class="col-3">
-                                <b><a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a></b><br>
+                                <b>
+                                    <a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a>
+                                </b>
+                                <a href="{% url 'boecie:courses.overview' study.id %}">
+                                    <span class="fa fa-list"></span>
+                                </a>
                             </td>
                             <td class="col-5">
                                 <div class="progress">

@@ -1,0 +1,49 @@
+{% extends 'boecie/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+
+        <br>
+        {% for period in study.periods %}
+            <h4>{{ period.name }}</h4>
+            <hr>
+            <div class="row">
+                <div class="col-3">
+                    <h6>{% trans 'Course Code' %}</h6>
+                </div>
+                <div class="col-3">
+                    <h6>{% trans 'Course Name' %}</h6>
+                </div>
+                <div class="col-6">
+                    <h6>{% trans 'Course Coordinator' %}</h6>
+                </div>
+            </div>
+
+            {% for course in period.courses %}
+                <div class="row">
+                    <div class="col-3">
+                        <a href="{% url 'boecie:course.detail' study=study.study pk=course.pk %}">
+                            {{ course.course_code }}
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a href="{% url 'boecie:course.detail' study=study.study pk=course.pk %}">
+                            {{ course.name }}
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="{% url 'boecie:teacher.detail' pk=course.coordinator.pk %}">
+                            {{ course.coordinator }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+            <br>
+        {% endfor %}
+
+    </div>
+    <div class="spacing"></div>
+    {{ periods }}
+{% endblock %}
