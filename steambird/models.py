@@ -15,3 +15,7 @@ from steambird.models_msp import *
 # noinspection PyUnresolvedReferences
 # pylint: disable=wildcard-import,unused-wildcard-import
 from steambird.models_user import *
+
+# noinspection PyUnresolvedReferences
+# pylint: disable=wildcard-import,unused-wildcard-import
+from steambird.models_site_config import *

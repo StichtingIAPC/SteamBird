@@ -12,7 +12,7 @@ name = "iapc-releases"
 django = ">=2.1"
 django-modeltranslation = "==0.13b1"
 django-polymorphic = "==2.0.3"
-pysidian-core = ">=0.0.7"
+pysidian-core = ">=0.0.9"
 isbnlib = "*"
 django_select2 = "*"
 psycopg2 = "*"
@@ -21,12 +21,12 @@ crossrefapi = "*"
 
 [dev-packages]
 django-debug-toolbar = "==1.10.1"
-django-rosetta = ">=0.9"
-rosetta = "*"
+django-rosetta = ">=0.9.3,<0.10.0"
 scipy = "*"
 nltk = "*"
 pandas = "*"
 pylint = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.7"

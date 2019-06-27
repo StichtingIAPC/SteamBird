@@ -9,11 +9,12 @@
         <div class="col-12">
             <p>
                 {% blocktrans %}Hello <b>{{ teacher }}</b>, this is the current status of the courses you are
-                    assigned to: (according to osiris) {% endblocktrans %}
+                    assigned to: (according to osiris) {% endblocktrans %}<br>
+            {% blocktrans %} These are the courses we could find you give in <b>{{ year }} {{ period }}</b>{% endblocktrans %}
             </p>
         </div>
         <div>
-            {% for course in teacher.all_courses.all %}
+            {% for course in courses %}
                 <div class="card">
                     <div class="card-header">{{ course }}</div>
                     <ul class="list-group">

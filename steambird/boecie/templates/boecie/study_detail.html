@@ -15,26 +15,26 @@
         {% include 'boecie/studycourse_form.html' %}
         <hr>
         <h3>{% trans "Courses to be updated:" %}</h3><br>
-        {% for coursestudy in study.coursestudy_set.all %}
-            {% if not coursestudy.course.updated_associations %}
+        {% for course in courses %}
+            {% if not course.updated_associations %}
                 <div class="row">
                     <div class="col-4">
-                        <a href="{% url 'boecie:course.detail' study.pk coursestudy.course.pk %}">{{ coursestudy.course.name }}</a>
+                        <a href="{% url 'boecie:course.detail' study.pk course.pk %}">{{ course.name }}</a>
                     </div>
                     <div class="col-5">
-                        {{ coursestudy.course.coordinator }};
-                        {{ coursestudy.course.teachers.all|join:'; ' }}
+                        {{ course.coordinator }};
+                        {{ course.teachers.all|join:'; ' }}
                         {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
                     </div>
                     <div class="col-1">
-                        {{ coursestudy.study_year }}
+                        {{ course.study_year }}
 
                     </div>
                     <div class="col-1">
-                        {{ coursestudy.course.calendar_year }}
+                        {{ course.calendar_year }}
                     </div>
                     <div class="col-1">
-                        {{ coursestudy.course.period }}
+                        {{ course.period }}
                     </div>
                 </div>
             {% endif %}
@@ -44,26 +44,26 @@
         <hr>
         <div class="spacing"></div>
         <h3>{% trans "Courses that are already updated"%}</h3>
-        {% for coursestudy in study.coursestudy_set.all %}
-            {% if coursestudy.course.updated_associations %}
+        {% for course in courses %}
+            {% if course.updated_associations %}
                 <div class="row">
                     <div class="col-4">
-                        <a href="{% url 'boecie:course.detail' study.pk coursestudy.course.pk %}">{{ coursestudy.course.name }}</a>
+                        <a href="{% url 'boecie:course.detail' study.pk course.pk %}">{{ course.name }}</a>
                     </div>
                     <div class="col-5">
-                        {{ coursestudy.course.coordinator }};
-                        {{ coursestudy.course.teachers.all|join:'; ' }}
+                        {{ course.coordinator }};
+                        {{ course.teachers.all|join:'; ' }}
                         {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
                     </div>
                     <div class="col-1">
-                        {{ coursestudy.study_year }}
+                        {{ course.study_year }}
 
                     </div>
                     <div class="col-1">
-                        {{ coursestudy.course.calendar_year }}
+                        {{ course.calendar_year }}
                     </div>
                     <div class="col-1">
-                        {{ coursestudy.course.period }}
+                        {{ course.period }}
                     </div>
                 </div>
             {% endif %}

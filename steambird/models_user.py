@@ -30,6 +30,10 @@ class Teacher(models.Model):
     def all_courses(self):
         return self.coordinated_courses.all().union(self.teaches_courses.all())
 
+    def all_courses_period(self, year, period):
+        return self.coordinated_courses.filter(calendar_year=year, period=period)\
+            .union(self.teaches_courses.filter(calendar_year=year, period=period))
+
     def __str__(self):
         if self.surname_prefix:
             return "{} {} {} {}".format(

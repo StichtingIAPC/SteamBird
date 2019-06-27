@@ -9,7 +9,7 @@ from django_addanother.contrib.select2 import Select2MultipleAddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher, CourseStudy, Study, Period
+from steambird.models import Course, Teacher, CourseStudy, Study, Period, Config
 
 
 class CourseForm(forms.ModelForm):
@@ -130,3 +130,12 @@ class LmlExportForm(forms.Form):
     option = forms.ChoiceField(choices=((i.value, i.name) for i in LmlExportOptions))
     period = forms.ChoiceField(choices=(('Q{}'.format(i), 'Quartile {}'.format(i) ) for i in range(1,5)))
 
+
+
+class ConfigForm(forms.ModelForm):
+    class Meta:
+        model = Config
+        fields = [
+            'year',
+            'period'
+        ]
