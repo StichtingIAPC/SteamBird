@@ -52,6 +52,7 @@ Run Python linter:
         SELENIUM_DRIVER: REMOTE
 
 Run browser tests (Chrome):
+    when: manual
     extends: .browsertest
     variables:
         SELENIUM_DRIVER: CHROME_LOCAL_HEADLESS
@@ -61,6 +62,7 @@ Run browser tests (Chrome):
         - python manage.py test steambird --tag=chrome --tag=any-browser
 
 Run browser tests (Firefox):
+    when: manual
     extends: .browsertest
     variables:
         SELENIUM_DRIVER: FIREFOX_LOCAL_HEADLESS
@@ -68,11 +70,13 @@ Run browser tests (Firefox):
         - python manage.py test steambird --tag=firefox --tag=any-browser
 
 Run unit tests:
+    when: manual
     extends: .test
     script:
         - python manage.py test steambird --tag=unit
 
 Run integration tests:
+    when: manual
     extends: .test
     script:
         - python manage.py test steambird --tag=integ
