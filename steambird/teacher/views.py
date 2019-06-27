@@ -10,7 +10,7 @@ from django.views.generic import FormView, TemplateView, DetailView
 
 from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle
 from steambird.models_msp import MSPLine
-from steambird.perm_utils import IsTeacherMixin, LoginRequiredMixin
+from steambird.perm_utils import IsTeacherMixin
 from steambird.teacher.tools import isbn_lookup, doi_lookup
 from .forms import ISBNForm, PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm, BookForm, ScientificPaperForm
