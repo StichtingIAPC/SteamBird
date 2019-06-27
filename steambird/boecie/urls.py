@@ -27,7 +27,7 @@ urlpatterns = [
 
     path('config/<int:pk>', ConfigView.as_view(), name='config'),
     # path('lml_export/', LmlExportOverView.as_view(), name='lmlexport.overview'),
-    path('lml_export/', LmlExport.as_view(), name='lmlexport.export'),
+    path('lml_export/', LmlExport.as_view(), name='lml_export'),
 ]
 
 # pylint: disable=invalid-name
