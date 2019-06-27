@@ -19,6 +19,7 @@ from steambird.boecie.forms import StudyCourseForm, ConfigForm
 from steambird.models import Config, MSP
 from steambird.models import Study, Course, Teacher, CourseStudy, Book
 from steambird.models_coursetree import Period
+from steambird.perm_utils import IsStudyAssociationMixin
 from steambird.util import MultiFormView
 
 
@@ -200,7 +201,7 @@ class StudyCourseView(FormView):
     template_name = 'boecie/studycourse_form.html'
 
 
-class LmlExport(FormView):
+class LmlExport(IsStudyAssociationMixin, FormView):
     template_name = 'boecie/lml_export_overview.html'
 
     form_class = LmlExportForm
