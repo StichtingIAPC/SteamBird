@@ -1,6 +1,7 @@
 from json import dumps
 from urllib.parse import quote, unquote
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -9,7 +10,7 @@ from django.views.generic import FormView, TemplateView, DetailView
 
 from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle
 from steambird.models_msp import MSPLine
-from steambird.perm_utils import IsTeacherMixin
+from steambird.perm_utils import IsTeacherMixin, LoginRequiredMixin
 from steambird.teacher.tools import isbn_lookup, doi_lookup
 from .forms import ISBNForm, PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm, BookForm, ScientificPaperForm
@@ -74,7 +75,7 @@ class AddMSPView(IsTeacherMixin, View):
         return render(request, 'teacher/new_studymaterial.html', {'form': form})
 
 
-class ISBNSearchApiView(View):
+class ISBNSearchApiView(LoginRequiredMixin, View):
     # pylint: disable=no-self-use
     def get(self, request):
         isbn = request.GET['isbn']
@@ -89,7 +90,7 @@ class ISBNSearchApiView(View):
         return JsonResponse(isbn_data)
 
 
-class DOISearchApiView(View):
+class DOISearchApiView(LoginRequiredMixin, View):
     # pylint: disable=no-self-use
     def get(self, request):
         doi = request.GET['doi']
@@ -103,7 +104,8 @@ class DOISearchApiView(View):
 
         return JsonResponse(doi_data)
 
-class DOIDetailView(IsTeacherMixin, DetailView):
+
+class DOIDetailView(LoginRequiredMixin, DetailView):
     model = ScientificArticle
     template_name = 'teacher/DOI.html'
 
