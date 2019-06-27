@@ -10,8 +10,8 @@ from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm
-from steambird.models import Study, Course, Teacher, CourseStudy
+from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm, ConfigForm
+from steambird.models import Study, Course, Teacher, CourseStudy, Config
 from steambird.util import MultiFormView
 
 
@@ -23,26 +23,34 @@ class HomeView(View):
         }
 
         studies = Study.objects.all().order_by('type')
+        year = Config.get_system_value('year')
+        period = Config.get_system_value('period')
 
         for study in studies:
-            course_total = study.course_set.count()
+            course_total = study.course_set.filter(
+                calendar_year=year,
+                period=period).count()
             courses_updated_teacher = study.course_set.filter(
-                updated_teacher=True).count()
+                updated_teacher=True,
+                calendar_year=year,
+                period=period).count()
             courses_updated_associations = study.course_set.filter(
-                updated_associations=True).count()
+                updated_associations=True,
+                calendar_year=year,
+                period=period).count()
             context['types'][study.type].append({
                 'name': study.name,
                 'type': study.type,
                 'id': study.pk,
                 'courses_total': course_total,
                 'courses_updated_teacher': courses_updated_teacher,
-                'courses_updated_teacher_p':
-                    (courses_updated_teacher / course_total * 100)
-                    if course_total > 0 else 0,
+                'courses_updated_teacher_p': round(
+                    ((courses_updated_teacher / course_total * 100)
+                     if course_total > 0 else 0), 2),
                 'courses_updated_association': courses_updated_associations,
                 'courses_updated_association_p':
-                    ((courses_updated_associations - courses_updated_teacher) /
-                     course_total * 100) if course_total > 0 else 0
+                    round((((courses_updated_associations - courses_updated_teacher) /
+                            course_total * 100) if course_total > 0 else 0), 2)
             })
         context["types"] = dict(context["types"])
 
@@ -58,6 +66,10 @@ class StudyDetailView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['study'] = Study.objects.get(pk=self.kwargs['pk'])
+        context['courses'] = Course.objects.filter(
+            calendar_year=Config.get_system_value("year"),
+            period=Config.get_system_value("period"),
+            studies=self.kwargs['pk'])
         return context
 
     # For the small included form on the top of the page
@@ -179,3 +191,16 @@ class TeacherDeleteView(DeleteView):
 class StudyCourseView(FormView):
     form_class = StudyCourseForm(has_course_field=True)
     template_name = 'boecie/studycourse_form.html'
+
+
+class ConfigView(UpdateView):
+    template_name = 'boecie/config.html'
+    model = Config
+    form_class = ConfigForm
+
+    def form_valid(self, form):
+        form.instance.pk = 1
+        form.save()
+        return redirect(reverse_lazy('boecie:config', kwargs={'pk': 1}))
+        # TODO: make this universal for more associations instead of just us, then pk will
+        # match something with them

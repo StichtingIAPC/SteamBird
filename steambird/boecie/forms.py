@@ -7,7 +7,7 @@ from django_addanother.contrib.select2 import Select2MultipleAddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher, CourseStudy, Study
+from steambird.models import Course, Teacher, CourseStudy, Study, Config
 
 
 class CourseForm(forms.ModelForm):
@@ -114,3 +114,12 @@ def StudyCourseForm(has_course_field: bool = False):
                 }
 
     return _cls
+
+
+class ConfigForm(forms.ModelForm):
+    class Meta:
+        model = Config
+        fields = [
+            'year',
+            'period'
+        ]
