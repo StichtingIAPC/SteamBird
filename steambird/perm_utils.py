@@ -13,3 +13,9 @@ class IsStudyAssociationMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_authenticated and \
                StudyAssociation.objects.filter(users=self.request.user).exists()
+
+
+class IsBoecieMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_authenticated and \
+               self.request.user.is_superuser

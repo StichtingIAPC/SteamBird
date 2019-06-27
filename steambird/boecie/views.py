@@ -14,16 +14,18 @@ from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import CourseForm, TeacherForm, LmlExportForm
-from steambird.boecie.forms import StudyCourseForm, ConfigForm
+from steambird.boecie.forms import ConfigForm
+from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm
+from steambird.boecie.forms import LmlExportForm
+from steambird.models import Book
 from steambird.models import Config, MSP
-from steambird.models import Study, Course, Teacher, CourseStudy, Book
+from steambird.models import Study, Course, Teacher, CourseStudy
 from steambird.models_coursetree import Period
-from steambird.perm_utils import IsStudyAssociationMixin
+from steambird.perm_utils import IsStudyAssociationMixin, IsBoecieMixin
 from steambird.util import MultiFormView
 
 
-class HomeView(View):
+class HomeView(IsBoecieMixin, View):
     # pylint: disable=no-self-use
     def get(self, request):
         context = {
@@ -66,7 +68,7 @@ class HomeView(View):
         return render(request, "boecie/index.html", context)
 
 
-class StudyDetailView(FormView):
+class StudyDetailView(IsStudyAssociationMixin, FormView):
     model = Study
     form_class = StudyCourseForm(True)
     template_name = "boecie/study_detail.html"
@@ -90,7 +92,7 @@ class StudyDetailView(FormView):
         return reverse_lazy('boecie:study.list', kwargs={'pk': self.kwargs['pk']})
 
 
-class CourseUpdateView(MultiFormView):
+class CourseUpdateView(IsStudyAssociationMixin, MultiFormView):
     template_name = "boecie/course_form.html"
     forms = {
         'course_form': CourseForm,
@@ -139,7 +141,7 @@ class CourseUpdateView(MultiFormView):
                                         'pk': self.kwargs['pk']}))
 
 
-class CourseCreateView(CreateView):
+class CourseCreateView(IsStudyAssociationMixin, CreateView):
     model = Course
     form_class = CourseForm
     template_name = 'boecie/course_form.html'
@@ -165,20 +167,20 @@ class CourseCreateView(CreateView):
             reverse('boecie:study.list', kwargs={'pk': self.kwargs['pk']}))
 
 
-class TeachersListView(ListView):
+class TeachersListView(IsStudyAssociationMixin, ListView):
     template_name = 'boecie/teachers_list.html'
     queryset = Teacher.objects.all()
     context_object_name = 'teachers'
 
 
-class TeacherEditView(UpdateView):
+class TeacherEditView(IsStudyAssociationMixin, UpdateView):
     template_name = 'boecie/teacher_form.html'
     model = Teacher
     form_class = TeacherForm
     success_url = reverse_lazy('boecie:teacher.list')
 
 
-class TeacherCreateView(CreatePopupMixin, CreateView):
+class TeacherCreateView(IsStudyAssociationMixin, CreatePopupMixin, CreateView):
     model = Teacher
     form_class = TeacherForm
     template_name = 'boecie/teacher_form.html'
@@ -190,13 +192,13 @@ class TeacherCreateView(CreatePopupMixin, CreateView):
             reverse('boecie:teacher.detail', kwargs={'pk': teacher_pk}))
 
 
-class TeacherDeleteView(DeleteView):
+class TeacherDeleteView(IsStudyAssociationMixin, DeleteView):
     model = Teacher
     success_url = reverse_lazy('boecie:teacher.list')
     template_name = 'boecie/teacher_confirm_delete.html'
 
 
-class StudyCourseView(FormView):
+class StudyCourseView(IsStudyAssociationMixin, FormView):
     form_class = StudyCourseForm(has_course_field=True)
     template_name = 'boecie/studycourse_form.html'
 
@@ -254,7 +256,7 @@ class LmlExport(IsStudyAssociationMixin, FormView):
             for study in Study.objects.filter(type='master'):
                 courses = [c for c in Course.objects.filter(
                     calendar_year=form.get('year', datetime.date.today().year)
-                    ) if c.falls_in(period)]
+                ) if c.falls_in(period)]
 
                 for course in courses:
                     for msp in MSP.objects.filter(course=course):
@@ -282,7 +284,7 @@ class LmlExport(IsStudyAssociationMixin, FormView):
             for study in Study.objects.filter('premaster'):
                 courses = [c for c in Course.objects.filter(
                     calendar_year=form.get('year', datetime.date.today().year)
-                    ) if c.falls_in(period)]
+                ) if c.falls_in(period)]
 
                 for course in courses:
                     for msp in MSP.objects.filter(course=course):
