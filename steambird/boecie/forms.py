@@ -77,7 +77,7 @@ class TeacherForm(forms.ModelForm):
             'email',
             'active',
             'retired',
-            'user',
+            'user'
         ]
 
 

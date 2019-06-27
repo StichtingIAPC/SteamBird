@@ -15,59 +15,108 @@
         {% include 'boecie/studycourse_form.html' %}
         <hr>
         <h3>{% trans "Courses to be updated:" %}</h3><br>
-        {% for course in courses %}
-            {% if not course.updated_associations %}
-                <div class="row">
-                    <div class="col-4">
-                        <a href="{% url 'boecie:course.detail' study.pk course.pk %}">{{ course.name }}</a>
-                    </div>
-                    <div class="col-5">
-                        {{ course.coordinator }};
-                        {{ course.teachers.all|join:'; ' }}
-                        {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
-                    </div>
-                    <div class="col-1">
-                        {{ course.study_year }}
-
-                    </div>
-                    <div class="col-1">
-                        {{ course.calendar_year }}
-                    </div>
-                    <div class="col-1">
-                        {{ course.period }}
-                    </div>
-                </div>
-            {% endif %}
-            {#                    TODO: Add handling for when after if statements empty#}
-        {% endfor %}
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Course' %}</th>
+                            <th>{% trans 'Coordinator' %}</th>
+                            <th>{% trans 'Teacher(s)' %}</th>
+                            <th>{% trans 'Study Year' %}</th>
+                            <th>{% trans 'Year' %}</th>
+                            <th>{% trans 'Period' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses_not_updated %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'boecie:course.detail' study.pk course.pk %}">{{ course.name }}</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'boecie:teacher.detail' course.coordinator.pk %}">{{ course.coordinator }}</a>
+                                </td>
+                                <td>
+                                    {% for teacher in course.teachers.all %}
+                                        <a href="{% url 'boecie:teacher.detail' teacher.pk %}">{{ teacher }}</a>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{ course.study_year }}
+                                </td>
+                                <td>
+                                    {{ course.calendar_year }}
+                                </td>
+                                <td>
+                                    {{ course.period }}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    {% trans 'All courses have been updated, good work!' %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="spacing"></div>
         <hr>
         <div class="spacing"></div>
-        <h3>{% trans "Courses that are already updated"%}</h3>
-        {% for course in courses %}
-            {% if course.updated_associations %}
-                <div class="row">
-                    <div class="col-4">
-                        <a href="{% url 'boecie:course.detail' study.pk course.pk %}">{{ course.name }}</a>
-                    </div>
-                    <div class="col-5">
-                        {{ course.coordinator }};
-                        {{ course.teachers.all|join:'; ' }}
-                        {#                            TODO: make teacher name automatiaclly be a link to their personal information page#}
-                    </div>
-                    <div class="col-1">
-                        {{ course.study_year }}
 
-                    </div>
-                    <div class="col-1">
-                        {{ course.calendar_year }}
-                    </div>
-                    <div class="col-1">
-                        {{ course.period }}
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
+        <h3>{% trans "Courses that are already updated"%}</h3>
+        <hr>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Course' %}</th>
+                            <th>{% trans 'Coordinator' %}</th>
+                            <th>{% trans 'Teacher(s)' %}</th>
+                            <th>{% trans 'Study Year' %}</th>
+                            <th>{% trans 'Year' %}</th>
+                            <th>{% trans 'Period' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses_updated %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'boecie:course.detail' study.pk course.pk %}">{{ course.name }}</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'boecie:teacher.detail' course.coordinator.pk %}">{{ course.coordinator }}</a>
+                                </td>
+                                <td>
+                                    {% for teacher in course.teachers.all %}
+                                        <a href="{% url 'boecie:teacher.detail' teacher.pk %}">{{ teacher }}</a>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {{ course.study_year }}
+                                </td>
+                                <td>
+                                    {{ course.calendar_year }}
+                                </td>
+                                <td>
+                                    {{ course.period }}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    {% trans 'No courses have been updated yet.' %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
         {#                    TODO: Add handling for when after if statements empty#}
         <div class="spacing"></div>
     </div>

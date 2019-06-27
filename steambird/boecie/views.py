@@ -74,10 +74,16 @@ class StudyDetailView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['study'] = Study.objects.get(pk=self.kwargs['pk'])
-        context['courses'] = Course.objects.filter(
+        context['courses_not_updated'] = Course.objects.filter(
             calendar_year=Config.get_system_value("year"),
             period=Config.get_system_value("period"),
-            studies=self.kwargs['pk'])
+            studies=self.kwargs['pk'],
+            updated_associations=False)
+        context['courses_updated'] = Course.objects.filter(
+            calendar_year=Config.get_system_value("year"),
+            period=Config.get_system_value("period"),
+            studies=self.kwargs['pk'],
+            updated_associations=True)
         return context
 
     # For the small included form on the top of the page
