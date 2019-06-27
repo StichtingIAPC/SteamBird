@@ -207,6 +207,7 @@ class Course(models.Model):
     def association_can_manage_msp(self, association: StudyAssociation) -> bool:
         return association in self.associations
 
+    # pylint: disable=inconsistent-return-statements
     def falls_in(self, period: Period):
         if Period[self.period] == Period.FULL_YEAR:
             return True
@@ -214,15 +215,14 @@ class Course(models.Model):
         if period == Period[self.period]:
             return True
 
-        if period == Period.Q1 or period == Period.Q2:
+        if period in [Period.Q1, Period.Q2]:
             return Period[self.period] == Period.S1
 
-        if period == Period.Q3 or period == Period.Q4:
+        if period in [Period.Q3, Period.Q4]:
             return Period[self.period] == Period.S2
 
         if period == Period.Q5:
             return Period[self.period] == Period.S3
-
 
     def __str__(self):
         return '{} ({}, {})'.format(self.name, self.calendar_year, self.period)

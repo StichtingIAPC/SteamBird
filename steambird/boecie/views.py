@@ -1,10 +1,8 @@
 import csv
-
-import io
 import datetime
+import io
 from collections import defaultdict
 from typing import Optional, Any
-from enum import Enum, auto
 
 from django.forms import Form
 from django.http import HttpRequest
@@ -14,19 +12,14 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, \
-    DeleteView, FormView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm, ConfigForm
-from steambird.models import Study, Course, Teacher, CourseStudy, Config, MSP
-from steambird.util import MultiFormView
-from steambird.boecie.forms import CourseForm, TeacherForm, LmlExportForm, LmlExportOptions
+from steambird.boecie.forms import CourseForm, TeacherForm, LmlExportForm
+from steambird.boecie.forms import StudyCourseForm, ConfigForm
+from steambird.models import Config, MSP
 from steambird.models import Study, Course, Teacher, CourseStudy, Book
-
-from django.utils.translation import ugettext_lazy as _
-
 from steambird.models_coursetree import Period
+from steambird.util import MultiFormView
 
 
 class HomeView(View):
@@ -212,6 +205,7 @@ class LmlExport(FormView):
 
     form_class = LmlExportForm
 
+    # pylint: disable = too-many-nested-blocks, too-many-branches
     def form_valid(self, form):
         form = form.cleaned_data
 
@@ -225,80 +219,92 @@ class LmlExport(FormView):
 
         if int(form.get('option')) < 4:
             for study in Study.objects.filter(type='bachelor'):
-                for course in [c for c in Course.objects.filter(
+                courses = [c for c in Course.objects.filter(
                     coursestudy__study_year=int(form.get('option')),
-                    calendar_year=form.get('year', Config.objects.all().first().year)
-                ) if c.falls_in(period)]:
+                    calendar_year=form.get('year', Config.objects.all().first().year))
+                           if c.falls_in(period)]
+
+                for course in courses:
                     for msp in MSP.objects.filter(course=course):
                         if msp.resolved():
                             for book in msp.mspline_set.last().materials.all():
                                 if isinstance(book, Book):
-                                    writer.writerow([
-                                        study,
-                                        'Module {year}.{period} - {name}'.format(
-                                            year=form.get('option'),
-                                            period=course.period[1],
-                                            name=course.name
-                                        ),
-                                        '',
-                                        book.ISBN,
-                                        '',
-                                        'n',
-                                        'verplicht' if msp.mandatory else 'aanbevolen',
-                                        'koop'
-                                        '',
-                                        '',
-                                        '']
-                                        )
+                                    writer.writerow(
+                                        [
+                                            study,
+                                            'Module {year}.{period} - {name}'.format(
+                                                year=form.get('option'),
+                                                period=course.period[1],
+                                                name=course.name
+                                            ),
+                                            '',
+                                            book.ISBN,
+                                            '',
+                                            'n',
+                                            'verplicht' if msp.mandatory else 'aanbevolen',
+                                            'koop'
+                                            '',
+                                            '',
+                                            ''
+                                        ]
+                                    )
 
         elif int(form.get('option')) == 4:
             for study in Study.objects.filter(type='master'):
-                for course in [c for c in Course.objects.filter(
+                courses = [c for c in Course.objects.filter(
                     calendar_year=form.get('year', datetime.date.today().year)
-                ) if c.falls_in(period)]:
+                    ) if c.falls_in(period)]
+
+                for course in courses:
                     for msp in MSP.objects.filter(course=course):
                         if msp.resolved():
                             for book in msp.mspline_set.last().materials.all():
                                 if isinstance(book, Book):
-                                    writer.writerow([
-                                        study,
-                                        '{name}'.format(
-                                            name=course.name
-                                        ),
-                                        '',
-                                        book.ISBN,
-                                        '',
-                                        'n',
-                                        'verplicht' if msp.mandatory else 'aanbevolen',
-                                        'koop'
-                                        '',
-                                        '',
-                                        '']
-                                        )
+                                    writer.writerow(
+                                        [
+                                            study,
+                                            '{name}'.format(
+                                                name=course.name
+                                            ),
+                                            '',
+                                            book.ISBN,
+                                            '',
+                                            'n',
+                                            'verplicht' if msp.mandatory else 'aanbevolen',
+                                            'koop'
+                                            '',
+                                            '',
+                                            ''
+                                        ]
+                                    )
         elif int(form.get('option')) == 5:
             for study in Study.objects.filter('premaster'):
-                for course in [c for c in Course.objects.filter(
+                courses = [c for c in Course.objects.filter(
                     calendar_year=form.get('year', datetime.date.today().year)
-                ) if c.falls_in(period)]:
+                    ) if c.falls_in(period)]
+
+                for course in courses:
                     for msp in MSP.objects.filter(course=course):
                         if msp.resolved():
                             for book in msp.mspline_set.last().materials.all():
                                 if isinstance(book, Book):
-                                    writer.writerow([
-                                        study,
-                                        '{name}'.format(
-                                            name=course.name
-                                        ),
-                                        '',
-                                        book.ISBN,
-                                        '',
-                                        'n',
-                                        'verplicht' if msp.mandatory else 'aanbevolen',
-                                        'koop'
-                                        '',
-                                        '',
-                                        '']
-                                        )
+                                    writer.writerow(
+                                        [
+                                            study,
+                                            '{name}'.format(
+                                                name=course.name
+                                            ),
+                                            '',
+                                            book.ISBN,
+                                            '',
+                                            'n',
+                                            'verplicht' if msp.mandatory else 'aanbevolen',
+                                            'koop'
+                                            '',
+                                            '',
+                                            ''
+                                        ]
+                                    )
         response = HttpResponse(result.getvalue(), content_type="text/csv")
         response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format('foobarbaz')
         return response
