@@ -19,7 +19,7 @@ from django.views.generic import ListView, DetailView, UpdateView, CreateView, \
 from django_addanother.views import CreatePopupMixin
 
 from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm, ConfigForm
-from steambird.models import Study, Course, Teacher, CourseStudy, Config
+from steambird.models import Study, Course, Teacher, CourseStudy, Config, MSP
 from steambird.util import MultiFormView
 from steambird.boecie.forms import CourseForm, TeacherForm, LmlExportForm, LmlExportOptions
 from steambird.models import Study, Course, Teacher, CourseStudy, Book
@@ -227,7 +227,7 @@ class LmlExport(FormView):
             for study in Study.objects.filter(type='bachelor'):
                 for course in [c for c in Course.objects.filter(
                     coursestudy__study_year=int(form.get('option')),
-                    calendar_year=form.get('year', datetime.date.today().year)
+                    calendar_year=form.get('year', Config.objects.all().first().year)
                 ) if c.falls_in(period)]:
                     for msp in MSP.objects.filter(course=course):
                         if msp.resolved():

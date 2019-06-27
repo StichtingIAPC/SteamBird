@@ -25,7 +25,7 @@ urlpatterns = [
 
     path('test', StudyCourseView.as_view(), name='studycourse'),
 
-    path('config/<int:pk>', ConfigView.as_view(), name='config')
+    path('config/<int:pk>', ConfigView.as_view(), name='config'),
     # path('lml_export/', LmlExportOverView.as_view(), name='lmlexport.overview'),
     path('lml_export/', LmlExport.as_view(), name='lmlexport.export'),
 ]
