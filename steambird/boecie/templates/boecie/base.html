@@ -8,6 +8,7 @@
     {% url 'boecie:index' as home %}
     {% url 'boecie:teacher.list' as teacher_list %}
     {% url 'boecie:config' pk=1 as config %}
+    {% url 'boecie:lml_export' as lml_export %}
 
     <li class="{% active_menu home %}">
         <a class="nav-link"
@@ -16,6 +17,10 @@
     <li class="{% active_menu teacher_list %}">
         <a class="nav-link"
            href="{{ teacher_list }}">{% trans "Teachers" %}</a>
+    </li>
+    <li class="{% active_menu lml_export %}">
+        <a class="nav-link"
+           href="{{ lml_export }}">{% trans "LML Export" %}</a>
     </li>
     <li class="{% active_menu config %}">
         <a class="nav-link"

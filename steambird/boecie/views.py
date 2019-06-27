@@ -1,8 +1,12 @@
+import csv
+import datetime
+import io
 from collections import defaultdict
 from typing import Optional, Any
 
 from django.forms import Form
 from django.http import HttpRequest
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -10,8 +14,12 @@ from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm, ConfigForm
-from steambird.models import Study, Course, Teacher, CourseStudy, Config
+from steambird.boecie.forms import CourseForm, TeacherForm, LmlExportForm
+from steambird.boecie.forms import StudyCourseForm, ConfigForm
+from steambird.models import Config, MSP
+from steambird.models import Study, Course, Teacher, CourseStudy, Book
+from steambird.models_coursetree import Period
+from steambird.perm_utils import IsStudyAssociationMixin
 from steambird.util import MultiFormView
 
 
@@ -191,6 +199,116 @@ class TeacherDeleteView(DeleteView):
 class StudyCourseView(FormView):
     form_class = StudyCourseForm(has_course_field=True)
     template_name = 'boecie/studycourse_form.html'
+
+
+class LmlExport(IsStudyAssociationMixin, FormView):
+    template_name = 'boecie/lml_export_overview.html'
+
+    form_class = LmlExportForm
+
+    # pylint: disable = too-many-nested-blocks, too-many-branches
+    def form_valid(self, form):
+        form = form.cleaned_data
+
+        period = Period[form.get('period')]
+
+        result = io.StringIO()
+
+        writer = csv.writer(result, delimiter=';', quotechar='"')
+        writer.writerow('groep;vak;standaardvak;isbn;prognose;schoolBetaalt;verplicht;huurkoop;'
+                        'vanprijs;korting;opmerking'.split(';'))
+
+        if int(form.get('option')) < 4:
+            for study in Study.objects.filter(type='bachelor'):
+                courses = [c for c in Course.objects.filter(
+                    coursestudy__study_year=int(form.get('option')),
+                    calendar_year=form.get('year', Config.get_system_value('year')))
+                           if c.falls_in(period)]
+
+                for course in courses:
+                    for msp in MSP.objects.filter(course=course):
+                        if msp.resolved():
+                            for book in msp.mspline_set.last().materials.all():
+                                if isinstance(book, Book):
+                                    writer.writerow(
+                                        [
+                                            study,
+                                            'Module {year}.{period} - {name}'.format(
+                                                year=form.get('option'),
+                                                period=course.period[1],
+                                                name=course.name
+                                            ),
+                                            '',
+                                            book.ISBN,
+                                            '',
+                                            'n',
+                                            'verplicht' if msp.mandatory else 'aanbevolen',
+                                            'koop'
+                                            '',
+                                            '',
+                                            ''
+                                        ]
+                                    )
+
+        elif int(form.get('option')) == 4:
+            for study in Study.objects.filter(type='master'):
+                courses = [c for c in Course.objects.filter(
+                    calendar_year=form.get('year', datetime.date.today().year)
+                    ) if c.falls_in(period)]
+
+                for course in courses:
+                    for msp in MSP.objects.filter(course=course):
+                        if msp.resolved():
+                            for book in msp.mspline_set.last().materials.all():
+                                if isinstance(book, Book):
+                                    writer.writerow(
+                                        [
+                                            study,
+                                            '{name}'.format(
+                                                name=course.name
+                                            ),
+                                            '',
+                                            book.ISBN,
+                                            '',
+                                            'n',
+                                            'verplicht' if msp.mandatory else 'aanbevolen',
+                                            'koop'
+                                            '',
+                                            '',
+                                            ''
+                                        ]
+                                    )
+        elif int(form.get('option')) == 5:
+            for study in Study.objects.filter('premaster'):
+                courses = [c for c in Course.objects.filter(
+                    calendar_year=form.get('year', datetime.date.today().year)
+                    ) if c.falls_in(period)]
+
+                for course in courses:
+                    for msp in MSP.objects.filter(course=course):
+                        if msp.resolved():
+                            for book in msp.mspline_set.last().materials.all():
+                                if isinstance(book, Book):
+                                    writer.writerow(
+                                        [
+                                            study,
+                                            '{name}'.format(
+                                                name=course.name
+                                            ),
+                                            '',
+                                            book.ISBN,
+                                            '',
+                                            'n',
+                                            'verplicht' if msp.mandatory else 'aanbevolen',
+                                            'koop'
+                                            '',
+                                            '',
+                                            ''
+                                        ]
+                                    )
+        response = HttpResponse(result.getvalue(), content_type="text/csv")
+        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format('foobarbaz')
+        return response
 
 
 class ConfigView(UpdateView):

@@ -1,3 +1,5 @@
+from enum import Enum, auto
+
 from django import forms
 from django.forms import HiddenInput
 from django.urls import reverse_lazy
@@ -114,6 +116,21 @@ def StudyCourseForm(has_course_field: bool = False):
                 }
 
     return _cls
+
+
+class LmlExportOptions(Enum):
+    YEAR_1 = auto()
+    YEAR_2 = auto()
+    YEAR_3 = auto()
+    MASTER = auto()
+    PREMASTER = auto()
+
+
+class LmlExportForm(forms.Form):
+    option = forms.ChoiceField(choices=((i.value, i.name) for i in LmlExportOptions))
+    period = forms.ChoiceField(
+        choices=(('Q{}'.format(i), 'Quartile {}'.format(i)) for i in range(1, 5))
+    )
 
 
 class ConfigForm(forms.ModelForm):
