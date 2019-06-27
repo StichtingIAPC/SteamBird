@@ -221,7 +221,7 @@ class LmlExport(FormView):
             for study in Study.objects.filter(type='bachelor'):
                 courses = [c for c in Course.objects.filter(
                     coursestudy__study_year=int(form.get('option')),
-                    calendar_year=form.get('year', Config.objects.all().first().year))
+                    calendar_year=form.get('year', Config.get_system_value('year')))
                            if c.falls_in(period)]
 
                 for course in courses:
