@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView, DetailView
 
-from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle
+from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle, Config
 from steambird.models_msp import MSPLine
 from steambird.perm_utils import IsTeacherMixin
 from steambird.teacher.tools import isbn_lookup, doi_lookup
@@ -120,8 +120,16 @@ class CourseView(IsTeacherMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
+
+        data['year'] = Config.get_system_value('year')
+        data['period'] = Config.get_system_value('period')
+
         try:
-            data["teacher"] = Teacher.objects.get(user=self.request.user)
+            data['teacher'] = Teacher.objects.get(user=self.request.user)
+            data['courses'] = data["teacher"].all_courses_period(
+                year=data['year'],
+                period=data['period']
+            )
         except Teacher.DoesNotExist:
             raise Http404
 

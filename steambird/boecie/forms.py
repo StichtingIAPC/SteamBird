@@ -1,3 +1,5 @@
+from enum import Enum, auto
+
 from django import forms
 from django.forms import HiddenInput
 from django.urls import reverse_lazy
@@ -7,7 +9,7 @@ from django_addanother.contrib.select2 import Select2MultipleAddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher, CourseStudy, Study
+from steambird.models import Course, Teacher, CourseStudy, Study, Config
 
 
 class CourseForm(forms.ModelForm):
@@ -114,3 +116,27 @@ def StudyCourseForm(has_course_field: bool = False):
                 }
 
     return _cls
+
+
+class LmlExportOptions(Enum):
+    YEAR_1 = auto()
+    YEAR_2 = auto()
+    YEAR_3 = auto()
+    MASTER = auto()
+    PREMASTER = auto()
+
+
+class LmlExportForm(forms.Form):
+    option = forms.ChoiceField(choices=((i.value, i.name) for i in LmlExportOptions))
+    period = forms.ChoiceField(
+        choices=(('Q{}'.format(i), 'Quartile {}'.format(i)) for i in range(1, 5))
+    )
+
+
+class ConfigForm(forms.ModelForm):
+    class Meta:
+        model = Config
+        fields = [
+            'year',
+            'period'
+        ]
