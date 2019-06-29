@@ -22,6 +22,7 @@ class Period(Enum):
     S1 = "Semester 1, half year course"
     S2 = "Semester 2, half year course"
     S3 = "Semester 3, half year course"
+    YEAR = "Course that is in both S1 and S2"
     FULL_YEAR = "Full year course"
 
 

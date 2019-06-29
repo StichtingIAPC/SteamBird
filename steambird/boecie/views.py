@@ -134,10 +134,7 @@ class CoursesListView(IsStudyAssociationMixin, ListView):
                         'courses': this_quartile
                     })
 
-
         return result
-
-
 
 
 class CourseUpdateView(IsStudyAssociationMixin, MultiFormView):
