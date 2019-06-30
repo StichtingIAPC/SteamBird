@@ -13,11 +13,15 @@
 
     {% block extrahead %}{% endblock %}
     {% block responsive %}
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="viewport"
+              content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
         <link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive.css" %}">
-        {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
+        {% if LANGUAGE_BIDI %}
+            <link rel="stylesheet" type="text/css"
+                  href="{% static "admin/css/responsive_rtl.css" %}">{% endif %}
     {% endblock %}
-    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
+    {% block blockbots %}
+        <meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
 
     <script src="{% static "js/less.js" %}"></script>
     <script src="{% static "js/jquery.js" %}"></script>
@@ -38,8 +42,13 @@
             <div class="container">
                 <div class="navbar-header order-0">
                     <div class="d-inline-flex">
-                        <button class="nav navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-                                aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <button class="nav navbar-toggler"
+                                type="button"
+                                data-toggle="collapse"
+                                data-target=".navbar-collapse"
+                                aria-controls="navbar-collapse"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                     </div>
@@ -48,32 +57,53 @@
                 <div class="navbar-collapse collapse order-2 order-lg-1"></div>
                 {% block nav-global %}{% endblock %}
                 {% block usertools %}
-                {% if has_permission %}
-                <ul class="profile nav navbar-right order-3 order-lg-2 collapse navbar-collapse nav-link">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{ request.user.username }}{% endif %}<span class="caret"></span></a>
-                        <div class="dropdown-menu">
-                            {% block userlinks %}
-                                {% if site_url %}
-                                    <a href="{{ site_url }}" class="dropdown-item">{% trans 'View site' %}</a>
-                                {% endif %}
-                                {% if user.is_active and user.is_staff %}
-                                    {% url 'django-admindocs-docroot' as docsroot %}
-                                    {% if docsroot %}
-                                        <a href="{{ docsroot }}" class="dropdown-item">{% trans 'Documentation' %}</a>
+                    {% if has_permission %}
+                        <ul class="profile nav navbar-right order-3 order-lg-2 collapse navbar-collapse nav-link">
+                            <li class="dropdown">
+                                <a href="#"
+                                   class="dropdown-toggle"
+                                   data-toggle="dropdown"
+                                   role="button"
+                                   aria-haspopup="true"
+                                   aria-expanded="false">
+                                    {% if request.user.first_name %}
+                                        {{ request.user.first_name }}
+                                    {% else %}
+                                        {{ request.user.username }}
                                     {% endif %}
-                                {% endif %}
-                                <div class="dropdown-divider"></div>
-                                {% if user.has_usable_password %}
-                                    <a href="{% url 'admin:password_change' %}" class="dropdown-item">{% trans 'Change password' %}</a>
-                                {% endif %}
-                                <a href="{% url 'admin:logout' %}" class="dropdown-item">{% trans 'Log out' %}</a>
-                            {% endblock %}
-                        </div>
-                    </li>
-                </ul>
-                {% include "pysidian_core/nav/language_switcher.html" %}
-                {% endif %}
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    {% block userlinks %}
+                                        {% if site_url %}
+                                            <a href="{{ site_url }}" class="dropdown-item">
+                                                {% trans 'View site' %}
+                                            </a>
+                                        {% endif %}
+                                        {% if user.is_active and user.is_staff %}
+                                            {% url 'django-admindocs-docroot' as docsroot %}
+                                            {% if docsroot %}
+                                                <a href="{{ docsroot }}" class="dropdown-item">
+                                                    {% trans 'Documentation' %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                        <div class="dropdown-divider"></div>
+                                        {% if user.has_usable_password %}
+                                            <a href="{% url 'admin:password_change' %}"
+                                               class="dropdown-item">
+                                                {% trans 'Change password' %}
+                                            </a>
+                                        {% endif %}
+                                        <a href="{% url 'admin:logout' %}" class="dropdown-item">
+                                            {% trans 'Log out' %}
+                                        </a>
+                                    {% endblock %}
+                                </div>
+                            </li>
+                        </ul>
+                        {% include "pysidian_core/nav/language_switcher.html" %}
+                    {% endif %}
                 {% endblock %}
             </div>
         </div>
@@ -85,13 +115,24 @@
     <div class="container">
         <div id="content">
             {% block pretitle %}{% endblock %}
-            {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+            {% block content_title %}
+                {% if title %}
+                    <h1>
+                        {{ title }}
+                    </h1>
+                {% endif %}
+            {% endblock %}
             {% block messages %}
                 {% if messages %}
                     <div class="card">
                         <ul class="list-group">
                             {% for message in messages %}
-                                <li{% if message.tags %} class="list-group-item {{ message.tags }}"{% else %} class="list-group-item"{% endif %}>{{ message|capfirst }}</li>
+                                <li
+                                    {% if message.tags %} class="list-group-item {{ message.tags }}"
+                                    {% else %} class="list-group-item"
+                                    {% endif %}>
+                                    {{ message|capfirst }}
+                                </li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -99,26 +140,32 @@
             {% endblock messages %}
             {% block breadcrumbs %}
                 {% if not is_popup %}
-                <div class="breadcrumbs">
-                    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
-                    {% if title %} &rsaquo; {{ title }}{% endif %}
-                </div>
+                    <div class="breadcrumbs">
+                        <a href="{% url 'admin:index' %}">
+                            {% trans 'Home' %}
+                        </a>
+                        {% if title %}
+                            &rsaquo; {{ title }}
+                        {% endif %}
+                    </div>
                 {% endif %}
             {% endblock %}
             {% block content_wide %}
-            <div class="row">
-                {% block content %}
-                    {% block object-tools %}{% endblock %}
-                    {{ content }}
-                {% endblock %}
-                {% block sidebar %}{% endblock %}
-            </div>
+                <div class="row">
+                    {% block content %}
+                        {% block object-tools %}{% endblock %}
+                        {{ content }}
+                    {% endblock %}
+                    {% block sidebar %}{% endblock %}
+                </div>
             {% endblock %}
         </div>
     </div>
     <!-- END Content -->
 
-    {% block footer %}<div id="footer"></div>{% endblock %}
+    {% block footer %}
+        <div id="footer"></div>
+    {% endblock %}
 </div>
 <!-- END Container -->
 

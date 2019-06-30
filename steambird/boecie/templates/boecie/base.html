@@ -12,19 +12,23 @@
 
     <li class="{% active_menu home %}">
         <a class="nav-link"
-           href="{% url 'boecie:index' %}">{% trans "Home" %}</a>
+           href="{% url 'boecie:index' %}">{% trans "Home" %}
+        </a>
     </li>
     <li class="{% active_menu teacher_list %}">
         <a class="nav-link"
-           href="{{ teacher_list }}">{% trans "Teachers" %}</a>
+           href="{{ teacher_list }}">{% trans "Teachers" %}
+        </a>
     </li>
     <li class="{% active_menu lml_export %}">
         <a class="nav-link"
-           href="{{ lml_export }}">{% trans "LML Export" %}</a>
+           href="{{ lml_export }}">{% trans "LML Export" %}
+        </a>
     </li>
     <li class="{% active_menu config %}">
         <a class="nav-link"
-           href="{{ config }}">{% trans "Config" %}</a>
+           href="{{ config }}">{% trans "Config" %}
+        </a>
     </li>
 
 {% endblock %}

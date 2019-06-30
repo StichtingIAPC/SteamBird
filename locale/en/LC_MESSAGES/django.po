@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-19 15:20+0200\n"
-"PO-Revision-Date: 2019-06-19 15:29+0020\n"
+"POT-Creation-Date: 2019-06-30 21:28+0200\n"
+"PO-Revision-Date: 2019-06-30 21:42+0020\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -23,126 +23,150 @@ msgstr ""
 msgid "Steambird Admin"
 msgstr "Steambird Admin"
 
-#: .\steambird\boecie\templates\boecie\base.html:13
-#: .\steambird\teacher\templates\teacher\base.html:17
+#: .\steambird\boecie\templates\boecie\base.html:15
+#: .\steambird\teacher\templates\teacher\base.html:21
 #: .\steambird\templates\admin\app_index.html:13
-#: .\steambird\templates\admin\base.html:103
-#: .\steambird\templates\admin\change_form.html:36
-#: .\steambird\templates\admin\change_list.html:31
-#: .\steambird\templates\admin\object_history.html:6
-#: .\steambird\templates\steambird\base.html:21
+#: .\steambird\templates\admin\base.html:145
+#: .\steambird\templates\admin\change_form.html:52
+#: .\steambird\templates\admin\change_list.html:36
+#: .\steambird\templates\admin\object_history.html:7
+#: .\steambird\templates\steambird\base.html:25
 msgid "Home"
 msgstr "Home"
 
-#: .\steambird\boecie\templates\boecie\base.html:17
-#: .\steambird\models_user.py:42
+#: .\steambird\boecie\templates\boecie\base.html:20
+#: .\steambird\models_user.py:46
 msgid "Teachers"
 msgstr "Teachers"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:10
+#: .\steambird\boecie\templates\boecie\base.html:25
+msgid "LML Export"
+msgstr "LML Export"
+
+#: .\steambird\boecie\templates\boecie\base.html:30
+#: .\steambird\boecie\templates\boecie\config.html:8
+msgid "Config"
+msgstr "Config"
+
+#: .\steambird\boecie\templates\boecie\config.html:16
+#| msgid "Change password"
+msgid "Change Period"
+msgstr "Change Period"
+
+#: .\steambird\boecie\templates\boecie\course_form.html:11
 #: .\steambird\boecie\templates\boecie\studycourse_form.html:46
-#| msgid "No courses found"
 msgid "Add course to study"
 msgstr "Add course to study"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:17
+#: .\steambird\boecie\templates\boecie\course_form.html:20
 #, python-format
-msgid "Edit information of '%(o)s'"
-msgstr "Edit information of '%(o)s'"
+#| msgid ""
+#| "\n"
+#| "                    Are you sure you want to delete Teacher '%(object)s' ?\n"
+#| "                "
+msgid ""
+"\n"
+"                                Edit information of '%(o)s'\n"
+"                            "
+msgstr ""
+"\n"
+"Edit information of '%(o)s'"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:19
+#: .\steambird\boecie\templates\boecie\course_form.html:26
 msgid "Creating Course"
 msgstr "Creating Course"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:28
-#: .\steambird\boecie\templates\boecie\teacher_form.html:30
+#: .\steambird\boecie\templates\boecie\course_form.html:36
+#: .\steambird\boecie\templates\boecie\teacher_form.html:33
 msgid "There were some problems with the data you entered. Please see below."
 msgstr "There were some problems with the data you entered. Please see below."
 
-#: .\steambird\boecie\templates\boecie\course_form.html:56
+#: .\steambird\boecie\templates\boecie\course_form.html:67
 msgid "General course information"
 msgstr "General course information"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:63
+#: .\steambird\boecie\templates\boecie\course_form.html:76
 msgid "Course Code:"
 msgstr "Course"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:68
-#: .\steambird\boecie\templates\boecie\course_form.html:112
+#: .\steambird\boecie\templates\boecie\course_form.html:84
+#: .\steambird\boecie\templates\boecie\course_form.html:134
 msgid "Year"
 msgstr "Year"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:75
-#: .\steambird\boecie\templates\boecie\course_form.html:82
+#: .\steambird\boecie\templates\boecie\course_form.html:92
+#: .\steambird\boecie\templates\boecie\course_form.html:100
 msgid "Name:"
 msgstr "Name"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:93
+#: .\steambird\boecie\templates\boecie\course_form.html:112
 #: .\steambird\models_coursetree.py:133
 msgid "Course Code"
 msgstr "Course"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:123
+#: .\steambird\boecie\templates\boecie\course_form.html:146
 msgid "Period"
 msgstr "Period"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:133
+#: .\steambird\boecie\templates\boecie\course_form.html:158
 msgid "Name"
 msgstr "Name"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:149
+#: .\steambird\boecie\templates\boecie\course_form.html:176
 msgid "Coordinator of the course"
 msgstr "Coordinator of the course"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:188
+#: .\steambird\boecie\templates\boecie\course_form.html:220
 msgid "Teachers related to course"
 msgstr "Teachers related to course"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:219
+#: .\steambird\boecie\templates\boecie\course_form.html:254
 msgid "Materials related to course"
 msgstr "Materials related to course"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:250
+#: .\steambird\boecie\templates\boecie\course_form.html:289
 msgid "Updated by info"
 msgstr "Updated by info"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:303
-#: .\steambird\boecie\templates\boecie\teacher_form.html:252
+#: .\steambird\boecie\templates\boecie\course_form.html:348
+#: .\steambird\boecie\templates\boecie\teacher_form.html:258
 msgid "Save profile"
 msgstr "Save profile"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:312
+#: .\steambird\boecie\templates\boecie\course_form.html:358
 msgid "Save and go to next course"
 msgstr "Save and go to next course"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:314
+#: .\steambird\boecie\templates\boecie\course_form.html:360
 msgid "Save and go back to overview"
 msgstr "Save and go back to overview"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:322
-#: .\steambird\templates\admin\submit_line.html:4
+#: .\steambird\boecie\templates\boecie\course_form.html:368
+#: .\steambird\templates\admin\submit_line.html:5
 msgid "Save"
 msgstr "Save"
 
-#: .\steambird\boecie\templates\boecie\course_form.html:327
+#: .\steambird\boecie\templates\boecie\course_form.html:374
 msgid "Save and mark as updated"
 msgstr "Save and mark as updated"
 
-#: .\steambird\boecie\templates\boecie\study_detail.html:12
+#: .\steambird\boecie\templates\boecie\lml_export_overview.html:9
+msgid "Project SteamBird - LML Export"
+msgstr "Project SteamBird - LML Export"
+
+#: .\steambird\boecie\templates\boecie\study_detail.html:13
 msgid "Add new course"
 msgstr "Add new course"
 
-#: .\steambird\boecie\templates\boecie\study_detail.html:17
-#| msgid "Course Code:"
+#: .\steambird\boecie\templates\boecie\study_detail.html:20
 msgid "Courses to be updated:"
 msgstr "Courses to be updated:"
 
-#: .\steambird\boecie\templates\boecie\study_detail.html:46
+#: .\steambird\boecie\templates\boecie\study_detail.html:57
 msgid "Courses that are already updated"
 msgstr "Courses that are already updated"
 
 #: .\steambird\boecie\templates\boecie\studycourse_form.html:14
-#| msgid "Study Material"
 msgid "Study Year"
 msgstr "Study Year"
 
@@ -152,7 +176,6 @@ msgid "Study"
 msgstr "Study"
 
 #: .\steambird\boecie\templates\boecie\studycourse_form.html:36
-#| msgid "Courses"
 msgid "Course"
 msgstr "Course"
 
@@ -170,94 +193,107 @@ msgstr ""
 "\n"
 "Are you sure you want to delete Teacher '%(object)s' ?"
 
-#: .\steambird\boecie\templates\boecie\teacher_confirm_delete.html:22
+#: .\steambird\boecie\templates\boecie\teacher_confirm_delete.html:25
 msgid "Yes"
 msgstr "Yes"
 
-#: .\steambird\boecie\templates\boecie\teacher_confirm_delete.html:23
+#: .\steambird\boecie\templates\boecie\teacher_confirm_delete.html:27
 msgid "No"
 msgstr "No"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:15
+#: .\steambird\boecie\templates\boecie\teacher_form.html:16
 msgid "Edit Teacher"
 msgstr "Edit Teacher"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:17
-#: .\steambird\templates\admin\submit_line.html:7
+#: .\steambird\boecie\templates\boecie\teacher_form.html:18
+#: .\steambird\templates\admin\submit_line.html:11
 msgid "Delete"
 msgstr "Delete"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:20
+#: .\steambird\boecie\templates\boecie\teacher_form.html:22
 msgid "Creating Teacher"
 msgstr "Creating Teacher"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:56
+#: .\steambird\boecie\templates\boecie\teacher_form.html:62
 msgid "Teacher Information"
 msgstr "Teacher Information"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:74
+#: .\steambird\boecie\templates\boecie\teacher_form.html:80
 msgid "Titles"
 msgstr "Titles"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:83
-#: .\steambird\boecie\templates\boecie\teacher_form.html:161
+#: .\steambird\boecie\templates\boecie\teacher_form.html:89
+#: .\steambird\boecie\templates\boecie\teacher_form.html:167
 #: .\steambird\models_user.py:9
 msgid "Initials"
 msgstr "Initials"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:92
-#: .\steambird\boecie\templates\boecie\teacher_form.html:173
+#: .\steambird\boecie\templates\boecie\teacher_form.html:98
+#: .\steambird\boecie\templates\boecie\teacher_form.html:179
 msgid "First Name"
 msgstr "First name"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:101
-#: .\steambird\boecie\templates\boecie\teacher_form.html:185
+#: .\steambird\boecie\templates\boecie\teacher_form.html:107
+#: .\steambird\boecie\templates\boecie\teacher_form.html:191
 msgid "Surname Prefix"
 msgstr "Surname prefix"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:110
+#: .\steambird\boecie\templates\boecie\teacher_form.html:116
 #: .\steambird\models_user.py:14
 msgid "Last name"
 msgstr "Last name"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:119
-#: .\steambird\boecie\templates\boecie\teacher_form.html:209
+#: .\steambird\boecie\templates\boecie\teacher_form.html:125
+#: .\steambird\boecie\templates\boecie\teacher_form.html:215
 #: .\steambird\models_user.py:15
 msgid "Email"
 msgstr "Email"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:128
-#: .\steambird\boecie\templates\boecie\teacher_form.html:221
+#: .\steambird\boecie\templates\boecie\teacher_form.html:134
+#: .\steambird\boecie\templates\boecie\teacher_form.html:227
 #: .\steambird\models_user.py:16
 msgid "Active"
 msgstr "Active"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:137
-#: .\steambird\boecie\templates\boecie\teacher_form.html:233
+#: .\steambird\boecie\templates\boecie\teacher_form.html:143
+#: .\steambird\boecie\templates\boecie\teacher_form.html:239
 #: .\steambird\models_user.py:17
 msgid "Retired"
 msgstr "Retired"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:149
-#: .\steambird\teacher\templates\teacher\forms\new_book.html:33
+#: .\steambird\boecie\templates\boecie\teacher_form.html:155
+#: .\steambird\teacher\templates\teacher\DOI.html:11
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:37
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:42
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:38
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:43
 msgid "Title"
 msgstr "Title"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:197
+#: .\steambird\boecie\templates\boecie\teacher_form.html:203
 msgid "Last Name"
 msgstr "Last name"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:260
+#: .\steambird\boecie\templates\boecie\teacher_form.html:266
 msgid "Save Edit"
 msgstr "Save Edit"
 
-#: .\steambird\boecie\templates\boecie\teacher_form.html:264
+#: .\steambird\boecie\templates\boecie\teacher_form.html:270
 #: .\steambird\boecie\templates\boecie\teachers_list.html:15
 msgid "Create new teacher"
 msgstr "Create new teacher"
 
+#: .\steambird\boecie\templates\boecie\teachers_list.html:39
+#| msgid "Active"
+msgid "Active:"
+msgstr "Active:"
+
+#: .\steambird\boecie\templates\boecie\teachers_list.html:44
+#| msgid "Retired"
+msgid "Retired:"
+msgstr "Retired:"
+
 #: .\steambird\models_coursetree.py:35
-#| msgid "Year"
 msgid "Year {}"
 msgstr "Year {}"
 
@@ -278,7 +314,6 @@ msgid "Studies"
 msgstr "Studies"
 
 #: .\steambird\models_coursetree.py:68
-#| msgid "The year in which this course takes place"
 msgid "The year of (nominal) study this course is given"
 msgstr "The year of (nominal) study this course is given"
 
@@ -330,75 +365,79 @@ msgstr "Updated by association?"
 msgid "Updated by teacher?"
 msgstr "Updated by teacher?"
 
-#: .\steambird\models_materials.py:10
+#: .\steambird\models_materials.py:11
 msgid "Category name of this article"
 msgstr "Category name of this article"
 
-#: .\steambird\models_materials.py:16
+#: .\steambird\models_materials.py:17
 msgid "Study Material"
 msgstr "Study Material"
 
-#: .\steambird\models_materials.py:17
+#: .\steambird\models_materials.py:18
 msgid "Study Materials"
 msgstr "Study Materials"
 
-#: .\steambird\models_materials.py:24
+#: .\steambird\models_materials.py:26
 msgid "Name of the material"
 msgstr "Name of the material"
 
-#: .\steambird\models_materials.py:30
+#: .\steambird\models_materials.py:32
 msgid "Material collection"
 msgstr "Material collection"
 
-#: .\steambird\models_materials.py:36
+#: .\steambird\models_materials.py:38
 msgid "StudyMaterial Edition"
 msgstr "StudyMaterial Edition"
 
-#: .\steambird\models_materials.py:37
+#: .\steambird\models_materials.py:39
 msgid "StudyMaterials Editions"
 msgstr "StudyMaterials Editions"
 
-#: .\steambird\models_materials.py:49
+#: .\steambird\models_materials.py:51
 msgid "Other Material"
 msgstr "Other Material"
 
-#: .\steambird\models_materials.py:50
+#: .\steambird\models_materials.py:52
 msgid "Other Materials"
 msgstr "Other Materials"
 
-#: .\steambird\models_materials.py:56
+#: .\steambird\models_materials.py:59
 msgid "ISBN 10 or ISBN 13"
 msgstr "ISBN 10 or ISBN 13"
 
-#: .\steambird\models_materials.py:60 .\steambird\models_materials.py:97
+#: .\steambird\models_materials.py:64 .\steambird\models_materials.py:107
 msgid "Author names, comma separated"
 msgstr "Author names, comma separated"
 
-#: .\steambird\models_materials.py:62
+#: .\steambird\models_materials.py:67
 msgid "Link to cover image of book"
 msgstr "Link to cover image of book"
 
-#: .\steambird\models_materials.py:71
+#: .\steambird\models_materials.py:78
 msgid "Edition of the book"
 msgstr "Edition of the book"
 
-#: .\steambird\models_materials.py:86
+#: .\steambird\models_materials.py:93
 msgid "Book"
 msgstr "Book"
 
-#: .\steambird\models_materials.py:87
+#: .\steambird\models_materials.py:94
 msgid "Books"
 msgstr "Books"
 
-#: .\steambird\models_materials.py:92
+#: .\steambird\models_materials.py:101
 msgid "Digital Object Identifier"
 msgstr "Digital Object Identifier (DOI)"
 
-#: .\steambird\models_materials.py:107
+#: .\steambird\models_materials.py:116
+msgid "Possible URL to the Article"
+msgstr "Possible URL to the Article"
+
+#: .\steambird\models_materials.py:123
 msgid "Scientific Article"
 msgstr "Scientific Article"
 
-#: .\steambird\models_materials.py:108
+#: .\steambird\models_materials.py:124
 msgid "Scientific Articles"
 msgstr "Scientific Articles"
 
@@ -411,7 +450,7 @@ msgid "Parent of this line"
 msgstr "Parent of this line"
 
 #: .\steambird\models_msp.py:31
-#: .\steambird\teacher\templates\teacher\msp\detail.html:54
+#: .\steambird\teacher\templates\teacher\msp\detail.html:59
 msgid "Comment"
 msgstr "Comment"
 
@@ -443,6 +482,15 @@ msgstr "Material Selection Process"
 msgid "Material Selection Processes"
 msgstr "Material Selection Processes"
 
+#: .\steambird\models_site_config.py:15
+msgid "Current year you are working in"
+msgstr "Current year you are working in"
+
+#: .\steambird\models_site_config.py:21
+#| msgid "The period in the year for this course"
+msgid "The period in the year you are working in"
+msgstr "The period in the year you are working in"
+
 #: .\steambird\models_user.py:8
 msgid "Academic titles"
 msgstr "Academic titles"
@@ -463,23 +511,23 @@ msgstr "Time of last login"
 msgid "The user associated to this"
 msgstr "The user associated to this"
 
-#: .\steambird\models_user.py:41 .\steambird\templates\steambird\base.html:24
+#: .\steambird\models_user.py:45 .\steambird\templates\steambird\base.html:30
 msgid "Teacher"
 msgstr "Teacher"
 
-#: .\steambird\models_user.py:47
+#: .\steambird\models_user.py:51
 msgid "Name of this association"
 msgstr "Name of this association"
 
-#: .\steambird\models_user.py:49
+#: .\steambird\models_user.py:53
 msgid "All the users that can manage books on behalf of this organization"
 msgstr "All the users that can manage books on behalf of this organisation"
 
-#: .\steambird\models_user.py:56
+#: .\steambird\models_user.py:60
 msgid "Association"
 msgstr "Association"
 
-#: .\steambird\models_user.py:57
+#: .\steambird\models_user.py:61
 msgid "Associations"
 msgstr "Associations"
 
@@ -495,102 +543,176 @@ msgstr "English"
 msgid "ISBN number"
 msgstr "ISBN number"
 
-#: .\steambird\teacher\templates\teacher\ISBN.html:19
-#: .\steambird\teacher\templates\teacher\book.html:25
-#: .\steambird\templates\steambird\base.html:52
-msgid "Admin"
-msgstr "Admin"
+#: .\steambird\teacher\templates\teacher\DOI.html:14
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:16
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:23
+msgid "DOI"
+msgstr "DOI"
 
-#: .\steambird\teacher\templates\teacher\ISBN.html:22
-#: .\steambird\teacher\templates\teacher\book.html:28
-#: .\steambird\templates\admin\base.html:70
-#: .\steambird\templates\steambird\base.html:55
-msgid "Log out"
-msgstr "Log out"
+#: .\steambird\teacher\templates\teacher\DOI.html:17
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:48
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:54
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:49
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:55
+msgid "Author(s)"
+msgstr "Author(s)"
 
-#: .\steambird\teacher\templates\teacher\base.html:9
-#| msgid "Creating Teacher"
+#: .\steambird\teacher\templates\teacher\DOI.html:20
+msgid "Year of publishing"
+msgstr "Year of publishing"
+
+#: .\steambird\teacher\templates\teacher\base.html:10
 msgid "Steambird Teacher"
 msgstr "Steambird Teacher"
 
-#: .\steambird\teacher\templates\teacher\base.html:21
-#: .\steambird\teacher\templates\teacher\forms\new_book.html:17
+#: .\steambird\teacher\templates\teacher\base.html:27
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:16
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:23
 msgid "ISBN"
 msgstr "ISBN"
 
-#: .\steambird\teacher\templates\teacher\base.html:25
+#: .\steambird\teacher\templates\teacher\base.html:33
+#| msgid "Scientific Article"
+msgid "Create Article"
+msgstr "Create Article"
+
+#: .\steambird\teacher\templates\teacher\base.html:39
 msgid "Course Overview"
 msgstr "Course Overview"
 
 #: .\steambird\teacher\templates\teacher\courseoverview.html:11
 #, python-format
+#| msgid ""
+#| "Hello <b>%(teacher)s</b>, this is the current status of the courses you are\n"
+#| "                    assigned to: (according to osiris) "
 msgid ""
-"Hello <b>%(teacher)s</b>, this is the current status of the courses you are\n"
-"                    assigned to: (according to osiris) "
+"\n"
+"                    Hello <b>%(teacher)s</b>, this is the current status of the courses you are\n"
+"                    assigned to: (according to osiris)\n"
+"                "
 msgstr ""
+"\n"
 "Hello <b>%(teacher)s</b>, this is the current status of the courses you are\n"
 "assigned to: (according to osiris)"
 
-#: .\steambird\teacher\templates\teacher\courseoverview.html:28
+#: .\steambird\teacher\templates\teacher\courseoverview.html:16
+#, python-format
+#| msgid ""
+#| "\n"
+#| "                    Are you sure you want to delete Teacher '%(object)s' ?\n"
+#| "                "
+msgid ""
+"\n"
+"                    These are the courses we could find you give in <b>%(year)s %(period)s</b>\n"
+"                "
+msgstr ""
+"\n"
+"These are the courses we could find you give in <b>%(year)s %(period)s</b>"
+
+#: .\steambird\teacher\templates\teacher\courseoverview.html:41
 msgid "No books"
 msgstr "No books"
 
-#: .\steambird\teacher\templates\teacher\courseoverview.html:35
+#: .\steambird\teacher\templates\teacher\courseoverview.html:50
 msgid "No courses found"
 msgstr "No courses found"
 
-#: .\steambird\teacher\templates\teacher\forms\new_book.html:42
-msgid "Author(s)"
-msgstr "Author(s)"
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:28
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:29
+msgid "Search"
+msgstr "Search"
 
-#: .\steambird\teacher\templates\teacher\forms\new_book.html:51
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:60
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:61
 msgid "Publishing year"
 msgstr "Publishing year"
 
-#: .\steambird\teacher\templates\teacher\forms\new_book.html:61
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:66
+msgid "Year of Publication"
+msgstr "Year of Publication"
+
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:72
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:78
+msgid "URL"
+msgstr "URL"
+
+#: .\steambird\teacher\templates\teacher\forms\new_article.html:82
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:101
+msgid "Create"
+msgstr "Create"
+
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:67
+#| msgid "Publishing year"
+msgid "Publishing Year"
+msgstr "Publishing Year"
+
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:73
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:79
+#| msgid "Action"
+msgid "Edition"
+msgstr "Edition"
+
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:86
 msgid "Image link"
 msgstr "Image link"
 
-#: .\steambird\teacher\templates\teacher\msp\detail.html:31
-#| msgid "Material Selection Process"
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:91
+#| msgid "Image link"
+msgid "Image"
+msgstr "Image"
+
+#: .\steambird\teacher\templates\teacher\forms\new_book.html:97
+msgid "Cover Image"
+msgstr "Cover Image"
+
+#: .\steambird\teacher\templates\teacher\home.html:7
+#: .\steambird\templates\steambird\base.html:44
+#| msgid "Steambird"
+msgid "Project SteamBird"
+msgstr "Project SteamBird"
+
+#: .\steambird\teacher\templates\teacher\home.html:8
+#: .\steambird\templates\steambird\base.html:46
+msgid "@Luuk, Deal with it."
+msgstr "@Luuk, Deal with it."
+
+#: .\steambird\teacher\templates\teacher\msp\detail.html:32
 msgid "Material selection process for"
 msgstr "Material selection process for"
 
-#: .\steambird\teacher\templates\teacher\msp\detail.html:42
+#: .\steambird\teacher\templates\teacher\msp\detail.html:44
 msgid "Suggest another"
 msgstr "Suggest another"
 
-#: .\steambird\teacher\templates\teacher\msp\detail.html:48
-#| msgid "Study Materials"
+#: .\steambird\teacher\templates\teacher\msp\detail.html:51
 msgid "Materials"
 msgstr "Materials"
 
-#: .\steambird\teacher\templates\teacher\msp\detail.html:58
+#: .\steambird\teacher\templates\teacher\msp\detail.html:65
 msgid "Suggest"
 msgstr "Suggest"
 
-#: .\steambird\teacher\templates\teacher\msp\mspline.html:11
+#: .\steambird\teacher\templates\teacher\msp\mspline.html:17
 msgid "Material requested"
 msgstr "Material requested"
 
-#: .\steambird\teacher\templates\teacher\msp\mspline.html:13
+#: .\steambird\teacher\templates\teacher\msp\mspline.html:19
 msgid "Checked for book availability"
 msgstr "Checked for book availability"
 
-#: .\steambird\teacher\templates\teacher\msp\mspline.html:15
+#: .\steambird\teacher\templates\teacher\msp\mspline.html:21
 msgid "Book order confirmed"
 msgstr "Book order confirmed"
 
-#: .\steambird\teacher\templates\teacher\msp\mspline.html:25
+#: .\steambird\teacher\templates\teacher\msp\mspline.html:32
 msgid "Selected study materials"
 msgstr "Selected study materials"
 
-#: .\steambird\teacher\templates\teacher\msp\mspline.html:40
+#: .\steambird\teacher\templates\teacher\msp\mspline.html:50
 msgid "Accept"
 msgstr "Accept"
 
-#: .\steambird\teacher\templates\teacher\new_book.html:8
-#| msgid "Study Material"
+#: .\steambird\teacher\templates\teacher\new_studymaterial.html:8
 msgid "Add material"
 msgstr "Add material"
 
@@ -598,117 +720,137 @@ msgstr "Add material"
 msgid "Steambird Django Admin"
 msgstr "Steambird Django Admin"
 
-#: .\steambird\templates\admin\base.html:58
+#: .\steambird\templates\admin\base.html:80
 msgid "View site"
 msgstr "View site"
 
-#: .\steambird\templates\admin\base.html:63
+#: .\steambird\templates\admin\base.html:87
 msgid "Documentation"
 msgstr "Documentation"
 
-#: .\steambird\templates\admin\base.html:68
+#: .\steambird\templates\admin\base.html:95
 msgid "Change password"
 msgstr "Change password"
 
-#: .\steambird\templates\admin\base_site.html:3
+#: .\steambird\templates\admin\base.html:99
+#: .\steambird\templates\steambird\base.html:79
+msgid "Log out"
+msgstr "Log out"
+
+#: .\steambird\templates\admin\base_site.html:4
 msgid "Django site admin"
 msgstr "Django site admin"
 
-#: .\steambird\templates\admin\base_site.html:6
+#: .\steambird\templates\admin\base_site.html:9
 msgid "Django administration"
 msgstr "Django administration"
 
-#: .\steambird\templates\admin\change_form.html:23
-#: .\steambird\templates\admin\object_history.html:10
+#: .\steambird\templates\admin\change_form.html:33
+#: .\steambird\templates\admin\object_history.html:22
 msgid "History"
 msgstr "History"
 
-#: .\steambird\templates\admin\change_form.html:25
+#: .\steambird\templates\admin\change_form.html:38
 msgid "View on site"
 msgstr "View on site"
 
-#: .\steambird\templates\admin\change_form.html:39
+#: .\steambird\templates\admin\change_form.html:68
 #, python-format
-msgid "Add %(name)s"
-msgstr "Add %(name)s"
+#| msgid ""
+#| "\n"
+#| "                    Are you sure you want to delete Teacher '%(object)s' ?\n"
+#| "                "
+msgid ""
+"\n"
+"                    Add %(name)s\n"
+"                "
+msgstr ""
+"\n"
+"Add %(name)s"
 
-#: .\steambird\templates\admin\change_form.html:52
-#: .\steambird\templates\admin\change_list.html:53
+#: .\steambird\templates\admin\change_form.html:109
+#: .\steambird\templates\admin\change_list.html:68
 msgid "Please correct the error below."
 msgstr "Please correct the error below."
 
-#: .\steambird\templates\admin\change_form.html:52
-#: .\steambird\templates\admin\change_list.html:53
+#: .\steambird\templates\admin\change_form.html:111
+#: .\steambird\templates\admin\change_list.html:70
 msgid "Please correct the errors below."
 msgstr "Please correct the errors below."
 
-#: .\steambird\templates\admin\change_list.html:64
+#: .\steambird\templates\admin\change_list.html:57
+#: .\steambird\templates\admin\iapc\model_list.html:28
+msgid "Add"
+msgstr "Add"
+
+#: .\steambird\templates\admin\change_list.html:91
 msgid "Filter"
 msgstr "Filter"
 
-#: .\steambird\templates\admin\change_list_results.html:17
+#: .\steambird\templates\admin\change_list_results.html:19
 msgid "Remove from sorting"
 msgstr "Remove from sorting"
 
-#: .\steambird\templates\admin\change_list_results.html:18
+#: .\steambird\templates\admin\change_list_results.html:22
 #, python-format
-msgid "Sorting priority: %(priority_number)s"
-msgstr "Sorting priority: %(priority_number)s"
+msgid ""
+"\n"
+"                                                Sorting priority: %(priority_number)s\n"
+"                                            "
+msgstr ""
+"\n"
+"Sorting priority: %(priority_number)s"
 
-#: .\steambird\templates\admin\change_list_results.html:19
+#: .\steambird\templates\admin\change_list_results.html:35
 msgid "Toggle sorting"
 msgstr "Toggle sorting"
 
-#: .\steambird\templates\admin\iapc\model_list.html:6
+#: .\steambird\templates\admin\iapc\model_list.html:7
 #, python-format
 msgid "Models in the %(name)s application"
 msgstr "Models in the %(name)s application"
 
-#: .\steambird\templates\admin\iapc\model_list.html:18
-msgid "Add"
-msgstr "Add"
-
-#: .\steambird\templates\admin\iapc\model_list.html:25
+#: .\steambird\templates\admin\iapc\model_list.html:39
 msgid "View"
 msgstr "View"
 
-#: .\steambird\templates\admin\iapc\model_list.html:27
+#: .\steambird\templates\admin\iapc\model_list.html:45
 msgid "Change"
 msgstr "Change"
 
-#: .\steambird\templates\admin\iapc\model_list.html:39
+#: .\steambird\templates\admin\iapc\model_list.html:59
 msgid "You don't have permission to view or edit anything."
 msgstr "You don't have permission to view or edit anything."
 
-#: .\steambird\templates\admin\index.html:21
+#: .\steambird\templates\admin\index.html:25
 msgid "Recent actions"
 msgstr "Recent actions"
 
-#: .\steambird\templates\admin\index.html:22
+#: .\steambird\templates\admin\index.html:28
 msgid "My actions"
 msgstr "My actions"
 
-#: .\steambird\templates\admin\index.html:26
+#: .\steambird\templates\admin\index.html:34
 msgid "None available"
 msgstr "None available"
 
-#: .\steambird\templates\admin\index.html:47
+#: .\steambird\templates\admin\index.html:75
 msgid "Unknown content"
 msgstr "Unknown content"
 
-#: .\steambird\templates\admin\object_history.html:20
+#: .\steambird\templates\admin\object_history.html:33
 msgid "Date/time"
 msgstr "Date/time"
 
-#: .\steambird\templates\admin\object_history.html:21
+#: .\steambird\templates\admin\object_history.html:36
 msgid "User"
 msgstr "User"
 
-#: .\steambird\templates\admin\object_history.html:22
+#: .\steambird\templates\admin\object_history.html:39
 msgid "Action"
 msgstr "Action"
 
-#: .\steambird\templates\admin\object_history.html:36
+#: .\steambird\templates\admin\object_history.html:63
 msgid ""
 "This object doesn't have a change history. It probably wasn't added via this"
 " admin site."
@@ -716,61 +858,82 @@ msgstr ""
 "This object doesn't have a change history. It probably wasn't added via this"
 " admin site."
 
-#: .\steambird\templates\admin\submit_line.html:9
+#: .\steambird\templates\admin\submit_line.html:16
 msgid "Save as new"
 msgstr "Save as new"
 
-#: .\steambird\templates\admin\submit_line.html:10
+#: .\steambird\templates\admin\submit_line.html:19
 msgid "Save and add another"
 msgstr "Save and add another"
 
-#: .\steambird\templates\admin\submit_line.html:11
+#: .\steambird\templates\admin\submit_line.html:24
 msgid "Save and continue editing"
 msgstr "Save and continue editing"
 
-#: .\steambird\templates\admin\submit_line.html:11
+#: .\steambird\templates\admin\submit_line.html:26
 msgid "Save and view"
 msgstr "Save and view"
 
-#: .\steambird\templates\admin\submit_line.html:12
+#: .\steambird\templates\admin\submit_line.html:31
 msgid "Close"
 msgstr "Close"
 
-#: .\steambird\templates\steambird\base.html:14
+#: .\steambird\templates\steambird\base.html:15
 msgid "Steambird"
 msgstr "Steambird"
 
-#: .\steambird\templates\steambird\base.html:27
+#: .\steambird\templates\steambird\base.html:35
 msgid "Boecie"
 msgstr "Boecie"
 
-#: .\steambird\templates\steambird\base.html:43
+#: .\steambird\templates\steambird\base.html:55
 msgid "KvK 41029973"
 msgstr "KvK 41029973"
 
-#: .\steambird\templates\steambird\base.html:44
+#: .\steambird\templates\steambird\base.html:56
 msgid "tel. 053 489 3927"
 msgstr "Tel. 053 489 3927"
 
-#: .\steambird\templates\steambird\base.html:45
+#: .\steambird\templates\steambird\base.html:59
 msgid "Store Website"
 msgstr "Store Website"
 
-#: .\steambird\templates\steambird\base.html:46
+#: .\steambird\templates\steambird\base.html:63
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
-#: .\steambird\templates\steambird\base.html:63
+#: .\steambird\templates\steambird\base.html:74
+msgid "Admin"
+msgstr "Admin"
+
+#: .\steambird\templates\steambird\base.html:91
 msgid "Username"
 msgstr "Username"
 
-#: .\steambird\templates\steambird\base.html:67
+#: .\steambird\templates\steambird\base.html:97
 msgid "Password"
 msgstr "Password"
 
-#: .\steambird\templates\steambird\base.html:70
+#: .\steambird\templates\steambird\base.html:103
 msgid "Login"
 msgstr "Login"
+
+#, fuzzy
+#~ msgid "Title:"
+#~ msgstr "Title"
+
+#, fuzzy
+#~ msgid "Author(s):"
+#~ msgstr "Author(s)"
+
+#~ msgid "Edit information of '%(o)s'"
+#~ msgstr "Edit information of '%(o)s'"
+
+#~ msgid "Add %(name)s"
+#~ msgstr "Add %(name)s"
+
+#~ msgid "Sorting priority: %(priority_number)s"
+#~ msgstr "Sorting priority: %(priority_number)s"
 
 #~ msgid "N-th year"
 #~ msgstr "N-th year"
