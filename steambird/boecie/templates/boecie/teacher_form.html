@@ -274,5 +274,8 @@
         </form>
         <div class="spacing"></div>
     </div>
+    {% if edit_url %}
+        {% include "boecie/teaches_courses.html" %}
+    {% endif %}
 {% endblock %}
 

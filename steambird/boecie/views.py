@@ -179,6 +179,14 @@ class TeacherEditView(IsStudyAssociationMixin, UpdateView):
     form_class = TeacherForm
     success_url = reverse_lazy('boecie:teacher.list')
 
+    def get_context_data(self):
+        result = super(TeacherEditView, self).get_context_data()
+        result['courses'] = Teacher.objects.get(pk=self.kwargs['pk']).all_courses_period(
+            year=Config.get_system_value('year'),
+            period=Config.get_system_value('period')
+        )
+        return result
+
 
 class TeacherCreateView(IsStudyAssociationMixin, CreatePopupMixin, CreateView):
     model = Teacher
