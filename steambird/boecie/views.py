@@ -4,6 +4,7 @@ import io
 from collections import defaultdict
 from typing import Optional, Any
 
+from django.db.models import Count, Q
 from django.forms import Form
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -32,22 +33,26 @@ class HomeView(IsBoecieMixin, View):
             'types': defaultdict(list)
         }
 
-        studies = Study.objects.all().order_by('type')
         year = Config.get_system_value('year')
         period = Config.get_system_value('period')
 
+        studies = Study.objects.order_by('type') \
+            .annotate(course_total=Count('course', filter=Q(
+                course__period=period,
+                course__calendar_year=year))) \
+            .annotate(courses_updated_teacher=Count('course', filter=Q(
+                course__updated_teacher=True,
+                course__period=period,
+                course__calendar_year=year))) \
+            .annotate(courses_updated_assications=Count('course', filter=Q(
+                course__updated_associations=True,
+                course__period=period,
+                course__calendar_year=year)))
+
         for study in studies:
-            course_total = study.course_set.filter(
-                calendar_year=year,
-                period=period).count()
-            courses_updated_teacher = study.course_set.filter(
-                updated_teacher=True,
-                calendar_year=year,
-                period=period).count()
-            courses_updated_associations = study.course_set.filter(
-                updated_associations=True,
-                calendar_year=year,
-                period=period).count()
+            course_total = study.course_total
+            courses_updated_teacher = study.courses_updated_teacher
+            courses_updated_associations = study.courses_updated_assications
             context['types'][study.type].append({
                 'name': study.name,
                 'type': study.type,
