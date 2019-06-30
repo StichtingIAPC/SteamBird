@@ -179,6 +179,7 @@ class TeacherEditView(IsStudyAssociationMixin, UpdateView):
     form_class = TeacherForm
     success_url = reverse_lazy('boecie:teacher.list')
 
+    # pylint: disable=arguments-differ
     def get_context_data(self):
         result = super(TeacherEditView, self).get_context_data()
         result['courses'] = Teacher.objects.get(pk=self.kwargs['pk']).all_courses_period(
