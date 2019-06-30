@@ -18,16 +18,18 @@
         <div class="row">
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>{% trans 'Course' %}</th>
-                            <th>{% trans 'Coordinator' %}</th>
-                            <th>{% trans 'Teacher(s)' %}</th>
-                            <th>{% trans 'Study Year' %}</th>
-                            <th>{% trans 'Year' %}</th>
-                            <th>{% trans 'Period' %}</th>
-                        </tr>
-                    </thead>
+                    {% if courses_not_updated %}
+                        <thead>
+                            <tr>
+                                <th>{% trans 'Course' %}</th>
+                                <th>{% trans 'Coordinator' %}</th>
+                                <th>{% trans 'Teacher(s)' %}</th>
+                                <th>{% trans 'Study Year' %}</th>
+                                <th>{% trans 'Year' %}</th>
+                                <th>{% trans 'Period' %}</th>
+                            </tr>
+                        </thead>
+                    {% endif %}
                     <tbody>
                         {% for course in courses_not_updated %}
                             <tr>
@@ -72,16 +74,18 @@
         <div class="row">
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>{% trans 'Course' %}</th>
-                            <th>{% trans 'Coordinator' %}</th>
-                            <th>{% trans 'Teacher(s)' %}</th>
-                            <th>{% trans 'Study Year' %}</th>
-                            <th>{% trans 'Year' %}</th>
-                            <th>{% trans 'Period' %}</th>
-                        </tr>
-                    </thead>
+                    {% if courses_updated %}
+                        <thead>
+                            <tr>
+                                <th>{% trans 'Course' %}</th>
+                                <th>{% trans 'Coordinator' %}</th>
+                                <th>{% trans 'Teacher(s)' %}</th>
+                                <th>{% trans 'Study Year' %}</th>
+                                <th>{% trans 'Year' %}</th>
+                                <th>{% trans 'Period' %}</th>
+                            </tr>
+                        </thead>
+                    {% endif %}
                     <tbody>
                         {% for course in courses_updated %}
                             <tr>
@@ -117,7 +121,6 @@
                 </table>
             </div>
         </div>
-        {#                    TODO: Add handling for when after if statements empty#}
         <div class="spacing"></div>
     </div>
 {% endblock %}

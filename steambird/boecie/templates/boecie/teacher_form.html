@@ -17,7 +17,15 @@
                             {% trans "Delete" %}
                         </a>
                     </h2>
-                    <span class="text-muted"><span class="fa fa-clock"></span> {% trans 'Last Login:' %}</span>
+                    <span class="text-muted"><span class="fa fa-clock"></span>
+                    {% trans 'Last Login:' %}
+                    {% if teacher.user.last_login %}
+                        {{ teacher.user.last_login }}
+                    {% else %}
+                        <span class="text-danger">
+                            {% trans "Never logged in" %}
+                        </span>
+                    {% endif %}
                 {% else %}
                     <h2>
                         <span>{% trans 'Creating Teacher' %}</span>
