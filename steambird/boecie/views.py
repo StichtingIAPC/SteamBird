@@ -104,6 +104,8 @@ class CoursesListView(IsStudyAssociationMixin, TemplateView):
             'study': Study.objects.get(pk=study)
         }
 
+        # Defines a base query configured to prefetch all resources that will
+        #  be used either in this view or in the template.
         courses = Course.objects.with_all_periods().filter(
             studies__pk=study,
             calendar_year=year)\
@@ -112,7 +114,11 @@ class CoursesListView(IsStudyAssociationMixin, TemplateView):
 
         per_year_quartile = defaultdict(list)
 
+        # The first execution of this line executes the entire `course`
+        #  query. After this ,the result of that query is cached.
         for course in courses:
+            # As coursestudy_set was prefetched, this will not execute a second
+            #  query.
             for coursestudy in course.coursestudy_set.all():
                 for period in course.period_all:
                     period_obj = Period[period]

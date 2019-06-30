@@ -153,6 +153,11 @@ class CourseStudy(models.Model):
 
 class CourseQuerySet(models.QuerySet):
     def with_all_periods(self):
+        """
+        This function populates the :py:attr:`Course.period_all` field.
+
+        :return: a QuerySet
+        """
         cases = [
             models.When(
                 models.Q(period=period.name),
@@ -172,6 +177,12 @@ class CourseQuerySet(models.QuerySet):
             default=models.Value([], ArrayField(models.CharField()))))
 
     def with_self_and_parents(self):
+        """
+        This function populates the :py:attr:`Course.period_self_and_parents`
+        field.
+
+        :return: a QuerySet
+        """
         cases = [
             models.When(
                 models.Q(period=period.name),
@@ -187,6 +198,11 @@ class CourseQuerySet(models.QuerySet):
             default=models.Value([], ArrayField(models.CharField()))))
 
     def with_is_quartile(self):
+        """
+        This function populates the :py:attr:`Course.is_quartile` field.
+
+        :return: a QuerySet
+        """
         cases = [
             models.When(
                 models.Q(period=period.name),
@@ -204,9 +220,26 @@ class CourseQuerySet(models.QuerySet):
 class Course(models.Model):
     objects = CourseQuerySet.as_manager()
 
-    period_parents_and_self: List[str]
-    period_all: List[str]
-    period_is_quartile: bool
+    period_parents_and_self: Optional[List[str]]
+    """
+    This field will be populated by the
+    :func:`CourseQuerySet.with_self_and_parents` function. It contains a list
+    of all direct parents and the period itself.
+    """
+
+    period_all: Optional[List[str]]
+    """
+    This field will be populated by the
+    :func:`CourseQuerySet.with_all_periods` function. It contains a list
+    of all direct parents and all children, and the period itself.
+    """
+
+    period_is_quartile: Optional[bool]
+    """
+    This field will be populated by the
+    :func:`CourseQuerySet.with_is_quartile` function. It is true when the
+    period of this course is exactly a quartile.
+    """
 
     studies = models.ManyToManyField(
         Study,
