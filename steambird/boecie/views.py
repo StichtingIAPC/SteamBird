@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, UpdateView, CreateView, \
-    DeleteView, FormView
+    DeleteView, FormView, TemplateView
 from django_addanother.views import CreatePopupMixin
 
 from steambird.boecie.forms import ConfigForm
@@ -92,47 +92,41 @@ class StudyDetailView(IsStudyAssociationMixin, FormView):
         return reverse_lazy('boecie:study.list', kwargs={'pk': self.kwargs['pk']})
 
 
-class CoursesListView(IsStudyAssociationMixin, ListView):
+class CoursesListView(IsStudyAssociationMixin, TemplateView):
     template_name = "boecie/courses.html"
-    context_object_name = 'study'
 
-    # Todo: Optimise this query
-    def get_queryset(self):
-        result = {'periods':[],
-                  'study': self.kwargs['study']}
+    # pylint: disable=arguments-differ
+    def get_context_data(self, study):
         year = Config.get_system_value('year')
-        study = Study.objects.get(pk=self.kwargs['study'])
 
-        study_years = study.coursestudy_set.filter(course__calendar_year=year)\
-            .values_list('study_year').distinct().order_by('study_year')
+        result = {
+            'periods': [],
+            'study': Study.objects.get(pk=study)
+        }
 
-        for study_year in study_years:
-            courses = Course.objects.filter(
-                studies=study,
-                coursestudy__study_year=study_year[0],
-                calendar_year=year
-            )
-            for quartile in [Period.Q1, Period.Q2, Period.Q3, Period.Q4]:
-                this_quartile = [course for course in courses if course.falls_in(quartile)]
-                if this_quartile:
-                    result['periods'].append({
-                        'name': 'Period {}'.format(4*(study_year[0] - 1) + int(quartile.name[1])),
-                        'courses': this_quartile
-                    })
+        courses = Course.objects.with_all_periods().filter(
+            studies__pk=study,
+            calendar_year=year)\
+            .order_by('coursestudy__study_year', 'period')\
+            .prefetch_related('coursestudy_set', 'coordinator')
 
-        for study_year in study_years:
-            courses = Course.objects.filter(
-                studies=study,
-                coursestudy__study_year=study_year[0],
-                calendar_year=year
-            )
-            for quartile in [Period.Q5]:
-                this_quartile = [course for course in courses if course.falls_in(quartile)]
-                if this_quartile:
-                    result['periods'].append({
-                        'name': 'Period Y{}-Q{}'.format(study_year[0], quartile.name[1]),
-                        'courses': this_quartile
-                    })
+        per_year_quartile = defaultdict(list)
+
+        for course in courses:
+            for coursestudy in course.coursestudy_set.all():
+                for period in course.period_all:
+                    period_obj = Period[period]
+                    if period_obj.is_quartile():
+                        per_year_quartile[(coursestudy.study_year, period_obj)].append(course)
+
+        result['periods'] = list(map(
+            lambda x: {
+                'quartile': x[0][1],
+                'year': x[0][0],
+                'courses': x[1]
+            },
+            sorted(per_year_quartile.items(), key=lambda x: (x[0][0], x[0][1]))
+        ))
 
         return result
 

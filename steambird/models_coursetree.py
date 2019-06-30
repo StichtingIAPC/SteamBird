@@ -1,6 +1,7 @@
 from enum import Enum, IntEnum
-from typing import List
+from typing import List, Optional
 
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -24,6 +25,71 @@ class Period(Enum):
     S3 = "Semester 3, half year course"
     YEAR = "Course that is in both S1 and S2"
     FULL_YEAR = "Full year course"
+
+    def sorting_index(self):
+        return {
+            Period.Q1: 0x01,
+            Period.Q2: 0x02,
+            Period.Q3: 0x03,
+            Period.Q4: 0x04,
+            Period.Q5: 0x05,
+            Period.S1: 0x10,
+            Period.S2: 0x11,
+            Period.S3: 0x12,
+            Period.YEAR: 0x20,
+            Period.FULL_YEAR: 0x30
+        }[self]
+
+    def __gt__(self, other: 'Period'):
+        return self.sorting_index() > other.sorting_index()
+
+    def __lt__(self, other: 'Period'):
+        return self.sorting_index() < other.sorting_index()
+
+    def is_quartile(self):
+        return self in [Period.Q1, Period.Q2, Period.Q3, Period.Q4, Period.Q5]
+
+    def parent(self) -> Optional['Period']:
+        if self in [Period.Q1, Period.Q2]:
+            return Period.S1
+        if self in [Period.Q3, Period.Q4]:
+            return Period.S2
+        if self == Period.Q5:
+            return Period.S3
+        if self in [Period.S1, Period.S2]:
+            return Period.YEAR
+        if self in [Period.S3, Period.YEAR]:
+            return Period.FULL_YEAR
+        return None
+
+    def children(self) -> List['Period']:
+        if self == Period.S1:
+            return [Period.Q1, Period.Q2]
+        if self == Period.S2:
+            return [Period.Q3, Period.Q4]
+        if self == Period.S3:
+            return [Period.Q5]
+        if self == Period.YEAR:
+            return [Period.S1, Period.S2]
+        if self == Period.FULL_YEAR:
+            return [Period.YEAR, Period.S3]
+        return []
+
+    def all_children(self):
+        result = []
+        for child in self.children():
+            result += child.all_children()
+            result.append(child)
+
+        return sorted(result)
+
+    def all_parents(self) -> List['Period']:
+        result = []
+        parent = self.parent()
+        if parent:
+            result.append(parent)
+            result += parent.all_parents()
+        return result
 
 
 class StudyYear(IntEnum):
@@ -85,7 +151,63 @@ class CourseStudy(models.Model):
         )
 
 
+class CourseQuerySet(models.QuerySet):
+    def with_all_periods(self):
+        cases = [
+            models.When(
+                models.Q(period=period.name),
+                then=models.Value(
+                    list(map(
+                        lambda e: e.name,
+                        [*period.all_children(), period, *period.all_parents()]
+                    )),
+                    output_field=ArrayField(models.CharField())
+                )
+            )
+            for period in Period
+        ]
+
+        return self.annotate(period_all=models.Case(
+            *cases,
+            default=models.Value([], ArrayField(models.CharField()))))
+
+    def with_self_and_parents(self):
+        cases = [
+            models.When(
+                models.Q(period=period.name),
+                then=models.Value(list(map(lambda e: e.name,
+                                           [period, *period.all_parents()])),
+                                  output_field=ArrayField(models.CharField()))
+            )
+            for period in Period
+        ]
+
+        return self.annotate(period_parents_and_self=models.Case(
+            *cases,
+            default=models.Value([], ArrayField(models.CharField()))))
+
+    def with_is_quartile(self):
+        cases = [
+            models.When(
+                models.Q(period=period.name),
+                then=models.Value(period.is_quartile(),
+                                  output_field=models.BooleanField())
+            )
+            for period in Period
+        ]
+
+        return self.annotate(period_is_quartile=models.Case(
+            *cases,
+            default=models.Value(False, models.BooleanField())))
+
+
 class Course(models.Model):
+    objects = CourseQuerySet.as_manager()
+
+    period_parents_and_self: List[str]
+    period_all: List[str]
+    period_is_quartile: bool
+
     studies = models.ManyToManyField(
         Study,
         through=CourseStudy,
@@ -208,22 +330,8 @@ class Course(models.Model):
     def association_can_manage_msp(self, association: StudyAssociation) -> bool:
         return association in self.associations
 
-    # pylint: disable=inconsistent-return-statements
     def falls_in(self, period: Period):
-        if Period[self.period] == Period.FULL_YEAR:
-            return True
-
-        if period == Period[self.period]:
-            return True
-
-        if period in [Period.Q1, Period.Q2]:
-            return Period[self.period] == Period.S1
-
-        if period in [Period.Q3, Period.Q4]:
-            return Period[self.period] == Period.S2
-
-        if period == Period.Q5:
-            return Period[self.period] == Period.S3
+        return period.name in self.period_all
 
     def __str__(self):
         return '{} ({}, {})'.format(self.name, self.calendar_year, self.period)
