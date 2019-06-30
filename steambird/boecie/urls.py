@@ -2,7 +2,7 @@ from django.urls import path
 
 from steambird.boecie.views import CourseCreateView, CourseUpdateView, \
     HomeView, StudyDetailView, TeacherCreateView, TeacherDeleteView, \
-    TeacherEditView, TeachersListView, StudyCourseView
+    TeacherEditView, TeachersListView, StudyCourseView, MSPDetail
 
 # pylint: disable=invalid-name
 urlpatterns = [
@@ -22,6 +22,7 @@ urlpatterns = [
     path('teachers/<int:pk>', TeacherEditView.as_view(), name='teacher.detail'),
     path('teachers/<int:pk>/delete', TeacherDeleteView.as_view(),
          name='teacher.delete'),
+    path('msp/<int:pk>', MSPDetail.as_view(), name='msp.detail'),
 
     path('test', StudyCourseView.as_view(), name='studycourse'),
 ]
