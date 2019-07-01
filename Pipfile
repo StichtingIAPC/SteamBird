@@ -27,6 +27,11 @@ nltk = "*"
 pandas = "*"
 pylint = "*"
 selenium = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+django-haystack = "*"
+sphinxcontrib-django = "*"
+sphinx-autodoc-annotation = "*"
 
 [requires]
 python_version = "3.7"
