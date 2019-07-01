@@ -1,13 +1,14 @@
 from json import dumps
 from urllib.parse import quote, unquote
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView, DetailView
 
-from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle
+from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle, Config
 from steambird.models_msp import MSPLine
 from steambird.perm_utils import IsTeacherMixin
 from steambird.teacher.tools import isbn_lookup, doi_lookup
@@ -74,7 +75,7 @@ class AddMSPView(IsTeacherMixin, View):
         return render(request, 'teacher/new_studymaterial.html', {'form': form})
 
 
-class ISBNSearchApiView(View):
+class ISBNSearchApiView(LoginRequiredMixin, View):
     # pylint: disable=no-self-use
     def get(self, request):
         isbn = request.GET['isbn']
@@ -89,7 +90,7 @@ class ISBNSearchApiView(View):
         return JsonResponse(isbn_data)
 
 
-class DOISearchApiView(View):
+class DOISearchApiView(LoginRequiredMixin, View):
     # pylint: disable=no-self-use
     def get(self, request):
         doi = request.GET['doi']
@@ -103,7 +104,8 @@ class DOISearchApiView(View):
 
         return JsonResponse(doi_data)
 
-class DOIDetailView(IsTeacherMixin, DetailView):
+
+class DOIDetailView(LoginRequiredMixin, DetailView):
     model = ScientificArticle
     template_name = 'teacher/DOI.html'
 
@@ -118,8 +120,16 @@ class CourseView(IsTeacherMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
+
+        data['year'] = Config.get_system_value('year')
+        data['period'] = Config.get_system_value('period')
+
         try:
-            data["teacher"] = Teacher.objects.get(user=self.request.user)
+            data['teacher'] = Teacher.objects.get(user=self.request.user)
+            data['courses'] = data["teacher"].all_courses_period(
+                year=data['year'],
+                period=data['period']
+            )
         except Teacher.DoesNotExist:
             raise Http404
 

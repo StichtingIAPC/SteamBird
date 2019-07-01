@@ -10,17 +10,27 @@
     <div class="container profile">
         <div class="row">
             <div class="col-xs-12 w-100">
-                <h2>
-                    {% if request.path == edit_url %}
-                        {% trans "Edit Teacher" %}
-                        <a class="btn btn-primary right" href="{% url 'boecie:teacher.delete' teacher.pk %}">
+                {% if request.path == edit_url %}
+                    <h2>
+                    {% trans "Edit " %}{{ teacher }}
+                        <a class="btn btn-primary float-right" href="{% url 'boecie:teacher.delete' teacher.pk %}">
                             {% trans "Delete" %}
                         </a>
+                    </h2>
+                    <span class="text-muted"><span class="fa fa-clock"></span>
+                    {% trans 'Last Login:' %}
+                    {% if teacher.user.last_login %}
+                        {{ teacher.user.last_login }}
                     {% else %}
-                        <span>{% trans 'Creating Teacher' %}</span>
+                        <span class="text-danger">
+                            {% trans "Never logged in" %}
+                        </span>
                     {% endif %}
-
-                </h2>
+                {% else %}
+                    <h2>
+                        <span>{% trans 'Creating Teacher' %}</span>
+                    </h2>
+                {% endif %}
             </div>
         </div>
         {% if form.errors or formset.errors %}
@@ -274,5 +284,8 @@
         </form>
         <div class="spacing"></div>
     </div>
+    {% if edit_url %}
+        {% include "boecie/teaches_courses.html" %}
+    {% endif %}
 {% endblock %}
 

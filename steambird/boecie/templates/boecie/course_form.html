@@ -13,20 +13,61 @@
     <div class="spacing"></div>
     <div class="container profile">
         {% if is_edit %}
-            <h3>{% trans 'Add course to study' %}</h3>
-            {% include 'boecie/studycourse_form.html' with form=studycourse_form %}
+            {# Order is the other way around than the page shows, due to trying to keep everything of the tabs as much together as possible#}
+            <nav>
+                <div class="nav nav-tabs"
+                     id="nav-tab"
+                     role="tablist">
+                    <a class="nav-item nav-link active"
+                       id="course-detail-tab"
+                       data-toggle="tab"
+                       href="#nav-course-detail"
+                       role="tab"
+                       aria-controls="nav-course-detail"
+                       aria-selected="true">
+                        {% trans "Course Details" %}
+                    </a>
+                    <a class="nav-item nav-link"
+                       id="nav-studycouse-tab"
+                       data-toggle="tab"
+                       href="#nav-studycourse"
+                       role="tab"
+                       aria-controls="nav-studycouse"
+                       aria-selected="false">
+                        {% trans "Study<->Course linking" %}
+                    </a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+
+            <div class="tab-pane fade"
+                 id="nav-studycourse"
+                 role="tabpanel"
+                 aria-labelledby="nav-studycouse-tab">
+                <h3>
+                    {% trans 'Add course to study' %}
+                </h3>
+                {% include 'boecie/studycourse_form.html' with form=studycourse_form %}
+            </div>
+            <div class="tab-pane fade  show active"
+                 id="nav-course-detail"
+                 role="tabpanel"
+                 aria-labelledby="course-detail-tab">
         {% endif %}
+
         <div class="row">
             <div class="col-xs-12 w-100">
                 <h2>
                     {% if is_edit %}
-                        <span>{% blocktrans with o=course_form.instance %}Edit information of '{{ o }}'{% endblocktrans %}</span>
+                        <span>{% blocktrans with o=course_form.instance %}Edit information of '
+                            {{ o }}'{% endblocktrans %}</span>
                     {% else %}
                         <span>{% trans 'Creating Course' %}</span>
                     {% endif %}
                 </h2>
             </div>
         </div>
+
         {% if course_form.errors or formset.errors %}
             <div class="row">
                 <div class="col-xs-12 w-100">
@@ -36,6 +77,7 @@
                     </div>
                 </div>
             </div>
+
             {% if course_form.non_field_errors %}
                 <div class="row">
                     <div class="col-xs-12 w-100">
@@ -49,6 +91,7 @@
                     </div>
                 </div>
             {% endif %}
+
         {% endif %}
 
         <form method="post" id="course_form" class="form-horizontal">
@@ -96,16 +139,19 @@
 
                             <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans "Course Code" %}
+                                    <label
+                                        class="col-sm-2 control-label w-100">{% trans "Course Code" %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
                                             {{ course_form.course_code|form_bootstrapify }}
                                             {% if is_edit %}
                                                 <div class="ml-3">
-                                                    <a href="{% osiris_url course_form.instance.course_code course_form.instance.calendar_year %}" {# TODO: make this temp .instance. fix work like a normal django form template_tag #}
+                                                    <a href="{% osiris_url course_form.instance.course_code course_form.instance.calendar_year %}"
+                                                        {# TODO: make this temp .instance. fix work like a normal django form template_tag #}
                                                        target="_blank">
-                                                        <span class="fa fa-external-link-alt"></span>
+                                                        <span
+                                                            class="fa fa-external-link-alt"></span>
                                                     </a>
                                                 </div>
                                             {% endif %}
@@ -126,7 +172,8 @@
                             </div>
                             <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans "Period" %}</label>
+                                    <label
+                                        class="col-sm-2 control-label w-100">{% trans "Period" %}</label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
                                             {{ course_form.period|form_bootstrapify }}
@@ -136,7 +183,8 @@
                             </div>
                             <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans "Name" %}</label>
+                                    <label
+                                        class="col-sm-2 control-label w-100">{% trans "Name" %}</label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
                                             {{ course_form.name|form_bootstrapify }}
@@ -174,8 +222,10 @@
                                             {% if is_edit %}
                                                 <div class="ml-3">
                                                     <a href="{% people_utwente course_form.instance.coordinator.initials course_form.instance.coordinator.surname_prefix course_form.instance.coordinator.last_name %}"
-                                                       target="_blank"> {# TODO: make this temp .instance. fix work like a normal django form template_tag #}
-                                                        <span class="fa fa-external-link-alt"></span>
+                                                       target="_blank">
+                                                        {# TODO: make this temp .instance. fix work like a normal django form template_tag #}
+                                                        <span
+                                                            class="fa fa-external-link-alt"></span>
                                                     </a>
                                                 </div>
                                             {% endif %}
@@ -372,6 +422,11 @@
                 </div>
             </div>
         </form>
+        {% if is_edit %}
+            {# This closes the nav-tabs, which only exist in edit-view #}
+            </div>
+            </div>
+        {% endif %}
 
     </div>
     {{ course_form.media.js }}

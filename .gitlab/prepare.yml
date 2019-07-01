@@ -1,5 +1,5 @@
 Prepare/check dev dependencies:
-    stage: prepare
+    stage: test  # TODO change back to prepare when we are further in development
     image: python:3.7
     cache:
         key: steambird-dev
@@ -13,6 +13,7 @@ Prepare/check dev dependencies:
 Prepare/check production dependencies:
     stage: prepare
     image: python:3.7
+    when: manual
     cache:
         key: steambird-prod
         paths:
