@@ -287,7 +287,7 @@ class LmlExport(IsStudyAssociationMixin, FormView):
 
         if int(form.get('option')) < 4:
             for study in Study.objects.filter(type='bachelor'):
-                courses = [c for c in Course.objects.filter(
+                courses = [c for c in Course.objects.with_all_periods().filter(
                     coursestudy__study_year=int(form.get('option')),
                     calendar_year=form.get('year', Config.get_system_value('year')))
                            if c.falls_in(period)]
