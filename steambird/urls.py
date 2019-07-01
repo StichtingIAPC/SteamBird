@@ -28,11 +28,11 @@ if settings.DEBUG:
     # pylint: disable=invalid-name
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
-        path('translations/', include('rosetta.urls'))
+        path('translations/', include('rosetta.urls')),
     ] + urlpatterns
 
 if find_loader('django_uwsgi'):
     # pylint: disable=invalid-name
     urlpatterns = [
-        path('admin/uwsgi/', include('django_uwsgi.urls'))
+        path('admin/uwsgi/', include('django_uwsgi.urls')),
     ] + urlpatterns
