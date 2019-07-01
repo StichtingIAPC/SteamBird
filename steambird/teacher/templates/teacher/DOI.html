@@ -1,23 +1,23 @@
 {% extends 'teacher/base.html' %}
 {% load i18n %}
 
-
+{# TODO: replace this TEMP PAGE! #}
 {% block content %}
 
     <div class="spacing"></div>
     <div class="container">
         <div class="spacing"></div>
         <div class="row">
-            <b>Title:</b> {{ scientificarticle.title }}
+            <b> {% trans "Title" %}:</b> {{ scientificarticle.title }}
         </div>
         <div class="row">
-            <b>DOI:</b> {{ scientificarticle.DOI }}
+            <b>{% trans "DOI" %}:</b> {{ scientificarticle.DOI }}
         </div>
         <div class="row">
-            <b>Authors:</b> {{ scientificarticle.author }}
+            <b>{% trans "Author(s)" %}:</b> {{ scientificarticle.author }}
         </div>
         <div class="row">
-            <b>Year of publishing:</b> {{ scientificarticle.year_of_publishing }}
+            <b>{% trans "Year of publishing" %}:</b> {{ scientificarticle.year_of_publishing }}
         </div>
         <div class="row">
             <a href="{{ scientificarticle.url }}">
