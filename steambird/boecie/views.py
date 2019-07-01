@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Optional, Any, Dict, Type
+from typing import Optional, Any
 
 from django.forms import Form
 from django.http import HttpRequest, Http404
@@ -8,12 +8,11 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView
-from django.views.generic.detail import SingleObjectMixin
 from django_addanother.views import CreatePopupMixin
 
 from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm
 from steambird.models import Study, Course, Teacher, CourseStudy, MSP, \
-    MSPLineType, MSPLine, StudyMaterial
+    MSPLineType, MSPLine
 from steambird.perm_utils import IsStudyAssociationMixin
 from steambird.teacher.forms import PrefilledSuggestAnotherMSPLineForm, \
     PrefilledMSPLineForm
