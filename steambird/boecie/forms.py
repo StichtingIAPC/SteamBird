@@ -28,7 +28,7 @@ class CourseForm(forms.ModelForm):
             'updated_teacher',
             'calendar_year',
             'coordinator',
-            'period'
+            'period',
         ]
 
         widgets = {
@@ -138,5 +138,5 @@ class ConfigForm(forms.ModelForm):
         model = Config
         fields = [
             'year',
-            'period'
+            'period',
         ]

@@ -26,12 +26,21 @@
                 {{ teacher.surname_prefix }}{% endif %} {{ teacher.last_name }}
             </td>
             <td class="col-3">Create filter to check if teacher has updated everything so far :D</td>
-            <td class="col-2"> Active: <p
-                class="fa {{ teacher.active|yesno:" fa-check-circle text-success, fa-times-circle text-danger" }} "></p>
+            <td class="col-2"> Active: <span
+                class="fa {{ teacher.active|yesno:" fa-check-circle text-success, fa-times-circle text-danger" }} "></span>
+                <br>
+                {% trans 'Last login' %}:
+                {% if teacher.user.last_login %}
+                    {{ teacher.user.last_login }}
+                {% else %}
+                    <div class="text-danger">
+                        {% trans "Never logged in" %}
+                    </div>
+                {% endif %}
             </td>
-            <td class="col-1"> Retired: <p
+            <td class="col-1"> Retired: <span
                 class="fa {{ teacher.retired|yesno:" fa-check-circle text-success, fa-times-circle text-danger" }}
-                "></p>
+                "></span>
             </td>
         </tr>
         {% endfor %}

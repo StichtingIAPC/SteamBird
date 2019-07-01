@@ -15,14 +15,15 @@ class Teacher(models.Model):
     email = models.EmailField(verbose_name=_("Email"), unique=True)
     active = models.BooleanField(default=True, verbose_name=_("Active"))
     retired = models.BooleanField(default=False, verbose_name=_("Retired"))
-    last_login = models.DateTimeField(
-        null=True, blank=True, verbose_name=_("Time of last login"))
     user = models.ForeignKey(
         User, on_delete=models.PROTECT,
         verbose_name=_("The user associated to this"),
         blank=True,
         null=True,
     )
+
+    def last_login(self):
+        return self.user.last_login
 
     def get_absolute_url(self):
         return reverse('boecie:teacher.detail', kwargs={'pk': self.pk})
