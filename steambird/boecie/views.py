@@ -4,6 +4,7 @@ import io
 from collections import defaultdict
 from typing import Optional, Any
 
+from django.db.models import Count, Q
 from django.forms import Form
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -11,7 +12,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView, UpdateView, CreateView, \
-    DeleteView, FormView
+    DeleteView, FormView, TemplateView
 from django_addanother.views import CreatePopupMixin
 
 from steambird.boecie.forms import ConfigForm
@@ -32,22 +33,26 @@ class HomeView(IsBoecieMixin, View):
             'types': defaultdict(list)
         }
 
-        studies = Study.objects.all().order_by('type')
         year = Config.get_system_value('year')
         period = Config.get_system_value('period')
 
+        studies = Study.objects.order_by('type') \
+            .annotate(course_total=Count('course', filter=Q(
+                course__period=period,
+                course__calendar_year=year))) \
+            .annotate(courses_updated_teacher=Count('course', filter=Q(
+                course__updated_teacher=True,
+                course__period=period,
+                course__calendar_year=year))) \
+            .annotate(courses_updated_assications=Count('course', filter=Q(
+                course__updated_associations=True,
+                course__period=period,
+                course__calendar_year=year)))
+
         for study in studies:
-            course_total = study.course_set.filter(
-                calendar_year=year,
-                period=period).count()
-            courses_updated_teacher = study.course_set.filter(
-                updated_teacher=True,
-                calendar_year=year,
-                period=period).count()
-            courses_updated_associations = study.course_set.filter(
-                updated_associations=True,
-                calendar_year=year,
-                period=period).count()
+            course_total = study.course_total
+            courses_updated_teacher = study.courses_updated_teacher
+            courses_updated_associations = study.courses_updated_assications
             context['types'][study.type].append({
                 'name': study.name,
                 'type': study.type,
@@ -76,10 +81,16 @@ class StudyDetailView(IsStudyAssociationMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['study'] = Study.objects.get(pk=self.kwargs['pk'])
-        context['courses'] = Course.objects.filter(
+        context['courses_not_updated'] = Course.objects.filter(
             calendar_year=Config.get_system_value("year"),
             period=Config.get_system_value("period"),
-            studies=self.kwargs['pk'])
+            studies=self.kwargs['pk'],
+            updated_associations=False)
+        context['courses_updated'] = Course.objects.filter(
+            calendar_year=Config.get_system_value("year"),
+            period=Config.get_system_value("period"),
+            studies=self.kwargs['pk'],
+            updated_associations=True)
         return context
 
     # For the small included form on the top of the page
@@ -90,6 +101,51 @@ class StudyDetailView(IsStudyAssociationMixin, FormView):
 
     def get_success_url(self):
         return reverse_lazy('boecie:study.list', kwargs={'pk': self.kwargs['pk']})
+
+
+class CoursesListView(IsStudyAssociationMixin, TemplateView):
+    template_name = "boecie/courses.html"
+
+    # pylint: disable=arguments-differ
+    def get_context_data(self, study):
+        year = Config.get_system_value('year')
+
+        result = {
+            'periods': [],
+            'study': Study.objects.get(pk=study)
+        }
+
+        # Defines a base query configured to prefetch all resources that will
+        #  be used either in this view or in the template.
+        courses = Course.objects.with_all_periods().filter(
+            studies__pk=study,
+            calendar_year=year)\
+            .order_by('coursestudy__study_year', 'period')\
+            .prefetch_related('coursestudy_set', 'coordinator')
+
+        per_year_quartile = defaultdict(list)
+
+        # The first execution of this line executes the entire `course`
+        #  query. After this ,the result of that query is cached.
+        for course in courses:
+            # As coursestudy_set was prefetched, this will not execute a second
+            #  query.
+            for coursestudy in course.coursestudy_set.all():
+                for period in course.period_all:
+                    period_obj = Period[period]
+                    if period_obj.is_quartile():
+                        per_year_quartile[(coursestudy.study_year, period_obj)].append(course)
+
+        result['periods'] = list(map(
+            lambda x: {
+                'quartile': x[0][1],
+                'year': x[0][0],
+                'courses': x[1]
+            },
+            sorted(per_year_quartile.items(), key=lambda x: (x[0][0], x[0][1]))
+        ))
+
+        return result
 
 
 class CourseUpdateView(IsStudyAssociationMixin, MultiFormView):
@@ -179,6 +235,15 @@ class TeacherEditView(IsStudyAssociationMixin, UpdateView):
     form_class = TeacherForm
     success_url = reverse_lazy('boecie:teacher.list')
 
+    # pylint: disable=arguments-differ
+    def get_context_data(self):
+        result = super(TeacherEditView, self).get_context_data()
+        result['courses'] = Teacher.objects.get(pk=self.kwargs['pk']).all_courses_period(
+            year=Config.get_system_value('year'),
+            period=Config.get_system_value('period')
+        )
+        return result
+
 
 class TeacherCreateView(IsStudyAssociationMixin, CreatePopupMixin, CreateView):
     model = Teacher
@@ -222,7 +287,7 @@ class LmlExport(IsStudyAssociationMixin, FormView):
 
         if int(form.get('option')) < 4:
             for study in Study.objects.filter(type='bachelor'):
-                courses = [c for c in Course.objects.filter(
+                courses = [c for c in Course.objects.with_all_periods().filter(
                     coursestudy__study_year=int(form.get('option')),
                     calendar_year=form.get('year', Config.get_system_value('year')))
                            if c.falls_in(period)]
