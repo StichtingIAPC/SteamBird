@@ -30,7 +30,7 @@ pages:
     script:
         - cd docs
         - make clean html
-        - mv build ../public
+        - mv build/html ../public
         - cd ..
     artifacts:
         paths:
