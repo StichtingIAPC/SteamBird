@@ -1,0 +1,56 @@
+{% extends 'boecie/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="row">
+            <h2>
+                {% trans "Course-Study relations" %}
+            </h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        <th>{% trans 'Study' %}</th>
+                        <th>{% trans 'Course code' %}</th>
+                        <th>{% trans 'Course Name' %}</th>
+                        <th>{% trans 'Calendar Year' %}</th>
+                        <th>{% trans 'Period' %}</th>
+                        {% if user.is_superuser %}
+                            <th>{% trans 'Delete line' %}</th>
+                        {% endif %}
+                    </tr>
+                    {% for relation in coursestudy_relation %}
+                        <tr>
+                            <td>
+                                {{ relation.study }}
+                            </td>
+                            <td>
+                                {{ relation.course.course_code }}
+                            </td>
+                            <td>
+                                {{ relation.course.name }}
+                            </td>
+                            <td>
+                                {{ relation.course.calendar_year }}
+                            </td>
+                            <td>
+                                {{ relation.course.period }}
+                            </td>
+                            {% if user.is_superuser %}
+                                <td>
+                                    <a href="{% url 'boecie:coursestudy.delete' pk=relation.pk %}">
+                                        <span class="fa fa-trash text-danger"></span>
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+
+
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="spacing"></div>
+{% endblock %}
