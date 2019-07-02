@@ -14,7 +14,7 @@ Deploy to container registry:
     script:
         - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
         - export VERSION=$(echo $CI_COMMIT_TAG | cut -d'/' -f2)
-        - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$VERSION --destination CI_REGISTRY_IMAGE:latest
+        - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:$VERSION --destination $CI_REGISTRY_IMAGE:latest
 
 pages:
     stage: deploy
