@@ -1,7 +1,7 @@
 from django import template
 from django.template.loader import get_template
 
-from steambird.models_materials import StudyMaterialEdition
+from steambird.models.materials import StudyMaterialEdition
 
 # pylint: disable=invalid-name
 register = template.Library()

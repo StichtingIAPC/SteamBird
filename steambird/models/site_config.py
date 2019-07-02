@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from steambird.models_coursetree import Period
+from steambird.models.coursetree import Period
 
 
 class Config(models.Model):

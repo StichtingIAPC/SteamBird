@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from steambird.models_user import Teacher, StudyAssociation
+from steambird.models.user import Teacher, StudyAssociation
 
 
 class StudyType(Enum):
