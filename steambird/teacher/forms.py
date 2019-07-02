@@ -7,8 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget
 
-from steambird.models_materials import StudyMaterialEdition, Book, ScientificArticle
-from steambird.models_msp import MSPLine
+from steambird.models.materials import StudyMaterialEdition, Book, ScientificArticle
+from steambird.models.msp import MSPLine
 
 
 class ISBNForm(forms.Form):

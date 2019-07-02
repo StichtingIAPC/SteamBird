@@ -7,7 +7,7 @@ Database model
 --------------
 
 These models can be found in
-:ref:`the models\_coursetree module<steambird.models\_coursetree>`.
+:ref:`the models.coursetree module<steambird.models.coursetree>`.
 
 .. graphviz:: coursetree_db_model.dot
 

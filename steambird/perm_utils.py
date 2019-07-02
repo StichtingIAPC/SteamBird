@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 
-from steambird.models_user import Teacher, StudyAssociation
+from steambird.models.user import Teacher, StudyAssociation
 
 
 class IsTeacherMixin(UserPassesTestMixin):

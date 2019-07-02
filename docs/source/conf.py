@@ -79,6 +79,10 @@ html_context = {
 
 # -- Options for intersphinx extension ---------------------------------------
 
+# -- Options for AutoDoc extension
+autodoc_member_order = 'bysource'
+add_module_names = False
+
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'http://docs.python.org/': None,

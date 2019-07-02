@@ -1,5 +1,5 @@
-steambird package
-=================
+API Documentation
+======================
 
 .. toctree::
 
@@ -8,8 +8,9 @@ steambird package
    steambird.templatetags
    steambird.tests
    steambird.util
+   steambird.models
 
-steambird.admin module
+Admin
 ----------------------
 
 .. automodule:: steambird.admin
@@ -17,51 +18,7 @@ steambird.admin module
    :undoc-members:
    :show-inheritance:
 
-.. _steambird.models\_coursetree:
-
-steambird.models\_coursetree module
------------------------------------
-
-.. automodule:: steambird.models_coursetree
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-steambird.models\_materials module
-----------------------------------
-
-.. automodule:: steambird.models_materials
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-.. _steambird.models\_msp:
-
-steambird.models\_msp module
-----------------------------
-
-.. automodule:: steambird.models_msp
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-steambird.models\_site\_config module
--------------------------------------
-
-.. automodule:: steambird.models_site_config
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-steambird.models\_user module
------------------------------
-
-.. automodule:: steambird.models_user
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-steambird.perm\_utils module
+Permission Utilities
 ----------------------------
 
 .. automodule:: steambird.perm_utils
@@ -69,15 +26,16 @@ steambird.perm\_utils module
    :undoc-members:
    :show-inheritance:
 
-steambird.settings module
+Settings
 -------------------------
+This is about the Django settings that steambird uses
 
 .. automodule:: steambird.settings
    :members:
    :undoc-members:
    :show-inheritance:
 
-steambird.urls module
+URL listing
 ---------------------
 
 .. automodule:: steambird.urls
@@ -85,7 +43,7 @@ steambird.urls module
    :undoc-members:
    :show-inheritance:
 
-steambird.views module
+Views
 ----------------------
 
 .. automodule:: steambird.views
@@ -93,19 +51,10 @@ steambird.views module
    :undoc-members:
    :show-inheritance:
 
-steambird.widgets module
+Widgets
 ------------------------
 
 .. automodule:: steambird.widgets
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: steambird
    :members:
    :undoc-members:
    :show-inheritance:

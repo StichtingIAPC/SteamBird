@@ -17,7 +17,7 @@ from django_addanother.views import CreatePopupMixin
 from steambird.boecie.forms import ConfigForm, CourseForm, TeacherForm, StudyCourseForm, \
     LmlExportForm
 from steambird.models import Book, Config, MSP, Study, Course, Teacher, CourseStudy
-from steambird.models_coursetree import Period
+from steambird.models.coursetree import Period
 from steambird.perm_utils import IsStudyAssociationMixin, IsBoecieMixin
 from steambird.util import MultiFormView
 
