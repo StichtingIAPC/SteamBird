@@ -1,6 +1,7 @@
 {% extends 'steambird/base.html' %}
 {% load i18n %}
 {% load active_menu %}
+{% load period_footer %}
 
 {% block page_title %}{% trans "Steambird Admin" %}{% endblock %}
 
@@ -38,4 +39,12 @@
         </a>
     </li>
 
+{% endblock %}
+
+{% block endjs %}
+    <div class="fixed-bottom background-attention" >
+        <div class="bottom_line">
+            {% period_retrieval %}
+        </div>
+    </div>
 {% endblock %}
