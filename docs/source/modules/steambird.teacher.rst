@@ -1,18 +1,11 @@
-steambird.teacher package
+Teacher
 =========================
 
 The teacher package contains all code specific to the views, pages and endpoints
 that are to be used by teachers.
 
-steambird.teacher.apps module
------------------------------
 
-.. automodule:: steambird.teacher.apps
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-steambird.teacher.forms module
+Forms
 ------------------------------
 
 .. automodule:: steambird.teacher.forms
@@ -20,15 +13,16 @@ steambird.teacher.forms module
    :undoc-members:
    :show-inheritance:
 
-steambird.teacher.tools module
+Tools
 ------------------------------
+Tools focuses on external API's
 
 .. automodule:: steambird.teacher.tools
    :members:
    :undoc-members:
    :show-inheritance:
 
-steambird.teacher.urls module
+URL listing
 -----------------------------
 
 .. automodule:: steambird.teacher.urls
@@ -36,19 +30,10 @@ steambird.teacher.urls module
    :undoc-members:
    :show-inheritance:
 
-steambird.teacher.views module
+Views
 ------------------------------
 
 .. automodule:: steambird.teacher.views
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: steambird.teacher
    :members:
    :undoc-members:
    :show-inheritance:

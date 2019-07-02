@@ -1,27 +1,20 @@
-steambird.tests package
+Tests
 =======================
 
-steambird.tests.homepage module
+Homepage test
 -------------------------------
+Tests whether the homepage loads in all available browsers
 
 .. automodule:: steambird.tests.homepage
    :members:
    :undoc-members:
    :show-inheritance:
 
-steambird.tests.models\_coursetree module
+Courstree Model tests
 -----------------------------------------
+Verifies working of Period squasification functions
 
 .. automodule:: steambird.tests.models_coursetree
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: steambird.tests
    :members:
    :undoc-members:
    :show-inheritance:

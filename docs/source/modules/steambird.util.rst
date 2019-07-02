@@ -1,19 +1,11 @@
-steambird.util package
+Steambird Utilities
 ======================
 
-steambird.util.multi\_form\_view module
+Multi Form View
 ---------------------------------------
+View that accepts multiple forms at the same time to be rendered. Only one can be submitted in the end.
 
 .. automodule:: steambird.util.multi_form_view
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: steambird.util
    :members:
    :undoc-members:
    :show-inheritance:

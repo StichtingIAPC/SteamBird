@@ -1,10 +1,10 @@
-steambird.boecie package
+Boecie
 ========================
 
 The Boecie package contains all code specific to the views, pages and endpoints
 that are to be used by study associations.
 
-steambird.boecie.forms module
+Boecie Forms
 -----------------------------
 
 .. automodule:: steambird.boecie.forms
@@ -12,7 +12,7 @@ steambird.boecie.forms module
    :undoc-members:
    :show-inheritance:
 
-steambird.boecie.urls module
+Boecie URL listing
 ----------------------------
 
 .. automodule:: steambird.boecie.urls
@@ -20,19 +20,10 @@ steambird.boecie.urls module
    :undoc-members:
    :show-inheritance:
 
-steambird.boecie.views module
+Boecie Views
 -----------------------------
 
 .. automodule:: steambird.boecie.views
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: steambird.boecie
    :members:
    :undoc-members:
    :show-inheritance:

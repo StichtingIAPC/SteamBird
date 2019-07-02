@@ -26,7 +26,7 @@ Database model
 --------------
 
 These models can be found in
-:ref:`the models\_msp module<steambird.models\_msp>`.
+:ref:`the models.msp module<steambird.models.msp>`.
 
 .. graphviz:: msp_db_model.dot
 
