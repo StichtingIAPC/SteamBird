@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from steambird.models_site_config import Config
 
+# pylint: disable=invalid-name
 register = template.Library()
 
 
