@@ -25,6 +25,7 @@ pages:
             - .cache/pipenv
             - .cache/pip
     before_script:
+        - apt update
         - apt install graphviz
         - pip install pipenv
         - pipenv install -d --deploy --system
