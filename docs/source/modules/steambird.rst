@@ -17,6 +17,8 @@ steambird.admin module
    :undoc-members:
    :show-inheritance:
 
+.. _steambird.models\_coursetree:
+
 steambird.models\_coursetree module
 -----------------------------------
 
@@ -32,6 +34,8 @@ steambird.models\_materials module
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. _steambird.models\_msp:
 
 steambird.models\_msp module
 ----------------------------

@@ -32,6 +32,7 @@ sphinx-rtd-theme = "*"
 django-haystack = "*"
 sphinxcontrib-django = "*"
 sphinx-autodoc-annotation = "*"
+m2r = "*"
 
 [requires]
 python_version = "3.7"

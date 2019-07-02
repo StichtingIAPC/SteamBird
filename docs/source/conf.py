@@ -13,7 +13,11 @@
 import os
 import sys
 import django
+
 sys.path.insert(0, os.path.abspath('../..'))
+sys.path.append(os.path.abspath("./_ext"))
+
+# -- Activate Django ---------------------------------------------------------
 os.environ['DJANGO_SETTINGS_MODULE'] = 'steambird.settings'
 django.setup()
 
@@ -32,12 +36,19 @@ author = 'Stichting IAPC & SteamBird contributors'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.graphviz',
+    'sphinx.ext.viewcode',
     'sphinxcontrib_django',
     'sphinx_autodoc_annotation',
+    'm2r',
+    'django_urls',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# Add any markup suffices that are used here.
+source_suffix = ['.rst', '.md']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -57,6 +68,12 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_show_sourcelink = True
+html_copy_source = True
+
+html_context = {
+    'source_url_prefix': "https://git.iapc.utwente.nl/www/steambird/tree/master/docs/source/",
+}
 
 # -- Extension configuration -------------------------------------------------
 
