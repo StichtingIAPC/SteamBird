@@ -1,0 +1,67 @@
+// vim: ts=4:sts=4:sw=4:expandtab
+
+graph MSP_MODEL {
+    rankdir=LR;
+
+    MSP [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>MSP</i></td></tr>
+    <tr><td port="pk">pk: PRIMARY</td></tr>
+</table>
+>, shape=plain]
+   MSPLine [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>MSPLine</i></td></tr>
+    <tr><td port="pk">pk: PRIMARY</td></tr>
+    <tr><td port="msp">msp_pk: ID</td></tr>
+    <tr><td port="materials">material_pk: ID</td></tr>
+    <tr><td port="type">type_pk: ID</td></tr>
+    <tr><td>comment: TEXT</td></tr>
+    <tr><td>seq: INT</td></tr>
+    <tr><td>UNIQ (msp_pk, seq)</td></tr>
+</table>
+>, shape=plain]
+
+    MaterialEdition [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>MaterialEdition (External)</i></td></tr>
+</table>
+>, shape=plain]
+
+    MSPLineType [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>MSPLineType: Enum</i></td></tr>
+    <tr><td>REQUEST_MATERIAL<br/>
+AVAILABLE_MATERIALS<br/>
+APPROVE_MATERIAL
+</td></tr>
+</table>
+>, shape=plain]
+
+    Teacher [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Teacher (External)</i></td></tr>
+</table>
+>, shape=plain]
+
+    MSP_Teacher [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>MSP_Teacher</i></td></tr>
+    <tr><td port="msp">msp: ID</td></tr>
+    <tr><td port="teacher">teacher: ID</td></tr>
+</table>
+>, shape=plain]
+
+    Course [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Course (External)</i></td></tr>
+</table>
+>, shape=plain]
+
+    MSP:pk -- MSPLine:msp
+    MSP:pk -- MSP_Teacher:msp
+    MSP:pk -- Course
+    MSPLine:type -- MSPLineType
+    MSPLine:materials -- MaterialEdition
+    MSP_Teacher:teacher -- Teacher
+}

@@ -14,8 +14,8 @@ class StudyMaterial(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _("Study Material")
-        verbose_name_plural = _("Study Materials")
+        verbose_name = _("Study Material Collection")
+        verbose_name_plural = _("Study Material Collections")
 
 
 class StudyMaterialEdition(PolymorphicModel):

@@ -122,7 +122,7 @@ LANGUAGES = [
     ('en', _('English')),
 ]
 
-LANGUAGE_CODE = 'nl'
+LANGUAGE_CODE = 'en'
 
 
 TIME_ZONE = 'Europe/Amsterdam'

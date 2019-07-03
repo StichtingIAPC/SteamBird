@@ -28,7 +28,9 @@
 {% block content %}
     <div class="container">
         <div class="spacing"></div>
-        <h1>{% trans "Material selection process for" %} <i>{{ msp }}</i></h1>
+        <h1>
+            {% trans "Material selection process for" %} <i>{{ msp }}</i>
+        </h1>
         <hr class="mb-0" />
         <ul class="timeline mb-0 pb-1">
             {% for line in lines %}
@@ -38,8 +40,9 @@
         {% if not finished %}
             <div class="card">
                 <div class="card-header">
-                    <span
-                        class="card-title">{% trans "Suggest another" %}</span>
+                    <span class="card-title">
+                        {% trans "Suggest another" %}
+                    </span>
                 </div>
                 <form class="card-body" method="post">
                     {% csrf_token %}
@@ -47,13 +50,17 @@
                         <label class="col-md-3 col-sm-12 font-weight-bold" for="{{ form.materials.id_for_label }}">
                             {% trans "Materials" %}:
                         </label>
-                        <div class="col-lg-6 col-md-9 col-sm-12 select2-child-sizing">{{ form.materials }}</div>
+                        <div class="col-lg-6 col-md-9 col-sm-12 select2-child-sizing">
+                            {{ form.materials }}
+                        </div>
                     </div>
                     <div class="row form-group">
                         <label class="col-md-3 col-sm-12 font-weight-bold" for="{{ form.comment.id_for_label }}">
                             {% trans "Comment" %}:
                         </label>
-                        <div class="col-lg-6 col-md-9 col-sm-12 input-child-w100">{{ form.comment }}</div>
+                        <div class="col-lg-6 col-md-9 col-sm-12 input-child-w100">
+                            {{ form.comment }}
+                        </div>
                     </div>
                     <input type="submit" value="{% trans "Suggest" %}"
                            class="btn btn-success"/>

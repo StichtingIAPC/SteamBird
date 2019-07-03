@@ -6,8 +6,7 @@ from typing import Optional, Any
 
 from django.db.models import Count, Q
 from django.forms import Form
-from django.http import HttpRequest, Http404
-from django.http import HttpResponse
+from django.http import HttpRequest, Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -15,18 +14,17 @@ from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView, TemplateView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import CourseForm, TeacherForm, StudyCourseForm, \
-    ConfigForm, LmlExportForm
-from steambird.models import Config, MSP, MSPLineType, MSPLine, Book
-from steambird.models import Study, Course, Teacher, CourseStudy
-from steambird.models_coursetree import Period
+from steambird.boecie.forms import ConfigForm, CourseForm, TeacherForm, StudyCourseForm, \
+    LmlExportForm
+from steambird.models import Book, Config, MSP, Study, Course, Teacher, CourseStudy,  MSPLineType, MSPLine
+from steambird.models.coursetree import Period
 from steambird.perm_utils import IsStudyAssociationMixin, IsBoecieMixin
 from steambird.teacher.forms import PrefilledSuggestAnotherMSPLineForm, \
     PrefilledMSPLineForm
 from steambird.util import MultiFormView
 
 
-class HomeView(IsBoecieMixin, View):
+class HomeView(IsStudyAssociationMixin, View):
     # pylint: disable=no-self-use
     def get(self, request):
         context = {
@@ -238,9 +236,8 @@ class TeacherEditView(IsStudyAssociationMixin, UpdateView):
     # pylint: disable=arguments-differ
     def get_context_data(self):
         result = super(TeacherEditView, self).get_context_data()
-        result['courses'] = Teacher.objects.get(pk=self.kwargs['pk']).all_courses_period(
-            year=Config.get_system_value('year'),
-            period=Config.get_system_value('period')
+        result['courses'] = Teacher.objects.get(pk=self.kwargs['pk']).all_courses_year(
+            year=Config.get_system_value('year')
         )
         return result
 
@@ -263,9 +260,24 @@ class TeacherDeleteView(IsStudyAssociationMixin, DeleteView):
     template_name = 'boecie/teacher_confirm_delete.html'
 
 
-class StudyCourseView(IsStudyAssociationMixin, FormView):
-    form_class = StudyCourseForm(has_course_field=True)
-    template_name = 'boecie/studycourse_form.html'
+class CourseStudyListView(IsStudyAssociationMixin, ListView):
+    template_name = 'boecie/coursestudy.html'
+    model = CourseStudy
+    context_object_name = 'coursestudy_relation'
+
+    def get_queryset(self):
+        config = Config.objects.first()
+        result = CourseStudy.objects.filter(
+            course__calendar_year=config.year).order_by('study__name')\
+            .prefetch_related('course', 'study')
+        return result
+
+
+class CourseStudyDeleteView(IsBoecieMixin, DeleteView):
+    template_name = 'boecie/coursestudy_confirm_delete.html'
+    model = CourseStudy
+    context_object_name = 'coursestudy_relation'
+    success_url = reverse_lazy('boecie:coursestudy.list')
 
 
 class LmlExport(IsStudyAssociationMixin, FormView):

@@ -2,8 +2,8 @@ from django.urls import path
 
 from steambird.boecie.views import CourseCreateView, CourseUpdateView, \
     HomeView, StudyDetailView, TeacherCreateView, TeacherDeleteView, \
-    TeacherEditView, TeachersListView, StudyCourseView, LmlExport, ConfigView, \
-    CoursesListView, MSPDetail
+    CourseStudyListView, CourseStudyDeleteView, TeacherEditView, TeachersListView, \
+    LmlExport, ConfigView, CoursesListView, MSPDetail
 
 # pylint: disable=invalid-name
 urlpatterns = [
@@ -26,7 +26,9 @@ urlpatterns = [
          name='teacher.delete'),
     path('msp/<int:pk>', MSPDetail.as_view(), name='msp.detail'),
 
-    path('test', StudyCourseView.as_view(), name='studycourse'),
+    path('coursestudyrelations', CourseStudyListView.as_view(), name='coursestudy.list'),
+    path('coursestudyrelations/<int:pk>/delete', CourseStudyDeleteView.as_view(),
+         name='coursestudy.delete'),
 
     path('config/<int:pk>', ConfigView.as_view(), name='config'),
     # path('lml_export/', LmlExportOverView.as_view(), name='lmlexport.overview'),
