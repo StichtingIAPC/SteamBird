@@ -25,3 +25,11 @@ UT URL mapper
    :members:
    :undoc-members:
    :show-inheritance:
+
+Period Footer
+--------------
+
+.. automodule:: steambird.templatetags.period_footer
+   :members:
+   :undoc-members:
+   :show-inheritance:

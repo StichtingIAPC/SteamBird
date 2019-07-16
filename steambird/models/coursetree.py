@@ -254,7 +254,7 @@ class Course(models.Model):
     materials = models.ManyToManyField(
         'MSP',
         blank=True,
-        verbose_name=_("Materials that are required by this study"),
+        verbose_name=_("Materials that are required by this course"),
     )
     sub_courses = models.ManyToManyField(
         'Course',
