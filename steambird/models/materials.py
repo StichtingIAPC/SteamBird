@@ -19,7 +19,7 @@ class StudyMaterial(models.Model):
 
 
 class StudyMaterialEdition(PolymorphicModel):
-    # Could be derived from either OID or ISBN
+    # Could be derived from either DOI or ISBN
     name = models.CharField(null=False,
                             blank=False,
                             max_length=255,

@@ -1,3 +1,7 @@
+"""
+This module contains the Django Form classes which are used in the Boecie views.
+"""
+
 from enum import Enum, auto
 
 from django import forms

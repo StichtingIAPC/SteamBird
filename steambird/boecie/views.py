@@ -1,3 +1,7 @@
+"""
+This module contains all the Views which setup the data used in the Boecie admin-side templates.
+"""
+
 import csv
 import datetime
 import io
@@ -234,6 +238,7 @@ class CourseUpdateView(IsStudyAssociationMixin, MultiFormView):
 
         Context description:
             context['is_edit'] -> Bool which returns True if Edit view
+
             context['has_next'} -> Query based bool, is true if there is another not yet updated \
             course
 
@@ -453,7 +458,7 @@ class LmlExport(IsStudyAssociationMixin, FormView):
     def form_valid(self, form: Form) -> HttpResponse:
         """
         Validates if the form submitted contains valid options, returns a download for
-        those options
+        those options.
 
         :param form: Django Form object
         :return: Django HttpResponse object
@@ -563,12 +568,22 @@ class LmlExport(IsStudyAssociationMixin, FormView):
 
 
 class ConfigView(UpdateView):
+    """
+    This view is to edit the site-wide config.
+    """
+
     template_name = 'boecie/config.html'
     model = Config
     form_class = ConfigForm
 
-    def form_valid(self, form):
-        form.instance.pk = 1
+    def form_valid(self, form: Form) -> HttpResponseRedirect:
+        """
+        If the form is valid, this will be triggered.
+
+        :param form: The submitted form
+        :return: Django HttpResponseRedirect
+        """
+
         form.save()
         return redirect(reverse_lazy('boecie:config', kwargs={'pk': 1}))
         # TODO: make this universal for more associations instead of just us, then pk will
