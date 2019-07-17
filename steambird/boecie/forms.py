@@ -18,8 +18,8 @@ from steambird.models import Course, Teacher, CourseStudy, Study, Config
 
 class CourseForm(forms.ModelForm):
     """
-    ModelForm for either showing/editing or inputting information related to a course. Makes use of the
-    Materials model and Teachers model.
+    ModelForm for either showing/editing or inputting information related to a course. Makes use of
+    the Materials model and Teachers model.
     """
 
     teachers = Course.teachers
@@ -101,14 +101,14 @@ def StudyCourseForm(has_course_field: bool = False):
     link information between studies anc courses.
 
     E.g.
-
         form_class = StudyCourseForm(True)
-    Will return a form with Course field and Study-year visible, study-field is hidden input.
 
+        Will return a form with Course field and Study-year visible, study-field is hidden input.
+
+    While:
         form_class = StudyCourseForm(False)
-    Will return  a form with Study field and Study-year visible, Course-field is hidden input.
 
-
+        Will return  a form with Study field and Study-year visible, Course-field is hidden input.
 
     :param has_course_field: bool
     :return: ModelForm with either Study or Course field

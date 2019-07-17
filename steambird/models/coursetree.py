@@ -1,3 +1,7 @@
+"""
+This package contains all the setup and definitions used to define anything related to Studies and
+Courses within SteamBird.
+"""
 from enum import Enum, IntEnum
 from typing import List, Optional
 
@@ -9,12 +13,18 @@ from steambird.models.user import Teacher, StudyAssociation
 
 
 class StudyType(Enum):
+    """
+    Simple Enum containing the StudyType options: Bachelor, Master, Premaster
+    """
     bachelor = 'BACHELOR'
     master = 'MASTER'
     premaster = 'PREMASTER'
 
 
 class Period(Enum):
+    """
+    An enum containing all period options so that it only needs to be defined only once
+    """
     Q1 = "Quartile 1"
     Q2 = "Quartile 2"
     Q3 = "Quartile 3"
@@ -27,6 +37,12 @@ class Period(Enum):
     FULL_YEAR = "Full year course"
 
     def sorting_index(self):
+        """
+        Method which returns the pre-defined sorting order. Makes Periods comparable and is used by
+        the Period.__gt__ and Period.__lt__ operators
+
+        :return:
+        """
         return {
             Period.Q1: 0x01,
             Period.Q2: 0x02,
@@ -40,16 +56,39 @@ class Period(Enum):
             Period.FULL_YEAR: 0x30
         }[self]
 
-    def __gt__(self, other: 'Period'):
+    def __gt__(self, other: 'Period') -> bool:
+        """
+        Greater than operator definition for Period comparison
+
+        :param other: The other Period to compare with
+        :return: A bool which is true if self is bigger than the other Period object
+        """
         return self.sorting_index() > other.sorting_index()
 
-    def __lt__(self, other: 'Period'):
+    def __lt__(self, other: 'Period') -> bool:
+        """
+        Less than operator definition for Period comparison
+
+        :param other: The other Period to compare with
+        :return: A bool which is true if self is smaller (less) than the other Period object
+        """
         return self.sorting_index() < other.sorting_index()
 
-    def is_quartile(self):
+    def is_quartile(self) -> bool:
+        """
+        Simple method which returns true if a Period is a quartile
+
+        :return: bool
+        """
         return self in [Period.Q1, Period.Q2, Period.Q3, Period.Q4, Period.Q5]
 
     def parent(self) -> Optional['Period']:
+        """
+        Method which returns the parents of a Period
+
+        :return: Usually a Period, or None
+        """
+
         if self in [Period.Q1, Period.Q2]:
             return Period.S1
         if self in [Period.Q3, Period.Q4]:
@@ -63,6 +102,12 @@ class Period(Enum):
         return None
 
     def children(self) -> List['Period']:
+        """
+        Method which returns the children of a Period
+
+        :return: List of Periods, List can be empty
+        """
+
         if self == Period.S1:
             return [Period.Q1, Period.Q2]
         if self == Period.S2:
@@ -75,7 +120,13 @@ class Period(Enum):
             return [Period.YEAR, Period.S3]
         return []
 
-    def all_children(self):
+    def all_children(self) -> List['Period']:
+        """
+        Method which returns all children of a Period. Recursively adds until there is no further
+        child object to be found
+
+        :return: List of Periods that are children of requested period
+        """
         result = []
         for child in self.children():
             result += child.all_children()
@@ -84,6 +135,12 @@ class Period(Enum):
         return sorted(result)
 
     def all_parents(self) -> List['Period']:
+        """
+        Method which returns all parents of a Period. Recursively adds until there is no further
+         child object to be found
+
+        :return: List of Periods that are parents of requested period
+        """
         result = []
         parent = self.parent()
         if parent:
@@ -93,16 +150,38 @@ class Period(Enum):
 
 
 class StudyYear(IntEnum):
+    """
+    Integer Enum which contains possible Years of a study. This represents the year of nominal study
+    in which a student would do a course. It's usage is to figure out when a course is followed in
+    e.g. course-study. Combined with Period you can create an overview such that you have a Yx-Qy or
+    Period 12 for Y3-Q4
+    """
+
     Y1 = 1
     Y2 = 2
     Y3 = 3
     Y4 = 4
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        Returns string representation as Year {year-value}
+
+        :return: String representation
+        """
         return _("Year {}").format(self.value)
 
 
 class Study(models.Model):
+    """
+    All data related to a Study is stored in this model.
+
+    Example Row:
+        type= BACHELOR, name="Creative Technology", slug="CreaTe"
+
+    String Representation:
+        <Study name> (<Study Type>)
+    """
+
     type = models.CharField(
         max_length=max([len(t.value) for t in StudyType]),
         choices=[(t.name, t.value) for t in StudyType],
@@ -128,6 +207,17 @@ class Study(models.Model):
 
 
 class CourseStudy(models.Model):
+    """
+    CourseStudy defines the linking between a study and a course. Instead of a M2M interface, we use
+    a self-defined M2M model as the same course might be given to different studies in different
+    study-years.
+
+    Example Row:
+        study = Study object id, course = Course object id, study_year = :any:`StudyYear` option
+
+    String Representation:
+        <Study Name> (Year: <Study Year>) <-> <Course name> (<Course code>)
+    """
     study = models.ForeignKey(Study, on_delete=models.CASCADE)
     course = models.ForeignKey('Course', on_delete=models.CASCADE)
     study_year = models.IntegerField(
@@ -218,6 +308,19 @@ class CourseQuerySet(models.QuerySet):
 
 
 class Course(models.Model):
+    """
+    Model in which course-objects are stored. This model mirrors most of Osiris, where some entries
+    are taken to a different model for less data redundancy. Stores related teachers outside the
+    Coordinator by a M2M relation. Study Materials (MSP's) also uses an M2M relation to be stored.
+
+    Example Row:
+        name = 'Human Factors and Engineering', period = :any:`Period` option, \
+        calendar_year = 2018, coordinator = Teacher object id, course-code = 115545882, \
+        updated_association = True, updated_teacher = False
+
+    String Representation:
+        <Course Name> (<Calendar Year>, <Period>)
+    """
     objects = CourseQuerySet.as_manager()
 
     period_parents_and_self: Optional[List[str]]
@@ -299,6 +402,12 @@ class Course(models.Model):
 
     @property
     def all_teachers(self) -> List[Teacher]:
+        """
+        Method which returns both the coordinator and teachers of a study in a list. Filled in with
+        the information according to osiris
+
+        :return: List of all teachers helping out with a course.
+        """
         return [
             self.coordinator,
             *self.teachers,
@@ -331,6 +440,11 @@ class Course(models.Model):
 
     @property
     def directors(self) -> List[Teacher]:
+        """
+        Method which returns the study directors (OLD/OLC)
+
+        :return: List of directors, should generally not be empty
+        """
         return [
             *[
                 director
@@ -342,6 +456,12 @@ class Course(models.Model):
 
     @property
     def associations(self) -> List[StudyAssociation]:
+        """
+        Method which returns all the associations related to a course. Basically retrieve who can
+        edit the course from the backend
+
+        :return: List of StudyAssociations
+        """
         return [
             *[
                 association
@@ -352,18 +472,50 @@ class Course(models.Model):
         ]
 
     def teacher_can_edit(self, teacher: Teacher) -> bool:
+        """
+        Can a teacher suggest changes to a course, e.g. on MSP's? Returns true if teacher is either
+        coordinator of course or study directors
+
+        :param teacher: Teacher object of which we want to know if they can make suggestions
+        :return: Boolean
+        """
         return teacher in (self.coordinators + self.directors)
 
     def association_can_edit(self, association: StudyAssociation) -> bool:
+        """
+        Returns if an association can edit a specific course.
+
+        :param association: A studyassociation object
+        :return: Boolean
+        """
         return association in self.associations
 
     def teacher_can_manage_msp(self, teacher: Teacher) -> bool:
+        """
+        Can a teacher in some way or form manage a course? Returns true for coordinators, directors
+        and teachers.
+
+        :param teacher: Teachers object for which you want to check if they can manage
+        :return: boolean
+        """
         return teacher in (self.coordinators + self.directors + self.teachers)
 
     def association_can_manage_msp(self, association: StudyAssociation) -> bool:
+        """
+
+
+        :param association: Study association you want to check this for
+        :return:
+        """
         return association in self.associations
 
-    def falls_in(self, period: Period):
+    def falls_in(self, period: Period) -> bool:
+        """
+        Which periods does a period fall in? Returns true if self falls in given period
+
+        :param period: Period you want to check against
+        :return: Boolean
+        """
         return period.name in self.period_all
 
     def __str__(self):
