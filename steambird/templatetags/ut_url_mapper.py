@@ -8,7 +8,7 @@ register = template.Library()
 
 
 @register.simple_tag()
-def osiris_url(course_code, calendar_year):
+def osiris_url(course_code, calendar_year) -> str:
     """
     A template tag which resolves the params into a Osiris URL.
     Calendar Year is understood as Academic year which started in that year
@@ -25,7 +25,7 @@ def osiris_url(course_code, calendar_year):
 
 
 @register.simple_tag()
-def people_utwente(initials, surname_prefix, surname):
+def people_utwente(initials, surname_prefix, surname) -> str:
     """
     Template tag which resolves teacher names into a people.utwente.nl URL
 

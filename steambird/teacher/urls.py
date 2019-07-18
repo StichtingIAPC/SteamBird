@@ -1,7 +1,7 @@
 from django.urls import path
 
 from steambird.teacher.views import HomeView, ISBNDetailView, ISBNView, \
-    CourseView, MSPDetail, AddMSPView, ISBNSearchApiView, DOISearchApiView, DOIDetailView
+    CourseView, MSPDetail, AddMaterialView, ISBNSearchApiView, DOISearchApiView, DOIDetailView
 
 # pylint: disable=invalid-name
 app_name = 'teacher'
@@ -12,7 +12,7 @@ urlpatterns = [
     path('overview', CourseView.as_view(), name='courseview.list'),
 
     path('msp/<int:pk>', MSPDetail.as_view(), name='msp.detail'),
-    path('msp/new', AddMSPView.as_view(), name='msp.new'),
+    path('msp/new', AddMaterialView.as_view(), name='msp.new'),
 
     path('isbn/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
     path('isbn', ISBNView.as_view(), name='isbn'),

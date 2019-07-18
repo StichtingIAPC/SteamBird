@@ -12,7 +12,7 @@ register = template.Library()
 
 
 @register.simple_tag()
-def period_retrieval():
+def period_retrieval() -> str:
     """
     Template tag for retrieving the period
 
