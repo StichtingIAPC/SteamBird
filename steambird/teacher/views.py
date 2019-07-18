@@ -47,7 +47,7 @@ class ISBNView(IsTeacherMixin, FormView):
         isbn = form.data['isbn']
         return redirect(reverse('teacher:isbndetail', kwargs={'isbn': isbn}))
 
-    def form_invalid(self, form:Form) -> HttpResponse:
+    def form_invalid(self, form: Form) -> HttpResponse:
         return render(self.request, 'teacher/ISBN.html', {'form': form})
 
 
@@ -115,8 +115,8 @@ class AddMaterialView(IsTeacherMixin, View):
 
 class ISBNSearchApiView(LoginRequiredMixin, View):
     """
-    The 'API endpoint' view we use for retrieving data concerning books. It returns a JsonResponse with
-    the data found on the isbn parameter.
+    The 'API endpoint' view we use for retrieving data concerning books. It returns a JsonResponse
+    with the data found on the isbn parameter.
     """
 
     # pylint: disable=no-self-use
