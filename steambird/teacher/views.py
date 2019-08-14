@@ -1,8 +1,17 @@
+"""
+This module contains all the View related logic for any pages the teachers might see. It currently
+is more a set of tools which aren't integrated into a fluid process yet
+"""
 from json import dumps
+from typing import Union, Dict, Any
 from urllib.parse import quote, unquote
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import QuerySet
+from django.forms import Form
+from django.http import Http404, JsonResponse, HttpResponseBadRequest, HttpResponseNotFound, \
+    HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
@@ -17,26 +26,42 @@ from .forms import ISBNForm, PrefilledMSPLineForm, \
 
 
 class HomeView(IsTeacherMixin, View):
-
+    """
+    The Homeview for teachers, is still pretty empty and could be improved upon.
+    """
     # pylint: disable=no-self-use
-    def get(self, request):
+    def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, "teacher/home.html")
 
 
 class ISBNView(IsTeacherMixin, FormView):
+    """
+    Original ISBN lookup view written pre 'Add Material' option. Still does the lookup, usage
+    should be discouraged for anything else than testing purposes.
+    """
+
     form_class = ISBNForm
     template_name = 'teacher/ISBN.html'
 
-    def form_valid(self, form):
+    def form_valid(self, form: Form) -> HttpResponseRedirect:
         isbn = form.data['isbn']
         return redirect(reverse('teacher:isbndetail', kwargs={'isbn': isbn}))
 
-    def form_invalid(self, form):
+    def form_invalid(self, form: Form) -> HttpResponse:
         return render(self.request, 'teacher/ISBN.html', {'form': form})
 
 
 class ISBNDetailView(IsTeacherMixin, View):
-    def get(self, _request, isbn):
+    def get(self, _request, isbn: str) -> HttpResponse:
+        """
+        Does the actual work in the lookup. Retrieves the data using an isbnlib tool. Returns a
+        Django HttpResponse that contains a result. Result contains either data or the
+        retrieved_data error
+
+        :param _request:
+        :param isbn: ISBN which is being looked up
+        :return: HttpResponse
+        """
         isbn_data = isbn_lookup(isbn)
         result = {'book': isbn_data}
 
@@ -46,12 +71,25 @@ class ISBNDetailView(IsTeacherMixin, View):
         return render(self.request, 'teacher/book.html', result)
 
 
-class AddMSPView(IsTeacherMixin, View):
-    def get(self, _request):
+class AddMaterialView(IsTeacherMixin, View):
+    """
+    View which shows the choice-menu and handles what happens with post-data. Creates a new Material
+     object of chosen type
+    """
+    def get(self, _request) -> HttpResponse:
         return render(self.request, 'teacher/new_studymaterial.html')
 
     # pylint: disable=no-self-use
-    def post(self, request):
+    def post(self, request) -> Union[HttpResponseBadRequest, HttpResponseRedirect, HttpResponse]:
+        """
+        This method handles all the responses which might be submitted using the template, fills in
+        the form and validates it before returning a specific return url. Take care when working
+        with the DOI, as this is quoted to be safe to handled on post. Unquoted DOI's will break
+        and fail due to the use of '/' in them
+
+        :param request: Probably a Django HttpRequest
+        :return: Bad request or a redirect to the page the right data, or a response with errors
+        """
         material_type = request.POST.get('type')
 
         # Set all book related variables
@@ -76,8 +114,20 @@ class AddMSPView(IsTeacherMixin, View):
 
 
 class ISBNSearchApiView(LoginRequiredMixin, View):
+    """
+    The 'API endpoint' view we use for retrieving data concerning books. It returns a JsonResponse
+    with the data found on the isbn parameter.
+    """
+
     # pylint: disable=no-self-use
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Union[HttpResponseNotFound, JsonResponse]:
+        """
+        Makes a call to the isbn_lookup tool which either returns a JSON response of data, or
+        returns a HttpResponseNotFound if nothing can be found
+
+        :param request: HttpRequest Object
+        :return: Either a response, or the string "No data was found for given ISBN"
+        """
         isbn = request.GET['isbn']
         isbn_data = isbn_lookup(isbn)
 
@@ -91,8 +141,20 @@ class ISBNSearchApiView(LoginRequiredMixin, View):
 
 
 class DOISearchApiView(LoginRequiredMixin, View):
+    """
+    The 'API endpoint' view  we use for retrieving data concerning Scientific articles. It returns a
+    JsonResponse with the data found on the DOI parameter
+    """
+
     # pylint: disable=no-self-use
-    def get(self, request):
+    def get(self, request: HttpRequest) -> Union[HttpResponseNotFound, JsonResponse]:
+        """
+        Method which makes a call to the doi_lookup tool. Retrieves a lot of data, which all
+        returned and sifted through on the front-end
+
+        :param request: HttpRequest object
+        :return: Either a HttpResponseNotFound or a JsonResponse if successful
+        """
         doi = request.GET['doi']
         doi_data = doi_lookup(doi)
 
@@ -106,19 +168,41 @@ class DOISearchApiView(LoginRequiredMixin, View):
 
 
 class DOIDetailView(LoginRequiredMixin, DetailView):
+    """
+    View which presents the object related the doi passed on in the kwargs. DOI needs to be safe to
+    be handled, meaning it should be quoted before passing on to this view. This is due to '/' in
+    DOI's
+    """
     model = ScientificArticle
     template_name = 'teacher/DOI.html'
 
-    def get_object(self, queryset=None):
+    def get_object(self, queryset=None) -> Union[QuerySet, ObjectDoesNotExist]:
+        """
+        Get the object for the view to display. kwargs['doi'] should be a quoted verion of the ODI
+
+        :param queryset:
+        :return: Queryset or EmptyQueryset
+        """
         queryset = queryset or ScientificArticle
         doi = unquote(self.kwargs['doi'])
         return queryset.objects.get(DOI=doi)
 
 
 class CourseView(IsTeacherMixin, TemplateView):
+    """
+    View which returns a list with all courses a teacher gives. Currently has no filters for
+    coordinators or teachers, and just works on the teachers ID
+    """
     template_name = 'teacher/courseoverview.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Union[Dict[str, Any], Http404]:
+        """
+        Method to get and setup context data. Retrieves all courses of the current active period and
+        return them in a list.
+
+        :param kwargs: Dict object
+        :return:
+        """
         data = super().get_context_data(**kwargs)
 
         data['year'] = Config.get_system_value('year')
@@ -158,7 +242,7 @@ class MSPDetail(IsTeacherMixin, FormView):
             'pk': self.kwargs.get("pk"),
         })
 
-    def form_valid(self, form):
+    def form_valid(self, form: Form) -> HttpResponseRedirect:
         """
         Makes sure the data is saved after submission.
 
@@ -168,7 +252,7 @@ class MSPDetail(IsTeacherMixin, FormView):
         form.save(commit=True)
         return super().form_valid(form)
 
-    def get_initial(self):
+    def get_initial(self) -> dict:
         """
         Fills in initial data for the primary form. The primary form is the
         form at the bottom of the page, where the teacher can request other
@@ -182,13 +266,13 @@ class MSPDetail(IsTeacherMixin, FormView):
 
         return initial
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         """
         Constructs the context (apart from the primary form). This means that it
         will generate all secondary forms, and meta data for allowing proper
         and nice-looking renderings of the view.
 
-        :param kwargs: ¯\\_(ツ)_/¯
+        :param kwargs: Dict of any kwargs passed as defined in the URL listing
         :return: a context
         """
         try:
