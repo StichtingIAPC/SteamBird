@@ -2,7 +2,13 @@
 
 
 {{ form.errors }}
-<form style="display: none;" id="book-add" class="form-add" method="post" action="{% url "teacher:msp.new" %}">
+<form style="display: none;"
+      id="book-add"
+      class="form-add"
+      data-toggle="validator"
+      role="form"
+      method="post"
+      action="{% url "teacher:msp.new" %}">
     {% csrf_token %}
     <input type="text"
            class="form-control"
@@ -11,7 +17,7 @@
            value="book"
            hidden/>
 
-    <div class="form-group required">
+    <div class="form-group required was-validated">
         <label for="book-add-isbn" class="control-label">
             {% trans 'ISBN' %}
         </label>
@@ -21,7 +27,10 @@
                    name="ISBN"
                    id="book-add-isbn"
                    placeholder="{% trans 'ISBN' %}"
-                   onkeyup="this.value=this.value.replace(/[^\w\d]/g,'')"/> {# TODO check if this doesn't break stuff (see gitlab Issue on ISBN number) #}
+                   pattern="[0-9\-xX]{3,}"
+                   data-error="ISBN can only contain numbers, dashes (-), and a X's" required
+            />
+{#                   onkeyup="this.value=this.value.replace(/[^0-9\-xX]/g,'')"/> {# TODO check if this doesn't break stuff (see gitlab Issue on ISBN number) #}
             <span class="input-group-append">
                 <button id="book-add-isbn-search"
                         type="button"
@@ -29,6 +38,7 @@
                     {% trans 'Search' %}
                 </button>
             </span>
+            <div class="invalid-feedback">ISBN can only contain numbers, dashes (-), and a X's</div>
         </span>
     </div>
 
