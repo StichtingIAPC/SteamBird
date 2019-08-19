@@ -17,7 +17,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView, DetailView
 
-from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle, Config
+from steambird.models import Teacher, MSP, MSPLineType, ScientificArticle, Config, Book
 from steambird.models.msp import MSPLine
 from steambird.perm_utils import IsTeacherMixin
 from steambird.teacher.tools import isbn_lookup, doi_lookup
@@ -45,23 +45,18 @@ class ISBNView(IsTeacherMixin, FormView):
 
     def form_valid(self, form: Form) -> HttpResponseRedirect:
         isbn = form.data['isbn']
-        return redirect(reverse('teacher:isbndetail', kwargs={'isbn': isbn}))
+        return redirect(reverse('isbnlookup', kwargs={'isbn': isbn}))
 
     def form_invalid(self, form: Form) -> HttpResponse:
         return render(self.request, 'teacher/ISBN.html', {'form': form})
 
 
-class ISBNDetailView(IsTeacherMixin, View):
-    def get(self, _request, isbn: str) -> HttpResponse:
-        """
-        Does the actual work in the lookup. Retrieves the data using an isbnlib tool. Returns a
-        Django HttpResponse that contains a result. Result contains either data or the
-        retrieved_data error
-
-        :param _request:
-        :param isbn: ISBN which is being looked up
-        :return: HttpResponse
-        """
+class ISBNLookupView(IsTeacherMixin, View):
+    """
+    A view which does a lookup based on the isbn givin in the URL. Does not show requested isbn's
+    stored info if we have any. For that, use :any:`ISBNDetailView`
+    """
+    def get(self, _request, isbn):
         isbn_data = isbn_lookup(isbn)
         result = {'book': isbn_data}
 
@@ -138,6 +133,19 @@ class ISBNSearchApiView(LoginRequiredMixin, View):
             )
 
         return JsonResponse(isbn_data)
+
+
+class ISBNDetailView(LoginRequiredMixin, DetailView):
+    """
+    Shows details we have stored on a given ISBN. Can return an error when object does not exist
+    """
+    model = Book
+    template_name = 'teacher/bookdetail.html'
+
+    def get_object(self, queryset=None):
+        queryset = queryset or Book
+        isbn = self.kwargs['isbn']
+        return queryset.objects.get(ISBN=isbn)
 
 
 class DOISearchApiView(LoginRequiredMixin, View):
