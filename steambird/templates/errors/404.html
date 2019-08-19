@@ -1,0 +1,18 @@
+{% extends "www/base.html" %}
+{% load i18n %}
+
+{% block page_title %}
+    {% trans 'Page not found' %}
+{% endblock page_title %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>{% trans 'Page not found' %}</h2>
+            <div class="textmodule-text">
+                {% trans 'The requested page does not exist.' %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

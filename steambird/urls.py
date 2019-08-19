@@ -1,5 +1,6 @@
 from pkgutil import find_loader
 
+from django.conf.urls import handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
@@ -22,6 +23,12 @@ urlpatterns = [
     path('boecie/', include('steambird.boecie.urls')),
 ] + pysidian_core_urls
 
+# https://docs.djangoproject.com/en/2.1/topics/http/views/#customizing-error-views
+handler404 = 'steambird.views.handler404'
+handler500 = 'steambird.views.handler500'
+handler403 = 'steambird.views.permission_denied'
+handler400 = 'steambird.views.bad_request'
+
 if settings.DEBUG:
     import debug_toolbar
 
@@ -36,3 +43,6 @@ if find_loader('django_uwsgi'):
     urlpatterns = [
         path('admin/uwsgi/', include('django_uwsgi.urls')),
     ] + urlpatterns
+
+
+

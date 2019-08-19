@@ -1,0 +1,37 @@
+{% extends "www/base.html" %}
+{% load i18n %}
+
+{% block page_title %}
+    {% trans 'Page not found' %}
+{% endblock page_title %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>{% trans 'Access denied' %}</h2>
+            <div>
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        {% trans '403: Access denied' %}
+                    </div>
+                    <div class="panel-body">
+                        <p>{% trans 'You do not have access to the requested page.' %}</p>
+                        {% if reason %}<p><b>{% trans 'Reason' %}: </b>{{ reason }}</p>{% endif %}
+                    </div>
+                </div>
+                {% if not request.user.is_authenticated %}
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            {% trans 'Login' %}
+                        </div>
+                        <div class="panel-body">
+                            {% blocktrans with path=request.path %}You might want to
+                                <a href="/login/?next={{ path }}">login</a>.{% endblocktrans %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

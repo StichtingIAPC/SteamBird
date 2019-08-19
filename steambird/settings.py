@@ -14,13 +14,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g+9hmm0y!48$_vaj=0&=mr%=pdd*c7&i&@8a)t=qow-!fh6vs!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "True") in ["True", "1", "true"]
+# DEBUG = os.getenv("DEBUG", "True") in ["True", "1", "true"]
+DEBUG = False
 
 INTERNAL_IPS = ('127.0.0.1',)
 ALLOWED_HOSTS = ([
     '127.0.0.1',
     'localhost'
 ] if DEBUG else ['*'])
+
 
 
 # Application definition
