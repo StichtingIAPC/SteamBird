@@ -6,7 +6,9 @@
     Steambird Teacher
 {% endblock %}
 
-{% block page_title %}{% trans "Steambird Teacher" %}{% endblock %}
+{% block page_title %}
+    {% trans "Steambird Teacher" %}
+{% endblock %}
 
 {% block nav_items %}
     {% url 'teacher:index' as home %}
@@ -15,19 +17,27 @@
     {% url 'teacher:courseview.list' as courseview %}
 
     <li class="{% active_menu home %}">
-        <a class="nav-link" href="{{ home }}">{% trans "Home" %}</a>
+        <a class="nav-link" href="{{ home }}">
+            {% trans "Home" %}
+        </a>
     </li>
     <li class="{% active_menu isbn %}">
         <a class="nav-link"
-           href="{{ isbn }}">{% trans "ISBN" %}</a>
+           href="{{ isbn }}">
+            {% trans "ISBN" %}
+        </a>
     </li>
     <li class="{% active_menu msp_create %}">
         <a class="nav-link"
-           href="{{ msp_create }}">{% trans "Create Article" %}</a>
+           href="{{ msp_create }}">
+            {% trans "Create Article" %}
+        </a>
     </li>
     <li class="{% active_menu courseview %}">
         <a class="nav-link"
-           href="{{ courseview }}">{% trans "Course Overview" %}</a>
+           href="{{ courseview }}">
+            {% trans "Course Overview" %}
+        </a>
     </li>
 
 {% endblock %}

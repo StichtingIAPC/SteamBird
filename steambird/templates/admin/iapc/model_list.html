@@ -3,28 +3,48 @@
     {% for app in app_list %}
         <div class="app-{{ app.app_label }} card">
             <div class="card-header">
-                <a href="{{ app.app_url }}" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}" class="card-title">{{ app.name }}</a>
+                <a href="{{ app.app_url }}"
+                   title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}"
+                   class="card-title">{{ app.name }}</a>
             </div>
             <table class="card-body table table-hover">
                 {% for model in app.models %}
                     <tr class="model-{{ model.object_name|lower }}">
                         {% if model.admin_url %}
-                            <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+                            <th scope="row">
+                                <a href="{{ model.admin_url }}">
+                                    {{ model.name }}
+                                </a>
+                            </th>
                         {% else %}
-                            <th scope="row">{{ model.name }}</th>
+                            <th scope="row">
+                                {{ model.name }}
+                            </th>
                         {% endif %}
 
                         {% if model.add_url %}
-                            <td style="width:1px;white-space:nowrap;"><a href="{{ model.add_url }}" class="addlink">{% trans 'Add' %}</a></td>
+                            <td style="width:1px;white-space:nowrap;">
+                                <a href="{{ model.add_url }}" class="addlink">
+                                    {% trans 'Add' %}
+                                </a>
+                            </td>
                         {% else %}
                             <td>&nbsp;</td>
                         {% endif %}
 
                         {% if model.admin_url %}
                             {% if model.view_only %}
-                                <td style="width:1px;white-space:nowrap;"><a href="{{ model.admin_url }}" class="viewlink">{% trans 'View' %}</a></td>
+                                <td style="width:1px;white-space:nowrap;">
+                                    <a href="{{ model.admin_url }}" class="viewlink">
+                                        {% trans 'View' %}
+                                    </a>
+                                </td>
                             {% else %}
-                                <td style="width:1px;white-space:nowrap;"><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+                                <td style="width:1px;white-space:nowrap;">
+                                    <a href="{{ model.admin_url }}" class="changelink">
+                                        {% trans 'Change' %}
+                                    </a>
+                                </td>
                             {% endif %}
                         {% else %}
                             <td>&nbsp;</td>

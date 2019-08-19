@@ -1,3 +1,7 @@
+"""
+This module contains the Django Form classes which are used in the Boecie views.
+"""
+
 from enum import Enum, auto
 
 from django import forms
@@ -13,6 +17,11 @@ from steambird.models import Course, Teacher, CourseStudy, Study, Config
 
 
 class CourseForm(forms.ModelForm):
+    """
+    ModelForm for either showing/editing or inputting information related to a course. Makes use of
+    the Materials model and Teachers model.
+    """
+
     teachers = Course.teachers
     materials = Course.materials
 
@@ -28,7 +37,7 @@ class CourseForm(forms.ModelForm):
             'updated_teacher',
             'calendar_year',
             'coordinator',
-            'period'
+            'period',
         ]
 
         widgets = {
@@ -66,6 +75,10 @@ class CourseForm(forms.ModelForm):
 
 
 class TeacherForm(forms.ModelForm):
+    """
+    Modelform for viewing or editing data related to Teacher users.
+    """
+
     class Meta:
         model = Teacher
         fields = [
@@ -83,6 +96,24 @@ class TeacherForm(forms.ModelForm):
 
 # pylint: disable=invalid-name
 def StudyCourseForm(has_course_field: bool = False):
+    """
+    Function which returns a modelform for usage in a page. The function is used to create a form to
+    link information between studies anc courses.
+
+    E.g.
+        form_class = StudyCourseForm(True)
+
+        Will return a form with Course field and Study-year visible, study-field is hidden input.
+
+    While:
+        form_class = StudyCourseForm(False)
+
+        Will return  a form with Study field and Study-year visible, Course-field is hidden input.
+
+    :param has_course_field: bool
+    :return: ModelForm with either Study or Course field
+    """
+
     class _cls(forms.ModelForm):
         class Meta:
             model = CourseStudy
@@ -119,6 +150,12 @@ def StudyCourseForm(has_course_field: bool = False):
 
 
 class LmlExportOptions(Enum):
+    """
+    An enum used to define the options for which selections to export. Used as the export options
+    are association-linked and can contain Pre-Masters and Masters, which are less 'year' focused
+    than Bachelors tend to be.
+    """
+
     YEAR_1 = auto()
     YEAR_2 = auto()
     YEAR_3 = auto()
@@ -127,6 +164,13 @@ class LmlExportOptions(Enum):
 
 
 class LmlExportForm(forms.Form):
+    """
+    Form to offer users to download a CSV file containing books for the period
+    based on the options selected. Options are presented by LmlExportOptions, combined with Quartile
+    """
+
+    # TODO: make sure this will only give the downloads for books within your association
+    #  (e.g. we shouldn't get EE)
     option = forms.ChoiceField(choices=((i.value, i.name) for i in LmlExportOptions))
     period = forms.ChoiceField(
         choices=(('Q{}'.format(i), 'Quartile {}'.format(i)) for i in range(1, 5))
@@ -134,9 +178,14 @@ class LmlExportForm(forms.Form):
 
 
 class ConfigForm(forms.ModelForm):
+    """
+    Modelform to offer users the possibility to change the defined periods of the year. Currently
+    affects all users due to how the model is set up.
+    """
+
     class Meta:
         model = Config
         fields = [
             'year',
-            'period'
+            'period',
         ]

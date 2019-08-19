@@ -1,3 +1,6 @@
+"""
+This module contains all forms used in the teacher Views
+"""
 import isbnlib as i
 from django import forms
 from django.core.exceptions import ValidationError
@@ -7,11 +10,14 @@ from django.utils.translation import ugettext_lazy as _
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget
 
-from steambird.models_materials import StudyMaterialEdition, Book, ScientificArticle
-from steambird.models_msp import MSPLine
+from steambird.models.materials import StudyMaterialEdition, Book, ScientificArticle
+from steambird.models.msp import MSPLine
 
 
 class ISBNForm(forms.Form):
+    """
+    Simple form for searching a book. Should be removed in the future
+    """
     isbn = forms.CharField(label=_('ISBN number'), max_length=18, min_length=10)
 
     def clean(self):
@@ -26,6 +32,9 @@ class ISBNForm(forms.Form):
 
 
 class BookForm(forms.ModelForm):
+    """
+    Form for inputting book information. Makes use of the Book model.
+    """
     class Meta:
         model = Book
         fields = [
@@ -39,6 +48,9 @@ class BookForm(forms.ModelForm):
 
 
 class ScientificPaperForm(forms.ModelForm):
+    """
+    Form for inputting DOI information. Makes use of the ScientificArticle model.
+    """
     class Meta:
         model = ScientificArticle
         fields = [

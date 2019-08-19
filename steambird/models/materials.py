@@ -1,3 +1,8 @@
+"""
+This package contains all definitions and setup needed regarding materials. It is what can be
+considered the key point an MSP or MSP line is about
+"""
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -5,6 +10,10 @@ from polymorphic.models import PolymorphicModel
 
 
 class StudyMaterial(models.Model):
+    """
+    Study Material Collections. Can be used to describe collections of alike materials, such as
+    same book, different edition
+    """
     name = models.CharField(null=False,
                             blank=False,
                             max_length=255,
@@ -14,12 +23,20 @@ class StudyMaterial(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _("Study Material")
-        verbose_name_plural = _("Study Materials")
+        verbose_name = _("Study Material Collection")
+        verbose_name_plural = _("Study Material Collections")
 
 
 class StudyMaterialEdition(PolymorphicModel):
-    # Could be derived from either OID or ISBN
+    """
+    Polymorphic base definition. Contains the name and possibly the collection they belong to.
+    Objects can belong to only one collection. Generally, you only have to Query to this level for
+    materials, and make selections using eg the Polymorphic_ctype to check what it is.
+
+    String Representation:
+        String representation of sub-object
+    """
+
     name = models.CharField(null=False,
                             blank=False,
                             max_length=255,
@@ -42,6 +59,9 @@ class StudyMaterialEdition(PolymorphicModel):
 class OtherMaterial(StudyMaterialEdition):
     """"
     Use if material is any material other than a scientific article or a book
+
+    String Representation:
+        <name>
     """
 
     def __str__(self):
@@ -53,6 +73,14 @@ class OtherMaterial(StudyMaterialEdition):
 
 
 class Book(StudyMaterialEdition):
+    """
+    Model which extends StudyMaterial, adds the fields ISBN, author, image, year of publishing and
+    edition.
+
+    String Representation:
+        <ISBN>: <name>
+    """
+
     # pylint: disable=invalid-name
     ISBN = models.CharField(null=False,
                             unique=True,
@@ -81,6 +109,7 @@ class Book(StudyMaterialEdition):
     # noinspection PyPep8Naming,PyMethodMayBeStatic
     # pylint: disable=no-self-use,invalid-name
     def validate_ISBN(self, ISBN):
+        # said its not used? dont we have this be verified in our tools already?
         if len(ISBN) == 10 or len(ISBN) == 13:
             return
 
@@ -95,6 +124,16 @@ class Book(StudyMaterialEdition):
 
 
 class ScientificArticle(StudyMaterialEdition):
+    """
+    Extends Studymaterial to work for Scientific Articles that have a DOI. DOI is not required, so
+    some non-DOI items can also be added under this. This add's DOI (Digital Object Identifier),
+    author, year of publishing and url fields
+
+    String Representation:
+        <name> (<DOI>)  -> If DOI is not None
+        <name>          -> If DOI is None
+    """
+
     DOI = models.CharField(null=False,
                            blank=True,
                            unique=True,

@@ -1,0 +1,35 @@
+{% load i18n %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    {% blocktrans %}
+                        Courses given by <b>{{ teacher }}</b>
+                    {% endblocktrans %}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for course in courses %}
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-4">
+                                        {{ course.course_code }}
+                                        {# TODO: add course:detail link (rewrite boecie:course_detail to accept one instead of two kwargs #}
+                                    </div>
+                                    <div class="col-4">
+                                        {{ course.name }}
+                                    </div>
+                                    <div class="col-4">
+                                        {{ course.period }}
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
