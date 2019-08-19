@@ -15,9 +15,9 @@ urlpatterns = [
     path('msp/<int:pk>', MSPDetail.as_view(), name='msp.detail'),
     path('msp/new', AddMSPView.as_view(), name='msp.new'),
 
-    path('isbn/<str:isbn>', ISBNLookupView.as_view(), name='isbnlookup'),
+    path('isbn/search/<str:isbn>', ISBNLookupView.as_view(), name='isbnlookup'),
     path('isbn', ISBNView.as_view(), name='isbn'),
-    path('isbn/d/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
+    path('isbn/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
     path('doi/<str:doi>', DOIDetailView.as_view(), name='articledetail'),
 
 
