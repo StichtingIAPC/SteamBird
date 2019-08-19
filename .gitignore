@@ -12,3 +12,5 @@
 *.mo
 
 steambird/local.py
+
+docs/build/

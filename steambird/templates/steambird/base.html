@@ -6,6 +6,11 @@
 {% block brand_link %}{% url 'index' %}{% endblock %}
 {% block brand_text %}Steambird{% endblock %}
 
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "js/libs/0.11.9-validator.min.js" %}"></script>
+{% endblock %}
+
 {% block css %}
     {{ block.super }}
     <link href="{% static "css/steambird.less" %}" rel="stylesheet/less" type="text/css">
