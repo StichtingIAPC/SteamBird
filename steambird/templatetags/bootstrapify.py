@@ -1,3 +1,6 @@
+"""
+Filter to bootstrapify Django template form-tags
+"""
 from django import template
 from django.utils.safestring import mark_safe
 

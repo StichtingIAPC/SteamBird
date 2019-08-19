@@ -6,6 +6,11 @@ from django.http import HttpRequest
 
 
 class MultiFormView(views.generic.TemplateView):
+    """
+    Class which allows multiple Form objects to be on the same page. You can only ever submit one,
+    but the calling should be made easier with this
+    """
+
     forms: ClassVar[Dict[str, Type[Form]]] = {}
     """
     Dictionary of form_name->form class. These are the forms that should be

@@ -5,16 +5,25 @@ from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _, ugettext as _t
 
+from steambird.models.materials import StudyMaterialEdition
 from steambird.models.user import Teacher, StudyAssociation
 
 
 class MSPLineType(Enum):
+    """
+    Enum of possible values MPS lines
+    """
     request_material = 'REQUEST_MATERIAL'
     set_available_materials = 'SET_AVAILABLE_MATERIALS'
     approve_material = 'APPROVE_MATERIAL'
 
 
 class MSPLine(models.Model):
+    """
+    Definition of an MSP-line, which talks about how far along in the process we are and what
+    options might be offered at that point of time
+
+    """
     type = models.CharField(
         max_length=max([len(t.value) for t in MSPLineType]),
         choices=[(t.name, t.value) for t in MSPLineType],
@@ -32,7 +41,7 @@ class MSPLine(models.Model):
     )
     time = models.DateTimeField(auto_now_add=True)
     materials = models.ManyToManyField(
-        'StudyMaterialEdition',
+        StudyMaterialEdition,
         blank=True,
         verbose_name=_("Related study material(s)")
     )
