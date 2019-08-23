@@ -1,6 +1,6 @@
 from django.test import tag, TestCase
 
-from steambird.models_coursetree import Period
+from steambird.models.coursetree import Period
 
 
 # pylint: disable=invalid-name

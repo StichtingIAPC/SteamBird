@@ -43,16 +43,20 @@
                  id="nav-study-detail"
                  role="tabpanel"
                  aria-labelledby="stduy-detail-tab">
-                <h2>{{ study.name }}</h2>
+                <h2>
+                    {{ study.name }}
+                </h2>
                 <hr>
                 <a href="{% url 'boecie:course.create' study.pk %}" class="btn-link">
-                    <button class="btn btn-success btn-block"
-                            type="submit">
-                        {% trans "Add new course" %}</button>
+                    <button class="btn btn-success btn-block" type="submit">
+                        {% trans "Add new course" %}
+                    </button>
                 </a>
                 <br>
                 <hr>
-                <h3>{% trans "Courses to be updated:" %}</h3><br>
+                <h3>
+                    {% trans "Courses to be updated:" %}
+                </h3><br>
                 <div class="row">
                     <div class="table-responsive">
                         <table class="table table-striped">
@@ -72,14 +76,20 @@
                             {% for course in courses_not_updated %}
                                 <tr>
                                     <td>
-                                        <a href="{% url 'boecie:course.detail' study.pk course.pk %}">{{ course.name }}</a>
+                                        <a href="{% url 'boecie:course.detail' study.pk course.pk %}">
+                                            {{ course.name }}
+                                        </a>
                                     </td>
                                     <td>
-                                        <a href="{% url 'boecie:teacher.detail' course.coordinator.pk %}">{{ course.coordinator }}</a>
+                                        <a href="{% url 'boecie:teacher.detail' course.coordinator.pk %}">
+                                            {{ course.coordinator }}
+                                        </a>
                                     </td>
                                     <td>
                                         {% for teacher in course.teachers.all %}
-                                            <a href="{% url 'boecie:teacher.detail' teacher.pk %}">{{ teacher }}</a>
+                                            <a href="{% url 'boecie:teacher.detail' teacher.pk %}">
+                                                {{ teacher }}
+                                            </a>
                                         {% endfor %}
                                     </td>
                                     <td>
@@ -128,14 +138,20 @@
                             {% for course in courses_updated %}
                                 <tr>
                                     <td>
-                                        <a href="{% url 'boecie:course.detail' study.pk course.pk %}">{{ course.name }}</a>
+                                        <a href="{% url 'boecie:course.detail' study.pk course.pk %}">
+                                            {{ course.name }}
+                                        </a>
                                     </td>
                                     <td>
-                                        <a href="{% url 'boecie:teacher.detail' course.coordinator.pk %}">{{ course.coordinator }}</a>
+                                        <a href="{% url 'boecie:teacher.detail' course.coordinator.pk %}">
+                                            {{ course.coordinator }}
+                                        </a>
                                     </td>
                                     <td>
                                         {% for teacher in course.teachers.all %}
-                                            <a href="{% url 'boecie:teacher.detail' teacher.pk %}">{{ teacher }}</a>
+                                            <a href="{% url 'boecie:teacher.detail' teacher.pk %}">
+                                                {{ teacher }}
+                                            </a>
                                         {% endfor %}
                                     </td>
                                     <td>

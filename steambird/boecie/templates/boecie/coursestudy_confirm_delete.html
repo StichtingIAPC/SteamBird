@@ -1,0 +1,33 @@
+{% extends 'boecie/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>{% trans 'Delete Course <-> Study Relation' %}</h2>
+            </div>
+        </div>
+        <div class="spacing"></div>
+        <div class="col-xs-12">
+            <p>{% blocktrans with object=object %}
+                Are you sure you want to delete the Study-Course relation '<b>{{ coursestudy_relation }}</b>' ?
+            {% endblocktrans %}
+            </p>
+            <form method="post" action="">
+                {% csrf_token %}
+                <p>
+                    <input type="submit"
+                           class="btn btn-primary"
+                           name="yes"
+                           value="{% trans 'Yes' %}"/>
+                    <a href="{% url 'boecie:teacher.list' %}" class="btn btn-outline-primary">
+                        {% trans 'No' %}
+                    </a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <div class="spacing"></div>
+{% endblock %}

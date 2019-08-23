@@ -1,3 +1,6 @@
+"""
+Resolves UT-specific details to a useful URL
+"""
 from django import template
 
 # pylint: disable=invalid-name

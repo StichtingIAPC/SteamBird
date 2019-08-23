@@ -1,6 +1,7 @@
 {% extends 'steambird/base.html' %}
 {% load i18n %}
 {% load active_menu %}
+{% load period_footer %}
 
 {% block page_title %}{% trans "Steambird Admin" %}{% endblock %}
 
@@ -9,22 +10,41 @@
     {% url 'boecie:teacher.list' as teacher_list %}
     {% url 'boecie:config' pk=1 as config %}
     {% url 'boecie:lml_export' as lml_export %}
+    {% url 'boecie:coursestudy.list' as coursestudyrel %}
 
     <li class="{% active_menu home %}">
         <a class="nav-link"
-           href="{% url 'boecie:index' %}">{% trans "Home" %}</a>
+           href="{% url 'boecie:index' %}">
+            {% trans "Home" %}
+        </a>
     </li>
     <li class="{% active_menu teacher_list %}">
-        <a class="nav-link"
-           href="{{ teacher_list }}">{% trans "Teachers" %}</a>
+        <a class="nav-link" href="{{ teacher_list }}">
+            {% trans "Teachers" %}
+        </a>
     </li>
     <li class="{% active_menu lml_export %}">
-        <a class="nav-link"
-           href="{{ lml_export }}">{% trans "LML Export" %}</a>
+        <a class="nav-link" href="{{ lml_export }}">
+            {% trans "LML Export" %}
+        </a>
     </li>
     <li class="{% active_menu config %}">
+        <a class="nav-link" href="{{ config }}">
+            {% trans "Config" %}
+        </a>
+    </li>
+    <li class="{% active_menu coursestudyrel %}">
         <a class="nav-link"
-           href="{{ config }}">{% trans "Config" %}</a>
+           href="{{ coursestudyrel }}">{% trans "Course Study" %}
+        </a>
     </li>
 
+{% endblock %}
+
+{% block endjs %}
+    <div class="fixed-bottom background-attention" >
+        <div class="bottom_line">
+            {% period_retrieval %}
+        </div>
+    </div>
 {% endblock %}
