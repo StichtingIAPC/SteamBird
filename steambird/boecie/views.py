@@ -1,6 +1,7 @@
 import csv
 import datetime
 import io
+import logging
 from collections import defaultdict
 from typing import Optional, Any
 
@@ -24,6 +25,9 @@ from steambird.perm_utils import IsStudyAssociationMixin, IsBoecieMixin
 from steambird.teacher.forms import PrefilledSuggestAnotherMSPLineForm, \
     PrefilledMSPLineForm
 from steambird.util import MultiFormView
+
+
+logger = logging.getLogger(__name__)
 
 
 class HomeView(IsBoecieMixin, View):
@@ -422,6 +426,16 @@ class MSPDetail(IsStudyAssociationMixin, FormView):
         """
         form.save(commit=True)
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        logger.warning(
+            "Invalid MSPLine create body submitted, with errors: {}",
+            form.errors,
+        )
+
+        if form.is_valid():
+            logger.critical("Valid form handled by form_invalid?", form)
+        return super().form_invalid(form)
 
     def get_initial(self):
         """

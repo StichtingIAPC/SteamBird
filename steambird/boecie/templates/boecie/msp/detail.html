@@ -71,6 +71,8 @@
                             </label>
                             <div class="col-lg-6 col-md-9 col-sm-12 input-child-w100">{{ set_avail_form.comment }}</div>
                         </div>
+                        {{ form.type }}
+                        {{ form.msp }}
                         <input type="submit" value="{% trans "Suggest" %}"
                                class="btn btn-success"/>
                     </form>
@@ -97,6 +99,8 @@
                             </label>
                             <div class="col-lg-6 col-md-9 col-sm-12 input-child-w100">{{ form.comment }}</div>
                         </div>
+                        {{ form.type }}
+                        {{ form.msp }}
                         <input type="submit" value="{% trans "Suggest" %}"
                                class="btn btn-success"/>
                     </form>
