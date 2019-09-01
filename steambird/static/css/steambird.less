@@ -119,7 +119,7 @@
 .timeline > li > .timeline-panel {
     border: 1px solid #d4d4d4;
     border-radius: 2px;
-    padding: 20px;
+    padding: 0;
     position: relative;
     -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
@@ -148,7 +148,7 @@
 
 .timeline > li > .timeline-panel:before {
     position: absolute;
-    top: 26px;
+    top: 18px;
     display: inline-block;
     border-top: 15px solid transparent;
     border-left: 15px solid #ccc;
@@ -163,10 +163,10 @@
 
 .timeline > li > .timeline-panel:after {
     position: absolute;
-    top: 27px;
+    top: 19px;
     display: inline-block;
     border-top: 14px solid transparent;
-    border-left: 14px solid #fff;
+    border-left: 14px solid #e1e1e1;
     border-right: 0 solid #fff;
     border-bottom: 14px solid transparent;
     content: " ";
@@ -194,7 +194,7 @@
 
 @media (max-width: 767px) {
     .timeline > li > .timeline-panel:before {
-        top: 33.5px;
+        top: 25.5px;
         border-top-width: 7.5px;
         border-left-width: 7.5px;
         border-bottom-width: 7.5px;
@@ -202,7 +202,7 @@
     }
 
     .timeline > li > .timeline-panel:after {
-        top: 34px;
+        top: 25px;
         border-top-width: 7px;
         border-left-width: 7px;
         border-bottom-width: 7px;
@@ -233,7 +233,7 @@
         height: 50px;
         line-height: 50px;
         font-size: 1.4em;
-        top: 16px;
+        top: 8px;
     }
 }
 
@@ -243,13 +243,26 @@
         height: 25px;
         line-height: 25px;
         font-size: 1em;
-        top: 28.5px;
+        top: 20.5px;
     }
 }
 
 .timeline-title {
     margin-top: 0;
     color: inherit;
+}
+
+.timeline-heading {
+    padding: 10px 20px 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.timeline-body {
+    padding: 10px 20px 15px;
+}
+
+.timeline-body > p {
+    padding: 10px 0 10px;
 }
 
 .timeline-body > p,
@@ -259,4 +272,10 @@
 
 .timeline-body > p + p {
     margin-top: 5px;
+}
+
+.timeline-footer {
+    margin: 0 20px 5px;
+    padding-top: 5px;
+    border-top: 1px solid #ccc;
 }

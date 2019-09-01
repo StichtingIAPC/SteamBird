@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import List
 
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _, ugettext as _t
@@ -44,6 +45,20 @@ class MSPLine(models.Model):
         StudyMaterialEdition,
         blank=True,
         verbose_name=_("Related study material(s)")
+    )
+    created_by = models.ForeignKey(
+        User,
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Creator of this MSP line"),
+    )
+    created_by_side = models.CharField(
+        max_length=max(len("BOECIE"), len("TEACHER")),
+        choices=[
+            ("BOECIE", "Boecie"),
+            ("TEACHER", "Teacher"),
+        ]
     )
 
     @property
