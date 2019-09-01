@@ -264,6 +264,14 @@ class MSPDetail(IsTeacherMixin, FormView):
         form.save(commit=True)
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        LOGGER.warning(
+            "Invalid MSPLine create body submitted, with errors: {}",
+            form.errors,
+        )
+
+        return super().form_invalid(form)
+
     def get_initial(self) -> dict:
         """
         Fills in initial data for the primary form. The primary form is the
