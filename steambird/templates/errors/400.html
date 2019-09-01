@@ -1,0 +1,18 @@
+{% extends "steambird/base.html" %}
+{% load i18n %}
+
+{% block page_title %}
+    {% trans 'Page not found' %}
+{% endblock page_title %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="textmodule">
+            <h2>{% trans 'Bad request' %}</h2>
+            <div class="textmodule-text">
+                {% trans 'You sent our server a bad request.' %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
