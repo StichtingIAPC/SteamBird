@@ -14,8 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g+9hmm0y!48$_vaj=0&=mr%=pdd*c7&i&@8a)t=qow-!fh6vs!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.getenv("DEBUG", "True") in ["True", "1", "true"]
-DEBUG = False
+DEBUG = os.getenv("DEBUG", "True") in ["True", "1", "true"]
 
 INTERNAL_IPS = ('127.0.0.1',)
 ALLOWED_HOSTS = ([
@@ -60,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ] + ([
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ] if DEBUG else [
