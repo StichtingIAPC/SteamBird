@@ -625,10 +625,10 @@ class MSPDetail(IsStudyAssociationMixin, FormView):
         :param form: The form and its data.
         :return: a redirect to get_success_url.
         """
-        object = form.save(commit=False)
-        object.created_by = self.request.user
-        object.created_by_side = "BOECIE"
-        object.save()
+        new_mspline = form.save(commit=False)
+        new_mspline.created_by = self.request.user
+        new_mspline.created_by_side = "BOECIE"
+        new_mspline.save()
         form.save_m2m()
         return super().form_valid(form)
 
