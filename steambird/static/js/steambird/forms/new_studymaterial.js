@@ -25,7 +25,7 @@ $.fn.enterKey = function (fnc) {
  */
 function searchIsbn(isbn) {
     $.ajax({
-        url: "/teacher/api/isbn/search",
+        url: "/api/isbn/search",
         data: {
             isbn,
         },
@@ -102,7 +102,7 @@ $(($) => {
  */
 function searchDoi(doi) {
     $.ajax({
-        url: "/teacher/api/doi/search",
+        url: "/api/doi/search",
         data: {
             doi,
         },

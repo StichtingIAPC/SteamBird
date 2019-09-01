@@ -1,4 +1,4 @@
-{% extends 'teacher/base.html' %}
+{% extends 'steambird/base.html' %}
 {% load staticfiles %}
 {% load i18n %}
 
@@ -12,9 +12,10 @@
             <option value="book">Book</option>
             <option value="paper">Scientific Article</option>
         </select>
+        <div class="spacing"></div>
 
-        {% include "teacher/forms/new_book.html" %}
-        {% include "teacher/forms/new_article.html" %}
+        {% include "steambird/forms/new_book.html" %}
+        {% include "steambird/forms/new_article.html" %}
     </div>
 {% endblock %}
 
