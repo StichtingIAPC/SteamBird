@@ -1,0 +1,114 @@
+{% extends "boecie/base.html" %}
+{% load i18n %}
+{% load bootstrapify %}
+{% load static %}
+
+{% block css %}
+    {{ block.super }}
+    {{ form.media.css }}
+    <style>
+        .input-child-w100 input,
+        .input-child-w100 textarea {
+            width: 100%;
+        }
+
+        .select2-child-sizing .select2-container {
+            width: calc(100% - 25px) !important;
+            width: -webkit-calc(100% - 25px) !important;
+            width: -moz-calc(100% - 25px) !important;
+        }
+
+        .select2-child-sizing .select2-selection {
+            width: 100% !important;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="spacing"></div>
+        <h1>{% trans "Material selection process for" %} <i>{{ msp }}</i></h1>
+        <hr class="mb-0"/>
+        <ul class="timeline mb-0 pb-1">
+            {% for line in lines %}
+                {% include "boecie/msp/mspline.html" with line=line.line meta=line materials=line.materials %}
+            {% endfor %}
+        </ul>
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="mspLineFormsTabs"
+                    role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab"
+                           data-toggle="tab"
+                           href="#mspLineSetAvailable" role="tab"
+                           aria-controls="mspLineSetAvailable"
+                           aria-selected="true">{% trans "Set available materials" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="home-tab" data-toggle="tab"
+                           href="#mspLineSuggestAnother" role="tab"
+                           aria-controls="mspLineSuggestAnother"
+                           aria-selected="true">{% trans "Suggest another" %}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content card-body" id="mspLineForms">
+                <div class="tab-pane fade show active" id="mspLineSetAvailable">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row form-group">
+                            <label class="col-md-3 col-sm-12 font-weight-bold"
+                                   for="{{ set_avail_form.materials.id_for_label }}">
+                                {% trans "Materials" %}:
+                            </label>
+                            <div class="col-lg-6 col-md-9 col-sm-12 select2-child-sizing">{{ set_avail_form.materials }}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-md-3 col-sm-12 font-weight-bold"
+                                   for="{{ set_avail_form.comment.id_for_label }}">
+                                {% trans "Comment" %}:
+                            </label>
+                            <div class="col-lg-6 col-md-9 col-sm-12 input-child-w100">{{ set_avail_form.comment }}</div>
+                        </div>
+                        {{ set_avail_form.type }}
+                        {{ set_avail_form.msp }}
+                        <input type="submit" value="{% trans "Suggest" %}"
+                               class="btn btn-success"/>
+                    </form>
+                </div>
+                <div class="tab-pane fade show" id="mspLineSuggestAnother">
+                    <div class="alert alert-danger">
+                        {% blocktrans %}
+                        Warning: This is an advanced feature that should only be
+                        used by the books manager, and only with knowledge about
+                        this specific form.
+                        {% endblocktrans %}
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row form-group">
+                            <label class="col-md-3 col-sm-12 font-weight-bold"
+                                   for="{{ form.materials.id_for_label }}">
+                                {% trans "Materials" %}:
+                            </label>
+                            <div class="col-lg-6 col-md-9 col-sm-12 select2-child-sizing">{{ form.materials }}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-md-3 col-sm-12 font-weight-bold"
+                                   for="{{ form.comment.id_for_label }}">
+                                {% trans "Comment" %}:
+                            </label>
+                            <div class="col-lg-6 col-md-9 col-sm-12 input-child-w100">{{ form.comment }}</div>
+                        </div>
+                        {{ form.type }}
+                        {{ form.msp }}
+                        <input type="submit" value="{% trans "Suggest" %}"
+                               class="btn btn-success"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.media.js }}
+{% endblock %}

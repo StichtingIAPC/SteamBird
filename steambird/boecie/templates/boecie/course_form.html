@@ -3,6 +3,12 @@
 {% load bootstrapify %}
 {% load ut_url_mapper %}
 
+{% block js %}
+    {{ block.super }}
+{#    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+{% endblock %}
+
 {% block content %}
     <div class="spacing"></div>
     <div class="container profile">
@@ -92,7 +98,7 @@
 
         {% endif %}
 
-        <form method="post" class="form-horizontal">
+        <form method="post" id="course_form" class="form-horizontal">
             {% csrf_token %}
             {{ course_form.form_name }}
             {{ course_form.media.css }}
@@ -310,8 +316,38 @@
                                         <div class="form-inline">
                                             {{ course_form.materials }}
                                         </div>
+                                        <ul id="book_list" class="list-group">
+
+                                        </ul>
                                     </div>
                                 </div>
+                                <script>
+                                    $(function() {
+                                    	const ul = document.getElementById("book_list");
+                                    	const l = document.getElementById("{{ course_form.materials.id_for_label }}");
+                                    	const link = "//" + window.location.host + "/boecie/msp/";
+
+                                    	const handle_change = () => {
+											options = $(l).find("option");
+											values = $("#course_form").serializeArray().filter(a => a["name"] === "materials").map(a => a["value"]);
+											ul.innerHTML = "";
+											options.each((k, v) => {
+												if (values.includes(v.value)) {
+													const a = document.createElement("a", );
+													a.setAttribute("href", link + v.value);
+													a.appendChild(document.createTextNode(v.innerHTML));
+													const li = document.createElement("li");
+													li.setAttribute("class", "list-group-item");
+													li.appendChild(a);
+													ul.appendChild(li);
+                                                }
+                                            });
+                                        };
+
+										$("#id_materials").on("select2:select", handle_change);
+                                    	handle_change();
+                                    })
+                                </script>
                             </div>
                         </div>
                     </div>
