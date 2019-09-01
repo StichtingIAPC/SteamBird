@@ -19,9 +19,10 @@ from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView, TemplateView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import ConfigForm, CourseForm, TeacherForm, StudyCourseForm, \
-    LmlExportForm
-from steambird.models import Book, Config, MSP, Study, Course, Teacher, CourseStudy,  MSPLineType, MSPLine
+from steambird.boecie.forms import ConfigForm, CourseForm, TeacherForm, \
+    StudyCourseForm, LmlExportForm
+from steambird.models import Book, Config, MSP, Study, Course, Teacher, \
+    CourseStudy, MSPLineType, MSPLine
 from steambird.models.coursetree import Period
 from steambird.perm_utils import IsStudyAssociationMixin, IsBoecieMixin
 from steambird.teacher.forms import PrefilledSuggestAnotherMSPLineForm, \
@@ -29,7 +30,7 @@ from steambird.teacher.forms import PrefilledSuggestAnotherMSPLineForm, \
 from steambird.util import MultiFormView
 
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class HomeView(IsBoecieMixin, View):
@@ -628,13 +629,11 @@ class MSPDetail(IsStudyAssociationMixin, FormView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        logger.warning(
+        LOGGER.warning(
             "Invalid MSPLine create body submitted, with errors: {}",
             form.errors,
         )
 
-        if form.is_valid():
-            logger.critical("Valid form handled by form_invalid?", form)
         return super().form_invalid(form)
 
     def get_initial(self):
