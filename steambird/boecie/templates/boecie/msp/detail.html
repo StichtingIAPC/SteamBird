@@ -79,9 +79,11 @@
                 </div>
                 <div class="tab-pane fade show" id="mspLineSuggestAnother">
                     <div class="alert alert-danger">
+                        {% blocktrans %}
                         Warning: This is an advanced feature that should only be
                         used by the books manager, and only with knowledge about
                         this specific form.
+                        {% endblocktrans %}
                     </div>
                     <form method="post">
                         {% csrf_token %}
