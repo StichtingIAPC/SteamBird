@@ -1,6 +1,5 @@
 from pkgutil import find_loader
 
-from django.conf.urls import handler400, handler403, handler404, handler500
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
@@ -43,6 +42,3 @@ if find_loader('django_uwsgi'):
     urlpatterns = [
         path('admin/uwsgi/', include('django_uwsgi.urls')),
     ] + urlpatterns
-
-
-
