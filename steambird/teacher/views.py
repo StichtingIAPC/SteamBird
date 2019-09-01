@@ -2,6 +2,7 @@
 This module contains all the View related logic for any pages the teachers might see. It currently
 is more a set of tools which aren't integrated into a fluid process yet
 """
+import logging
 from json import dumps
 from typing import Union, Dict, Any
 from urllib.parse import quote, unquote
@@ -23,6 +24,9 @@ from steambird.perm_utils import IsTeacherMixin
 from steambird.teacher.tools import isbn_lookup, doi_lookup
 from .forms import ISBNForm, PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm, BookForm, ScientificPaperForm
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class HomeView(IsTeacherMixin, View):
