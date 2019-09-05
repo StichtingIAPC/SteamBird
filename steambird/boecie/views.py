@@ -22,7 +22,7 @@ from django_addanother.views import CreatePopupMixin
 from steambird.boecie.forms import ConfigForm, CourseForm, TeacherForm, \
     StudyCourseForm, LmlExportForm
 from steambird.models import Book, Config, MSP, Study, Course, Teacher, \
-    CourseStudy, MSPLineType, MSPLine
+    CourseStudy, MSPLineType, MSPLine, StudyMaterialEdition
 from steambird.models.coursetree import Period
 from steambird.perm_utils import IsStudyAssociationMixin, IsBoecieMixin
 from steambird.teacher.forms import PrefilledSuggestAnotherMSPLineForm, \
@@ -716,3 +716,28 @@ class MSPDetail(IsStudyAssociationMixin, FormView):
         })
 
         return data
+
+
+class MaterialListView(IsStudyAssociationMixin, TemplateView):
+    """
+    A view which gives us a list of all materials which are currently in the system. List should be
+    ordered based on type. Future improvements should focus on better filters
+    """
+
+    template_name = 'boecie/materials_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        materials = StudyMaterialEdition.objects \
+            .select_related('polymorphic_ctype')\
+            .order_by('polymorphic_ctype')\
+            .all()
+
+        grouped = defaultdict(list)
+
+        for material in materials:
+            grouped[str(material.polymorphic_ctype)].append(material)
+
+        context['grouped_materials'] = dict(grouped)
+
+        return context
