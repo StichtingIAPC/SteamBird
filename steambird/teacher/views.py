@@ -91,7 +91,11 @@ class MSPDetail(IsTeacherMixin, FormView):
         :param form: The form and its data.
         :return: a redirect to get_success_url.
         """
-        form.save(commit=True)
+        new_mspline = form.save(commit=False)
+        new_mspline.created_by = self.request.user
+        new_mspline.created_by_side = "TEACHER"
+        new_mspline.save()
+        form.save_m2m()
         return super().form_valid(form)
 
     def form_invalid(self, form):

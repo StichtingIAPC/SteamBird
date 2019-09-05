@@ -7,7 +7,7 @@ from pysidian_core.urls import urls as pysidian_core_urls
 
 from steambird import settings
 from steambird.material_management.urls import urlpatterns as material_management_urls
-from steambird.views import IndexView
+from steambird.views import IndexView, TokenLogin
 
 from steambird.teacher.urls import urlpatterns as teacher_urls
 
@@ -21,10 +21,15 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('teacher/', include('steambird.teacher.urls', namespace='teacher')),
     path('boecie/', include('steambird.boecie.urls')),
-
-
+    path('token', TokenLogin.as_view(), name='token_login'),
 
 ] + pysidian_core_urls + material_management_urls
+
+# https://docs.djangoproject.com/en/2.1/topics/http/views/#customizing-error-views
+handler404 = 'steambird.views.handler404'
+handler500 = 'steambird.views.handler500'
+handler403 = 'steambird.views.permission_denied'
+handler400 = 'steambird.views.bad_request'
 
 if settings.DEBUG:
     import debug_toolbar

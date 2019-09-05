@@ -1,12 +1,12 @@
 {% load i18n %}
 
 <li>
-    <div class="timeline-badge bg-{{ line.bootstrap_type }}{% if line.type == 'set_available_materials' %} timeline-badge-inverted{% endif %}">
+    <div class="timeline-badge bg-{{ line.bootstrap_type }}{% if line.created_by_side == 'BOECIE' %} timeline-badge-inverted{% endif %}">
         <span class="fas fa-{{ line.fa_icon_type }}"></span>
     </div>
-    <div class="timeline-panel{% if line.type == 'set_available_materials' %} timeline-panel-inverted{% endif %}">
-        <div class="timeline-heading">
-            <h4 class="timeline-title inline">
+    <div class="timeline-panel{% if line.created_by_side == 'BOECIE' %} timeline-panel-inverted{% endif %}">
+        <div class="timeline-heading" {% if line.created_by_side == 'BOECIE' %}style="background-color: #eee;"{% endif %}>
+            <h4 class="timeline-title inline mb-0">
                 {% if line.type|upper == 'REQUEST_MATERIAL' %}
                     {% trans "Material requested" %}
                 {% elif line.type|upper == 'SET_AVAILABLE_MATERIALS' %}
@@ -15,10 +15,8 @@
                     {% trans "Book order confirmed" %}
                 {% endif %}
             </h4>
-            <small class="text-muted">
-                <span class="fas fa-clock"></span>
-                {{ line.time }}
-            </small>
+        </div>
+        <div class="timeline-body">
             <p>
                 {{ line.comment }}
             </p>
@@ -46,6 +44,15 @@
                     </tr>
                 {% endfor %}
             </table>
+        </div>
+        <div class="timeline-footer">
+            <small class="text-muted">
+                <span class="fas fa-clock"></span>
+                {{ line.time }}
+            </small>
+            <small class="pull-right float-right">
+                Created by: <span class="text-muted">{{ line.created_by }}</span>
+            </small>
         </div>
     </div>
 </li>
