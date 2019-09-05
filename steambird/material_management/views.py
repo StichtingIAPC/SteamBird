@@ -193,4 +193,3 @@ class OtherDetailView(LoginRequiredMixin, DetailView):
     model = OtherMaterial
     template_name = 'material_management/other_material.html'
     context_object_name = 'material'
-
