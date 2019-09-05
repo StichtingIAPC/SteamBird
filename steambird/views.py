@@ -1,5 +1,10 @@
+from django.contrib.auth import login
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.views import View
+
+from steambird.models import AuthToken
 
 
 def handler404(request, exception=None, template_name="errors/404.html"):
@@ -30,3 +35,24 @@ class IndexView(View):
     # pylint: disable=no-self-use
     def get(self, request):
         return render(request, "steambird/index.html")
+
+
+class TokenLogin(View):
+    # pylint: disable=no-self-use
+    def get(self, request):
+        if 'token' not in request.GET:
+            return HttpResponse(status=401, reason="No Credentials Provided")
+
+        try:
+            token: AuthToken = AuthToken.objects.get(token=request.GET['token'])
+        except AuthToken.DoesNotExist:
+            return HttpResponse(status=401, reason="Invalid credentials")
+
+        token.last_host = request.META['REMOTE_ADDR']
+
+        login(request, token.user)
+
+        if 'next' in request.GET:
+            return HttpResponseRedirect(redirect_to=request.GET['next'])
+
+        return HttpResponseRedirect(redirect_to=reverse('index'))
