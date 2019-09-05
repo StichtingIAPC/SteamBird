@@ -1,5 +1,6 @@
 from django.urls import path
 
+from steambird.boecie.api_views import FindPeopleView
 from steambird.boecie.views import CourseCreateView, CourseUpdateView, \
     HomeView, StudyDetailView, TeacherCreateView, TeacherDeleteView, \
     CourseStudyListView, CourseStudyDeleteView, TeacherEditView, TeachersListView, \
@@ -35,6 +36,8 @@ urlpatterns = [
     path('config/<int:pk>', ConfigView.as_view(), name='config'),
     # path('lml_export/', LmlExportOverView.as_view(), name='lmlexport.overview'),
     path('lml_export/', LmlExport.as_view(), name='lml_export'),
+
+    path('api/find_teacher', FindPeopleView.as_view(), name='api_find_teacher'),
 ]
 
 # pylint: disable=invalid-name

@@ -64,6 +64,59 @@
             {% endif %}
         {% endif %}
 
+        {% if request.path == add_url %}
+            <div class="row">
+                <div class="col-xs-12 w-100">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="card-title mb-0">
+                                Search for teacher in
+                                <a href="https://people.utwente.nl/">people.utwente.nl</a>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <form onsubmit="search_teachers(); return false;" name="people-utwente-search-form">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-2 control-label w-100" for="search-teacher-name-on-people">
+                                            {% trans 'Name of teacher' %}
+                                        </label>
+                                        <div class="col-sm-10 w-100">
+                                            <div class="form-inline">
+                                                <input type="text"
+                                                       name="teacher-name"
+                                                       id="search-teacher-name-on-people"
+                                                       class="form-control"
+                                                       placeholder="{% trans 'Name of teacher' %}"
+                                                >
+                                                <span style="display: none;" class="ml-2 text-primary" id="search-teacher-name-loading" role="status">
+                                                    Loading...
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100" for="teacher-select">
+                                        {% trans 'Select teacher' %}
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            <select class="form-control" id="teacher-select" onchange="set_teacher();">
+                                                <option selected>{% trans 'Select teacher' %}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         <form action="{{ request.path }}" method="post" class="form-horizontal">
             {% csrf_token %}
             {{ form.media.css }}
@@ -298,3 +351,45 @@
     {% endif %}
 {% endblock %}
 
+{% block endjs %}
+{{ block.super }}
+<script>
+    var current_search_results = [];
+
+    function search_teachers() {
+        let url = "{% url 'boecie:api_find_teacher' %}";
+
+        let text = document.forms["people-utwente-search-form"]["teacher-name"].value;
+
+        $("#search-teacher-name-loading").show();
+
+        fetch(url + "?" + $.param({query: text})).then(response => {
+        	response.json().then(value => {
+				current_search_results = value;
+				$("#search-teacher-name-loading").hide();
+				let selector = $("#teacher-select");
+				selector.empty();
+				selector.append($("<option selected>{% trans 'Select teacher' %}</option>"));
+                $.each(value, (key, value) =>
+                	selector.append(
+                		$("<option></option>")
+                            .attr("value", key)
+                            .text(value.name)
+                    )
+                );
+			});
+        });
+    }
+
+    function set_teacher() {
+    	let current = current_search_results[$("#teacher-select").val()];
+
+        $("#{{ form.titles.id_for_label }}").val(current.acedemic_title);
+		$("#{{ form.initials.id_for_label }}").val(current.initials);
+		$("#{{ form.first_name.id_for_label }}").val(current.first_name);
+		$("#{{ form.surname_prefix.id_for_label }}").val(current.surname_prefix);
+		$("#{{ form.last_name.id_for_label }}").val(current.family_name);
+		$("#{{ form.email.id_for_label }}").val(current.email);
+    }
+</script>
+{% endblock %}
