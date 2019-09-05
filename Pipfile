@@ -18,6 +18,7 @@ django_select2 = "*"
 psycopg2 = "*"
 django-addanother = "*"
 crossrefapi = "*"
+vobject = "*"
 
 [dev-packages]
 django-debug-toolbar = "==1.10.1"
