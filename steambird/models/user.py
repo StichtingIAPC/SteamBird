@@ -1,8 +1,10 @@
 """
 This package contains everything related to Users and possible Groups the might belong to
 """
+import uuid
 from datetime import datetime
 from typing import Union
+from urllib.parse import quote
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -118,3 +120,30 @@ class StudyAssociation(models.Model):
     def __str__(self):
         return '{} ({})'.format(self.name, ', '.join(
             [study for study in self.studies.values_list('slug', flat=True)]))
+
+
+class AuthToken(models.Model):
+    user = models.ForeignKey(
+        User,
+        verbose_name=_('User that will log in with given token'),
+        on_delete=models.CASCADE,
+        db_index=True,
+    )
+
+    token = models.UUIDField(
+        max_length=64,
+        verbose_name=_('Token that will be placed in the auth endpoint'),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+
+    last_host = models.GenericIPAddressField(
+        verbose_name=_('Last location that this token was used.'),
+        null=True,
+        blank=True,
+        default=None,
+    )
+
+    def login_url(self, next="/"):
+        return "{}?token={}&next={}".format(
+            reverse('token_login'), self.token, quote(next, safe=''))
