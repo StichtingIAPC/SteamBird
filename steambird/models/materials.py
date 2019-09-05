@@ -64,6 +64,15 @@ class OtherMaterial(StudyMaterialEdition):
         <name>
     """
 
+    description = models.TextField(null=True,
+                                   blank=True,
+                                   verbose_name=_("Description of an 'other material', can be "
+                                                  "expected to contain any sort of reference like "
+                                                  "links of sorts to make it clear what the exact"
+                                                  " product would be"),
+
+                                   )
+
     def __str__(self):
         return self.name
 
