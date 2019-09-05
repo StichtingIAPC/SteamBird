@@ -6,8 +6,8 @@ from django.views.generic import RedirectView
 from pysidian_core.urls import urls as pysidian_core_urls
 
 from steambird import settings
-from steambird.views import IndexView, ISBNLookupView, ISBNView, ISBNDetailView, DOIDetailView, \
-    ISBNSearchApiView, DOISearchApiView, AddMaterialView
+from steambird.material_management.urls import urlpatterns as material_management_urls
+from steambird.views import IndexView
 
 from steambird.teacher.urls import urlpatterns as teacher_urls
 
@@ -22,20 +22,9 @@ urlpatterns = [
     path('teacher/', include('steambird.teacher.urls', namespace='teacher')),
     path('boecie/', include('steambird.boecie.urls')),
 
-    path('isbn/search/<str:isbn>', ISBNLookupView.as_view(), name='isbnlookup'),
-    path('isbn', ISBNView.as_view(), name='isbn'),
-    path('isbn/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
-    path('doi/<str:doi>', DOIDetailView.as_view(), name='articledetail'),
 
 
-    path('api/isbn/search', ISBNSearchApiView.as_view(), name='isbn.search'),
-    path('api/doi/search', DOISearchApiView.as_view(), name='doi.search'),
-
-    path('msp/new', AddMaterialView.as_view(), name='msp.new'),
-
-
-
-] + pysidian_core_urls
+] + pysidian_core_urls + material_management_urls
 
 if settings.DEBUG:
     import debug_toolbar

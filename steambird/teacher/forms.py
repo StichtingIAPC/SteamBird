@@ -54,6 +54,6 @@ class PrefilledSuggestAnotherMSPLineForm(forms.ModelForm):
                     "scientificarticle__author__icontains",
                     "scientificarticle__year_of_publishing__icontains",
                 ]
-            ), reverse_lazy('isbn')),
+            ), reverse_lazy('msp.new')),
             # TODO: Convert this to a teacher:book.create view when it exists.
         }

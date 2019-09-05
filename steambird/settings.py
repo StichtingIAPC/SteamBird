@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'steambird',
     'steambird.boecie',
     'steambird.teacher',
+    'steambird.material_management',
+
     'pysidian_core',
     'django_select2',
     'django_addanother',

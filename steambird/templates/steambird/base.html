@@ -22,8 +22,6 @@
 
 {% block nav_items %}
     {% url 'index' as home %}
-        {% url 'isbn' as isbn %}
-        {% url 'msp.new' as msp_create %}
     {% url 'teacher:index' as teacher_home %}
     {% url 'boecie:index' as boecie_home %}
 
@@ -42,18 +40,6 @@
             {% trans "Boecie" %}
         </a>
     </li>
-        <li class="{% active_menu isbn %}">
-            <a class="nav-link"
-               href="{{ isbn }}">
-                {% trans "ISBN" %}
-            </a>
-        </li>
-        <li class="{% active_menu msp_create %}">
-            <a class="nav-link"
-               href="{{ msp_create }}">
-                {% trans "Create Article" %}
-            </a>
-        </li>
 {% endblock %}
 
 {% block content %}

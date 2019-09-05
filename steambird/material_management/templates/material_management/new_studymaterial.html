@@ -7,6 +7,7 @@
         <div class="spacing"></div>
         <h2>{% trans 'Add material' %}</h2>
 
+        {{ form.errors }}
         <select id="type-add">
             <option value selected>Select type...</option>
             <option value="book">Book</option>
@@ -14,8 +15,8 @@
         </select>
         <div class="spacing"></div>
 
-        {% include "steambird/forms/new_book.html" %}
-        {% include "steambird/forms/new_article.html" %}
+        {% include "material_management/forms/new_book.html" %}
+        {% include "material_management/forms/new_article.html" %}
     </div>
 {% endblock %}
 
