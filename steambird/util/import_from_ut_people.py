@@ -10,6 +10,7 @@ def read_vcard(vcard_url) -> Union[Component, None]:
     try:
         vcard = requests.get(vcard_url).text
         return vobject.readOne(vcard)
+    # pylint: disable=bare-except
     except:
         return None
 
