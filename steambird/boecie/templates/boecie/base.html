@@ -11,6 +11,7 @@
     {% url 'boecie:config' pk=1 as config %}
     {% url 'boecie:lml_export' as lml_export %}
     {% url 'boecie:coursestudy.list' as coursestudyrel %}
+    {% url 'boecie:materials.list' as matlist %}
 
     <li class="{% active_menu home %}">
         <a class="nav-link"
@@ -36,6 +37,11 @@
     <li class="{% active_menu coursestudyrel %}">
         <a class="nav-link"
            href="{{ coursestudyrel }}">{% trans "Course Study" %}
+        </a>
+    </li>
+    <li class="{% active_menu matlist %}">
+        <a class="nav-link"
+           href="{{ matlist }}">{% trans "Materials" %}
         </a>
     </li>
 
