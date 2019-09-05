@@ -1,8 +1,8 @@
 {% load i18n %}
 
 
-{{ form.errors }}
-<form style="display: none;" id="paper-add" class="form-add" method="post" action="{% url "teacher:msp.new" %}">
+
+<form style="display: none;" id="paper-add" class="form-add" method="post" action="{% url "msp.new" %}">
     {% csrf_token %}
     <input type="text"
            class="form-control"

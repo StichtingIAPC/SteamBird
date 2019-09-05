@@ -1,14 +1,13 @@
 {% load i18n %}
 
 
-{{ form.errors }}
 <form style="display: none;"
       id="book-add"
       class="form-add"
       data-toggle="validator"
       role="form"
       method="post"
-      action="{% url "teacher:msp.new" %}">
+      action="{% url "msp.new" %}">
     {% csrf_token %}
     <input type="text"
            class="form-control"

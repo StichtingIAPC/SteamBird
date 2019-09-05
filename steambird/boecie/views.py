@@ -573,7 +573,7 @@ class LmlExport(IsStudyAssociationMixin, FormView):
         return response
 
 
-class ConfigView(UpdateView):
+class ConfigView(IsBoecieMixin, UpdateView):
     """
     This view is to edit the site-wide config.
     """

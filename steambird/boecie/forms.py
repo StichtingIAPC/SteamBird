@@ -9,11 +9,10 @@ from django.forms import HiddenInput
 from django.urls import reverse_lazy
 # noinspection PyUnresolvedReferences
 # pylint: disable=no-name-in-module
-from django_addanother.contrib.select2 import Select2MultipleAddAnother
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher, CourseStudy, Study, Config
+from steambird.models import Course, Teacher, CourseStudy, Study, Config, StudyMaterialEdition
 
 
 class CourseForm(forms.ModelForm):
@@ -43,8 +42,18 @@ class CourseForm(forms.ModelForm):
         widgets = {
             'id': HiddenInput(),
 
-            'materials': Select2MultipleAddAnother(
-                reverse_lazy('boecie:teacher.list')),
+            "materials": AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
+                queryset=StudyMaterialEdition.objects.all(),
+                search_fields=[
+                    "name__icontains",
+                    "book__ISBN__icontains",
+                    "book__author__icontains",
+                    "book__year_of_publishing__icontains",
+                    "scientificarticle__DOI__icontains",
+                    "scientificarticle__author__icontains",
+                    "scientificarticle__year_of_publishing__icontains",
+                ]
+            ), reverse_lazy('msp.new')),
             # TODO: Make this work on the new MSP selection instead of this old
             #  one (therefore, up until then keep it like this)
 
