@@ -45,7 +45,7 @@ class TokenLogin(View):
 
         try:
             token: AuthToken = AuthToken.objects.get(token=request.GET['token'])
-        except AuthToken.DoesNotExist as e:
+        except AuthToken.DoesNotExist:
             return HttpResponse(status=401, reason="Invalid credentials")
 
         token.last_host = request.META['REMOTE_ADDR']

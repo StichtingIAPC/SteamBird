@@ -27,4 +27,3 @@ class AUthTokenAdmin(admin.ModelAdmin):
         'user',
         'login_url'
     )
-

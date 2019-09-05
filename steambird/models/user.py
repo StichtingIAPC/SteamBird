@@ -144,6 +144,6 @@ class AuthToken(models.Model):
         default=None,
     )
 
-    def login_url(self, next="/"):
+    def login_url(self, next_url="/"):
         return "{}?token={}&next={}".format(
-            reverse('token_login'), self.token, quote(next, safe=''))
+            reverse('token_login'), self.token, quote(next_url, safe=''))
