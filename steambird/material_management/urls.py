@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import AddMaterialView, ISBNLookupView, ISBNView, ISBNDetailView, DOIDetailView, \
-    ISBNSearchApiView, DOISearchApiView
+    ISBNSearchApiView, DOISearchApiView, OtherDetailView
 
 # pylint: disable=invalid-name
 urlpatterns = [
@@ -9,6 +9,7 @@ urlpatterns = [
     path('isbn', ISBNView.as_view(), name='isbn'),
     path('isbn/<str:isbn>', ISBNDetailView.as_view(), name='isbndetail'),
     path('doi/<str:doi>', DOIDetailView.as_view(), name='articledetail'),
+    path('other/<int:pk>', OtherDetailView.as_view(), name='otherdetail'),
 
 
     path('api/isbn/search', ISBNSearchApiView.as_view(), name='isbn.search'),

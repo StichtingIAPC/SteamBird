@@ -14,9 +14,10 @@ from django.views import View
 from django.views.generic import FormView, DetailView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.material_management.forms import ISBNForm, BookForm, ScientificPaperForm
+from steambird.material_management.forms import ISBNForm, BookForm, ScientificPaperForm, \
+    OtherMaterialForm
 from steambird.material_management.tools import isbn_lookup, doi_lookup
-from steambird.models import Book, ScientificArticle
+from steambird.models import Book, ScientificArticle, OtherMaterial
 
 
 class ISBNView(LoginRequiredMixin, FormView):
@@ -83,6 +84,12 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, View):
             reverse_url = 'articledetail'
             kwargs = {'doi': quote(request.POST.get('DOI'), safe='')}
         # Type is not supported
+        elif material_type == 'other':
+            form = OtherMaterialForm(request.POST)
+            reverse_url = 'otherdetail'
+            if form.is_valid():
+                saved_obj = form.save()
+                return redirect(reverse(reverse_url, kwargs={'pk': saved_obj.pk}))
         else:
             return HttpResponseBadRequest()
 
@@ -179,3 +186,11 @@ class DOIDetailView(LoginRequiredMixin, DetailView):
         queryset = queryset or ScientificArticle
         doi = unquote(self.kwargs['doi'])
         return queryset.objects.get(DOI=doi)
+
+
+class OtherDetailView(LoginRequiredMixin, DetailView):
+
+    model = OtherMaterial
+    template_name = 'material_management/other_material.html'
+    context_object_name = 'material'
+

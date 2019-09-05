@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import isbnlib as i
 
-from steambird.models import ScientificArticle, Book
+from steambird.models import ScientificArticle, Book, OtherMaterial
 
 
 class ISBNForm(forms.Form):
@@ -51,4 +51,16 @@ class ScientificPaperForm(forms.ModelForm):
             "author",
             "year_of_publishing",
             'url'
+        ]
+
+
+class OtherMaterialForm(forms.ModelForm):
+    """
+    Form for inputting Other Material information. Makes use of the OtherMaterial model.
+    """
+    class Meta:
+        model = OtherMaterial
+        fields = [
+            "name",
+            "description"
         ]

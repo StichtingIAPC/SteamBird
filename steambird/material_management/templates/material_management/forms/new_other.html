@@ -1,0 +1,42 @@
+{% load i18n %}
+
+
+<form style="display: none;"
+      id="other-add"
+      class="form-add"
+      data-toggle="validator"
+      role="form"
+      method="post"
+      action="{% url "msp.new" %}">
+    {% csrf_token %}
+    <input type="text"
+           class="form-control"
+           name="type"
+           id="material-type"
+           value="other"
+           hidden/>
+
+    <div class="form-group required">
+        <label for="other-add-title"
+               class="control-label">
+            {% trans 'Name' %}
+        </label>
+        <input type="text" class="form-control"
+               name="name"
+               id="other-add-title"
+               placeholder="{% trans 'Name' %}"/>
+    </div>
+    <div class="form-group required">
+        <label for="other-add-title"
+               class="control-label">
+            {% trans 'Description' %}
+        </label>
+        <textarea class="form-control"
+               name="description"
+               id="other-add-title"
+                  rows="5"
+                  placeholder="{% trans 'Description, can contain URLS to link to a product page' %}"></textarea>
+    </div>
+
+    <input type="submit" value="{% trans 'Create' %}" class="btn btn-success"/>
+</form>
