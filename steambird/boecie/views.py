@@ -7,10 +7,10 @@ import datetime
 import io
 import logging
 from collections import defaultdict
-from typing import Optional, Any, Dict
+from typing import Optional, Any, Dict, Type
 
 from django.db.models import Count, Q, QuerySet
-from django.forms import Form
+from django.forms import Form, ModelForm
 from django.http import HttpRequest, Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -19,8 +19,8 @@ from django.views.generic import ListView, UpdateView, CreateView, \
     DeleteView, FormView, TemplateView
 from django_addanother.views import CreatePopupMixin
 
-from steambird.boecie.forms import ConfigForm, CourseForm, TeacherForm, \
-    StudyCourseForm, LmlExportForm
+from steambird.boecie.forms import ConfigForm, get_course_form, TeacherForm, \
+    StudyCourseForm, LmlExportForm, MSPCreateForm
 from steambird.models import Book, Config, MSP, Study, Course, Teacher, \
     CourseStudy, MSPLineType, MSPLine, StudyMaterialEdition
 from steambird.models.coursetree import Period
@@ -215,10 +215,12 @@ class CourseUpdateView(IsStudyAssociationMixin, MultiFormView):
     """
 
     template_name = "boecie/course_form.html"
-    forms = {
-        'course_form': CourseForm,
-        'studycourse_form': StudyCourseForm(has_course_field=False)
-    }
+
+    def get_forms_classes(self) -> Dict[str, Type[Form]]:
+        return {
+            'studycourse_form': StudyCourseForm(has_course_field=False),
+            'course_form': get_course_form(course_id=self.kwargs['pk'])
+        }
 
     def get_object_for(self,
                        form_name: str,
@@ -301,7 +303,7 @@ class CourseCreateView(IsStudyAssociationMixin, CreateView):
     """
 
     model = Course
-    form_class = CourseForm
+    form_class = get_course_form()
     template_name = 'boecie/course_form.html'
 
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
@@ -741,3 +743,32 @@ class MaterialListView(IsStudyAssociationMixin, TemplateView):
         context['grouped_materials'] = dict(grouped)
 
         return context
+
+
+class MSPCreateView(IsStudyAssociationMixin, CreateView):
+    template_name = 'boecie/material_add.html'
+    model = MSP
+    form_class = MSPCreateForm
+
+    def get_success_url(self):
+        return reverse('boecie:msp.detail', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form: ModelForm):
+        line: MSPLine = form.save(commit=False)
+        line.created_by = self.request.user
+        line.created_by_side = "BOECIE"
+        line.type = MSPLineType.request_material.name
+        line.msp = MSP.objects.create()
+        line.msp.course_set.set([self.kwargs['course']])
+        line.save()
+
+        self.object = line.msp
+
+        form.save_m2m()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        LOGGER.warning("Invalid input received by the MSP create view.", form.errors, {name: field.error_messages for name, field in form.fields.items()})
+
+        return super().form_invalid(form)

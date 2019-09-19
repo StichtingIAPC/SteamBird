@@ -1,0 +1,66 @@
+{% extends 'boecie/base.html' %}
+{% load i18n %}
+{% load bootstrapify %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container profile">
+        <div class="row">
+            <div class="col-xs-12 w-100">
+                <h2>
+                    <span>
+                        Create MSP
+                    </span>
+                </h2>
+            </div>
+        </div>
+        <form action="{{ request.path }}" method="post" class="form-horizontal">
+            <div class="row">
+                <div class="col-xs-12 w-100">
+                        {% csrf_token %}
+                        {{ form.media.css }}
+                        {{ form.media.js }}
+                        {{ form.non_field_errors }}
+                        <div class="form-group required">
+                            <div class="row">
+                                <label class="col-sm-2 control-label w-100">
+                                    {% trans 'Material(s)' %}
+                                </label>
+                                <div class="col-sm-10 w-100">
+                                    {{ form.materials.errors }}
+                                    <div class="form-inline">
+                                        {{ form.materials }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <div class="row">
+                                <label class="col-sm-2 control-label w-100">
+                                    {% trans 'Description' %}
+                                </label>
+                                <div class="col-sm-10 w-100">
+                                    {{ form.comment.errors }}
+                                    <div class="form-inline">
+                                        {{ form.comment|form_bootstrapify }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 w-100">
+                    <div class="form-group">
+                        <div class="w-100 col-xs-12">
+                            <button class="btn btn-primary btn-block" type="submit">
+                                {% trans "Create new material request" %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="spacing"></div>
+    </div>
+{% endblock %}
