@@ -33,7 +33,7 @@ from steambird.util import MultiFormView
 LOGGER = logging.getLogger(__name__)
 
 
-class HomeView(IsBoecieMixin, View):
+class HomeView(IsStudyAssociationMixin, View):
     """
     View that creates the Home-page of the Boecie view. Shows which courses you are linked to as
     user (through association reference). Also shows progress bars to show how far a study is
