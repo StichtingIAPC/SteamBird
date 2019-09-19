@@ -53,7 +53,7 @@ class CourseForm(forms.ModelForm):
                     "scientificarticle__author__icontains",
                     "scientificarticle__year_of_publishing__icontains",
                 ]
-            ), reverse_lazy('msp.new')),
+            ), reverse_lazy('material_management:material.create')),
             # TODO: Make this work on the new MSP selection instead of this old
             #  one (therefore, up until then keep it like this)
 
