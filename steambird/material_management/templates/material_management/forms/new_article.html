@@ -2,7 +2,7 @@
 
 
 
-<form style="display: none;" id="paper-add" class="form-add" method="post" action="{% url "msp.new" %}">
+<form style="display: none;" id="paper-add" class="form-add" method="post" action="{% url "material_management:material.create" %}">
     {% csrf_token %}
     <input type="text"
            class="form-control"
