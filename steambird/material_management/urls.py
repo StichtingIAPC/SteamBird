@@ -3,6 +3,7 @@ from django.urls import path
 from .views import AddMaterialView, ISBNLookupView, ISBNView, ISBNDetailView, DOIDetailView, \
     ISBNSearchApiView, DOISearchApiView, OtherDetailView
 
+# pylint: disable=invalid-name
 app_name = 'material_management'
 
 # pylint: disable=invalid-name
