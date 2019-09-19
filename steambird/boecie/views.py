@@ -9,6 +9,7 @@ import logging
 from collections import defaultdict
 from typing import Optional, Any, Dict
 
+from django.contrib.auth.models import User
 from django.db.models import Count, Q, QuerySet
 from django.forms import Form
 from django.http import HttpRequest, Http404, HttpResponse, HttpResponseRedirect
@@ -22,7 +23,7 @@ from django_addanother.views import CreatePopupMixin
 from steambird.boecie.forms import ConfigForm, CourseForm, TeacherForm, \
     StudyCourseForm, LmlExportForm
 from steambird.models import Book, Config, MSP, Study, Course, Teacher, \
-    CourseStudy, MSPLineType, MSPLine, StudyMaterialEdition
+    CourseStudy, MSPLineType, MSPLine, StudyMaterialEdition, AuthToken
 from steambird.models.coursetree import Period
 from steambird.perm_utils import IsStudyAssociationMixin, IsBoecieMixin
 from steambird.teacher.forms import PrefilledSuggestAnotherMSPLineForm, \
@@ -399,7 +400,32 @@ class TeacherCreateView(IsStudyAssociationMixin, CreatePopupMixin, CreateView):
         :return: Django HttpResponseRedirect
         """
 
-        teacher = form.save()
+        teacherinfo = form.save(commit=False)
+        lastname = str()
+        if teacherinfo.surname_prefix is not None:
+            lastname += teacherinfo.surname_prefix
+        lastname += teacherinfo.last_name
+
+        # Create a Django User object, so we can then create a Authcode and Teacher object to
+        # link it to.
+        user = User()
+        user.first_name = teacherinfo.first_name
+        user.last_name = lastname
+        user.username = teacherinfo.initials.replace('.', '') + teacherinfo.last_name
+        user.password = 'AC0mpl3t3lyRandomPasSwORDThatSh08dNevahbeUsed'
+        user.set_unusable_password()
+        user.save()
+
+        # Create an AuthToken that can be used for the Teacher
+        authcode = AuthToken()
+        authcode.user = user
+        authcode.save()
+
+        # Create
+        teacher = form.save(commit=False)
+        teacher.user = user
+
+        teacher.save()
         teacher_pk = teacher.pk
         return redirect(
             reverse('boecie:teacher.detail', kwargs={'pk': teacher_pk}))
