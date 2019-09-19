@@ -4,6 +4,9 @@ from .views import AddMaterialView, ISBNLookupView, ISBNView, ISBNDetailView, DO
     ISBNSearchApiView, DOISearchApiView, OtherDetailView
 
 # pylint: disable=invalid-name
+app_name = 'material_management'
+
+# pylint: disable=invalid-name
 urlpatterns = [
     path('isbn/search/<str:isbn>', ISBNLookupView.as_view(), name='isbnlookup'),
     path('isbn', ISBNView.as_view(), name='isbn'),
@@ -15,6 +18,5 @@ urlpatterns = [
     path('api/isbn/search', ISBNSearchApiView.as_view(), name='isbn.search'),
     path('api/doi/search', DOISearchApiView.as_view(), name='doi.search'),
 
-    path('msp/new', AddMaterialView.as_view(), name='msp.new'),
-
+    path('material/new', AddMaterialView.as_view(), name='material.create'),
 ]

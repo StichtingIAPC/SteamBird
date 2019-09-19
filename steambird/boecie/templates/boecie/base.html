@@ -29,11 +29,13 @@
             {% trans "LML Export" %}
         </a>
     </li>
-    <li class="{% active_menu config %}">
-        <a class="nav-link" href="{{ config }}">
-            {% trans "Config" %}
-        </a>
-    </li>
+    {% if user.is_superuser %}
+        <li class="{% active_menu config %}">
+            <a class="nav-link" href="{{ config }}">
+                {% trans "Config" %}
+            </a>
+        </li>
+    {% endif %}
     <li class="{% active_menu coursestudyrel %}">
         <a class="nav-link"
            href="{{ coursestudyrel }}">{% trans "Course Study" %}

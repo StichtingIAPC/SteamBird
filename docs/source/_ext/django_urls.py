@@ -7,10 +7,34 @@ class DjangoUrlsNode(nodes.Admonition, nodes.Element):
     tagname = 'django-urls'
 
 
+def list_of_string(argument: str):
+    return argument.split(',')
+
+
 class DjangoUrlsDirective(SphinxDirective):
+    """
+    A directive that can be used to list out relevant django URLs.
+
+    Options:
+
+    * Namespaces: A comma-separated list of namespaces that should be included
+    * Extra_urls: A comma-separated list of urls that should be included
+    * Application_packages: A comma-separated list of base-packages that should
+      be included.
+    """
+
+    option_spec = {
+        'namespaces': list_of_string,
+        'extra_urls': list_of_string,
+        'application_packages': list_of_string,
+    }
 
     def run(self):
         url_resolver = get_resolver()
+
+        self.options.setdefault('namespaces', [])
+        self.options.setdefault('extra_urls', [])
+        self.options.setdefault('application_packages', [])
 
         all_urls = []
 
@@ -36,7 +60,11 @@ class DjangoUrlsDirective(SphinxDirective):
 
         populate_level(url_resolver)
 
-        all_urls = filter(lambda url: url[1] in ["teacher", "boecie"] or url[0] == "", all_urls)
+        all_urls = filter(lambda url:
+                          url[1] in self.options['namespaces'] or
+                          url[0] in self.options['extra_urls'] or
+                          any(filter(lambda pkg: str.startswith(url[3], pkg), self.options['application_packages'])),
+                          all_urls)
 
         return [self.build_table_from_list(all_urls, ['Pattern', 'Namespace', 'Name', 'Class'])]
 
