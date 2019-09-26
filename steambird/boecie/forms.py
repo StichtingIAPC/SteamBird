@@ -5,7 +5,7 @@ This module contains the Django Form classes which are used in the Boecie views.
 from enum import Enum, auto
 
 from django import forms
-from django.forms import HiddenInput, Field, MultipleHiddenInput
+from django.forms import HiddenInput, MultipleHiddenInput
 from django.urls import reverse_lazy
 # noinspection PyUnresolvedReferences
 # pylint: disable=no-name-in-module
@@ -19,8 +19,8 @@ from steambird.models import Course, Teacher, CourseStudy, Study, Config, \
 def get_course_form(course_id=None):
     class CourseForm(forms.ModelForm):
         """
-        ModelForm for either showing/editing or inputting information related to a course. Makes use of
-        the Materials model and Teachers model.
+        ModelForm for either showing/editing or inputting information related to
+        a course. Makes use of the Materials model and Teachers model.
         """
 
         teachers = Course.teachers
@@ -55,8 +55,9 @@ def get_course_form(course_id=None):
                         "mspline__materials__scientificarticle__author__icontains",
                         "mspline__materials__scientificarticle__year_of_publishing__icontains",
                     ]
-                ), reverse_lazy('boecie:msp.create', kwargs={'course': course_id}))
-                if course_id else MultipleHiddenInput(),
+                ), reverse_lazy('boecie:msp.create',
+                                kwargs={'course': course_id})) if course_id
+                             else MultipleHiddenInput(),
 
                 'teachers': AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
                     model=Teacher,
@@ -180,8 +181,8 @@ class LmlExportForm(forms.Form):
     based on the options selected. Options are presented by LmlExportOptions, combined with Quartile
     """
 
-    # TODO: make sure this will only give the downloads for books within your association
-    #  (e.g. we shouldn't get EE)
+    # TODO: make sure this will only give the downloads for books within your
+    #  association (e.g. we shouldn't get EE)
     option = forms.ChoiceField(choices=((i.value, i.name) for i in LmlExportOptions))
     period = forms.ChoiceField(
         choices=(('Q{}'.format(i), 'Quartile {}'.format(i)) for i in range(1, 5))
@@ -227,8 +228,8 @@ class MSPCreateForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        if len(cleaned_data.get('materials')) <= 0:
-            self.add_error('materials', 'At least one material should be specified.')
+        if not cleaned_data.get('materials'):
+            self.add_error('materials',
+                           'At least one material should be specified.')
 
         return cleaned_data
-

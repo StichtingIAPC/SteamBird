@@ -722,8 +722,9 @@ class MSPDetail(IsStudyAssociationMixin, FormView):
 
 class MaterialListView(IsStudyAssociationMixin, TemplateView):
     """
-    A view which gives us a list of all materials which are currently in the system. List should be
-    ordered based on type. Future improvements should focus on better filters
+    A view which gives us a list of all materials which are currently in the
+    system. List should be ordered based on type. Future improvements should
+    focus on better filters
     """
 
     template_name = 'boecie/materials_list.html'
@@ -762,6 +763,8 @@ class MSPCreateView(IsStudyAssociationMixin, CreateView):
         line.msp.course_set.set([self.kwargs['course']])
         line.save()
 
+        # noinspection PyAttributeOutsideInit
+        # pylint: disable=attribute-defined-outside-init
         self.object = line.msp
 
         form.save_m2m()
@@ -769,6 +772,6 @@ class MSPCreateView(IsStudyAssociationMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
-        LOGGER.warning("Invalid input received by the MSP create view.", form.errors, {name: field.error_messages for name, field in form.fields.items()})
+        LOGGER.info("Invalid input received by the MSP create view.")
 
         return super().form_invalid(form)
