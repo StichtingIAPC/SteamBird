@@ -13,7 +13,7 @@ from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
 from steambird.models import Course, Teacher, CourseStudy, Study, Config, \
-    StudyMaterialEdition, MSPLine
+    StudyMaterialEdition, MSPLine, MSP
 
 
 def get_course_form(course_id=None):
@@ -45,15 +45,15 @@ def get_course_form(course_id=None):
                 'id': HiddenInput(),
 
                 "materials": AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
-                    queryset=StudyMaterialEdition.objects.all(),
+                    queryset=MSP.objects.all(),
                     search_fields=[
-                        "name__icontains",
-                        "book__ISBN__icontains",
-                        "book__author__icontains",
-                        "book__year_of_publishing__icontains",
-                        "scientificarticle__DOI__icontains",
-                        "scientificarticle__author__icontains",
-                        "scientificarticle__year_of_publishing__icontains",
+                        "mspline__materials__name__icontains",
+                        "mspline__materials__book__ISBN__icontains",
+                        "mspline__materials__book__author__icontains",
+                        "mspline__materials__book__year_of_publishing__icontains",
+                        "mspline__materials__scientificarticle__DOI__icontains",
+                        "mspline__materials__scientificarticle__author__icontains",
+                        "mspline__materials__scientificarticle__year_of_publishing__icontains",
                     ]
                 ), reverse_lazy('boecie:msp.create', kwargs={'course': course_id}))
                 if course_id else MultipleHiddenInput(),
