@@ -24,6 +24,12 @@ class ISBNForm(forms.Form):
 
 
 class BookForm(forms.ModelForm):
+    ISBN = forms.CharField(widget=forms.TextInput(attrs={
+        'pattern': r"[0-9\-xX]{3,}",
+        'data-error': 'ISBN can only contain numbers, dashes (-), and a X\'s',
+        'required': True,
+    }))
+
     """
     Form for inputting book information. Makes use of the Book model.
     """

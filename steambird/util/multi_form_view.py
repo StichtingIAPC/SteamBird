@@ -130,6 +130,8 @@ class MultiFormView(views.generic.TemplateView):
             forms = self.get_form_instances(
                 self.get_forms_classes(), self.request)
 
+        # forms = [form.instance for form in forms]
+
         context = {
             **super().get_context_data(**kwargs),
             **forms,

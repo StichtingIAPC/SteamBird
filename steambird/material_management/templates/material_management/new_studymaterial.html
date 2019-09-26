@@ -16,9 +16,9 @@
         </select>
         <div class="spacing"></div>
 
-        {% include "material_management/forms/new_book.html" %}
-        {% include "material_management/forms/new_article.html" %}
-        {% include "material_management/forms/new_other.html" %}
+        {% include "material_management/forms/new_book.html" with form=book %}
+        {% include "material_management/forms/new_article.html" with form=paper %}
+        {% include "material_management/forms/new_other.html" with form=other %}
     </div>
 {% endblock %}
 
