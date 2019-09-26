@@ -32,7 +32,8 @@ class CoursesListView(FormView):
             calendar_year=data['calendar_year'],
             period=data['period']) \
             .order_by('coursestudy__study_year', 'period') \
-            .prefetch_related('coursestudy_set', 'coordinator')
+            .prefetch_related('coursestudy_set') \
+            .select_related('coordinator')
 
         per_year_quartile = defaultdict(list)
 
