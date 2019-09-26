@@ -73,6 +73,8 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
 
     form_name_field_name = 'object_type'
 
+    # noinspection PyMethodOverriding
+    # pylint: disable=arguments-differ,unused-argument
     def form_valid(self, request: HttpRequest, form: Form, form_name: str) -> Optional[Any]:
         obj = form.save()
 
