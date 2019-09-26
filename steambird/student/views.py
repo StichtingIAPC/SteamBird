@@ -27,7 +27,7 @@ class CoursesListView(FormView):
 
         # Defines a base query configured to prefetch all resources that will
         #  be used either in this view or in the template.
-        courses = Course.objects.with_self_and_parents().filter(
+        courses = Course.objects.with_all_periods().filter(
             studies__pk=data['study'].pk,
             calendar_year=data['calendar_year'],
             period=data['period']) \
