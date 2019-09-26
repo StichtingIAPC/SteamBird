@@ -17,8 +17,11 @@ urlpatterns = [
          RedirectView.as_view(pattern_name='admin:index', permanent=False)),
     path('', IndexView.as_view(), name='index'),
     path('', include('steambird.material_management.urls')),
+
     path('teacher/', include('steambird.teacher.urls', namespace='teacher')),
     path('boecie/', include('steambird.boecie.urls')),
+    path('student/', include('steambird.student.urls', namespace='student')),
+
     path('token', TokenLogin.as_view(), name='token_login'),
 
 ] + pysidian_core_urls
