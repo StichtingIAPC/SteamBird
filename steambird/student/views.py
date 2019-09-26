@@ -1,9 +1,10 @@
 from collections import defaultdict
 
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import FormView
 
-from steambird.models import Config, Study, Course, Period
+from steambird.models import Course, Period
 from steambird.student.forms import StudyCoursesFilterForm
 
 
@@ -19,25 +20,17 @@ class CoursesListView(FormView):
     def form_valid(self, form):
         data = form.cleaned_data
 
-
-    #     """
-    #     A function which returns the context structured on all courses per period, for every year
-    #
-    #     :param study: The database PK which is used to resolve the study
-    #     :return: Context
-    #     """
-
         result = {
             'periods': [],
-            'study': Study.objects.get(pk=data['study'])
+            'study': data['study']
         }
 
         # Defines a base query configured to prefetch all resources that will
         #  be used either in this view or in the template.
         courses = Course.objects.with_self_and_parents().filter(
-            studies__pk=data['study'],
-            calendar_year=data['year'],
-            period=data['[period']) \
+            studies__pk=data['study'].pk,
+            calendar_year=data['calendar_year'],
+            period=data['period']) \
             .order_by('coursestudy__study_year', 'period') \
             .prefetch_related('coursestudy_set', 'coordinator')
 
@@ -62,6 +55,8 @@ class CoursesListView(FormView):
             },
             sorted(per_year_quartile.items(), key=lambda x: (x[0][0], x[0][1]))
         ))
+        result['form'] = form
 
-        return result
-        # Return a HTTPResponse Object of sorts
+        return render(request=self.request,
+                      template_name=self.template_name,
+                      context=result)
