@@ -24,6 +24,7 @@
     {% url 'index' as home %}
     {% url 'teacher:index' as teacher_home %}
     {% url 'boecie:index' as boecie_home %}
+    {% url 'student:index' as student_home %}
 
     <li class="{% active_menu home %}">
         <a class="nav-link" href="{{ home }}">
@@ -38,6 +39,11 @@
     <li class="{% active_menu boecie_home %}">
         <a class="nav-link" href="{{ boecie_home }}">
             {% trans "Boecie" %}
+        </a>
+    </li>
+    <li class="{% active_menu student_home %}">
+        <a class="nav-link" href="{{ student_home }}">
+            {% trans "Student ☭ " %}
         </a>
     </li>
 {% endblock %}

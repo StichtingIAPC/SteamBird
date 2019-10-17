@@ -46,7 +46,8 @@
                             {% endif %}
                         </tr>
 
-
+                    {% empty %}
+                        <div class="card-header"> {% trans "No data can be found for this selection, if you think this is an error, contact us through a GitLab Issue report" %}</div>
                     {% endfor %}
                 </table>
             </div>
