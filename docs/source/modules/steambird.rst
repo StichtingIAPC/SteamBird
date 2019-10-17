@@ -8,6 +8,7 @@ Python API
    steambird.templatetags
    steambird.tests
    steambird.util
+   steambird.mail
    steambird.models
 
 Admin
