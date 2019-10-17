@@ -5,82 +5,85 @@ This module contains the Django Form classes which are used in the Boecie views.
 from enum import Enum, auto
 
 from django import forms
-from django.forms import HiddenInput
+from django.forms import HiddenInput, MultipleHiddenInput
 from django.urls import reverse_lazy
 # noinspection PyUnresolvedReferences
 # pylint: disable=no-name-in-module
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
-from steambird.models import Course, Teacher, CourseStudy, Study, Config, StudyMaterialEdition
+from steambird.models import Course, Teacher, CourseStudy, Study, Config, \
+    StudyMaterialEdition, MSPLine, MSP
 
 
-class CourseForm(forms.ModelForm):
-    """
-    ModelForm for either showing/editing or inputting information related to a course. Makes use of
-    the Materials model and Teachers model.
-    """
+def get_course_form(course_id=None):
+    class CourseForm(forms.ModelForm):
+        """
+        ModelForm for either showing/editing or inputting information related to
+        a course. Makes use of the Materials model and Teachers model.
+        """
 
-    teachers = Course.teachers
-    materials = Course.materials
+        teachers = Course.teachers
+        materials = Course.materials
 
-    class Meta:
-        model = Course
-        fields = [
-            'id',
-            'course_code',
-            'name',
-            'materials',
-            'teachers',
-            'updated_associations',
-            'updated_teacher',
-            'calendar_year',
-            'coordinator',
-            'period',
-        ]
+        class Meta:
+            model = Course
+            fields = [
+                'id',
+                'course_code',
+                'name',
+                'materials',
+                'teachers',
+                'updated_associations',
+                'updated_teacher',
+                'calendar_year',
+                'coordinator',
+                'period',
+            ]
 
-        widgets = {
-            'id': HiddenInput(),
+            widgets = {
+                'id': HiddenInput(),
 
-            "materials": AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
-                queryset=StudyMaterialEdition.objects.all(),
-                search_fields=[
-                    "name__icontains",
-                    "book__ISBN__icontains",
-                    "book__author__icontains",
-                    "book__year_of_publishing__icontains",
-                    "scientificarticle__DOI__icontains",
-                    "scientificarticle__author__icontains",
-                    "scientificarticle__year_of_publishing__icontains",
-                ]
-            ), reverse_lazy('material_management:material.create')),
-            # TODO: Make this work on the new MSP selection instead of this old
-            #  one (therefore, up until then keep it like this)
+                "materials": AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
+                    queryset=MSP.objects.all(),
+                    search_fields=[
+                        "mspline__materials__name__icontains",
+                        "mspline__materials__book__ISBN__icontains",
+                        "mspline__materials__book__author__icontains",
+                        "mspline__materials__book__year_of_publishing__icontains",
+                        "mspline__materials__scientificarticle__DOI__icontains",
+                        "mspline__materials__scientificarticle__author__icontains",
+                        "mspline__materials__scientificarticle__year_of_publishing__icontains",
+                    ]
+                ), reverse_lazy('boecie:msp.create',
+                                kwargs={'course': course_id})) if course_id
+                             else MultipleHiddenInput(),
 
-            'teachers': AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
-                model=Teacher,
-                search_fields=[
-                    'titles__icontains',
-                    'initials__icontains',
-                    'first_name__icontains',
-                    'surname_prefix__icontains',
-                    'last_name__icontains',
-                    'email__icontains'
-                ]
-            ), reverse_lazy('boecie:teacher.create')),
+                'teachers': AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
+                    model=Teacher,
+                    search_fields=[
+                        'titles__icontains',
+                        'initials__icontains',
+                        'first_name__icontains',
+                        'surname_prefix__icontains',
+                        'last_name__icontains',
+                        'email__icontains'
+                    ]
+                ), reverse_lazy('boecie:teacher.create')),
 
-            'coordinator': AddAnotherWidgetWrapper(ModelSelect2Widget(
-                model=Teacher,
-                search_fields=[
-                    'titles__icontains',
-                    'initials__icontains',
-                    'first_name__icontains',
-                    'surname_prefix__icontains',
-                    'last_name__icontains',
-                    'email__icontains'
-                ]
-            ), reverse_lazy('boecie:teacher.create'))
-        }
+                'coordinator': AddAnotherWidgetWrapper(ModelSelect2Widget(
+                    model=Teacher,
+                    search_fields=[
+                        'titles__icontains',
+                        'initials__icontains',
+                        'first_name__icontains',
+                        'surname_prefix__icontains',
+                        'last_name__icontains',
+                        'email__icontains'
+                    ]
+                ), reverse_lazy('boecie:teacher.create'))
+            }
+    return CourseForm
 
 
 class TeacherForm(forms.ModelForm):
@@ -178,8 +181,8 @@ class LmlExportForm(forms.Form):
     based on the options selected. Options are presented by LmlExportOptions, combined with Quartile
     """
 
-    # TODO: make sure this will only give the downloads for books within your association
-    #  (e.g. we shouldn't get EE)
+    # TODO: make sure this will only give the downloads for books within your
+    #  association (e.g. we shouldn't get EE)
     option = forms.ChoiceField(choices=((i.value, i.name) for i in LmlExportOptions))
     period = forms.ChoiceField(
         choices=(('Q{}'.format(i), 'Quartile {}'.format(i)) for i in range(1, 5))
@@ -198,3 +201,35 @@ class ConfigForm(forms.ModelForm):
             'year',
             'period',
         ]
+
+
+class MSPCreateForm(forms.ModelForm):
+    class Meta:
+        model = MSPLine
+        fields = [
+            'comment', 'materials'
+        ]
+        widgets = {
+            'comment': forms.Textarea(),
+            'materials': AddAnotherWidgetWrapper(ModelSelect2MultipleWidget(
+                queryset=StudyMaterialEdition.objects.all(),
+                search_fields=[
+                    "name__icontains",
+                    "book__ISBN__icontains",
+                    "book__author__icontains",
+                    "book__year_of_publishing__icontains",
+                    "scientificarticle__DOI__icontains",
+                    "scientificarticle__author__icontains",
+                    "scientificarticle__year_of_publishing__icontains",
+                ]
+            ), reverse_lazy('material_management:material.create')),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if not cleaned_data.get('materials'):
+            self.add_error('materials',
+                           'At least one material should be specified.')
+
+        return cleaned_data
