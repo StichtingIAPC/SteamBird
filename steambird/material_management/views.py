@@ -1,5 +1,6 @@
+import logging
 from json import dumps
-from typing import Union
+from typing import Union, Any, Optional
 from urllib.parse import quote, unquote
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,6 +19,10 @@ from steambird.material_management.forms import ISBNForm, BookForm, ScientificPa
     OtherMaterialForm
 from steambird.material_management.tools import isbn_lookup, doi_lookup
 from steambird.models import Book, ScientificArticle, OtherMaterial
+from steambird.util import MultiFormView
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class ISBNView(LoginRequiredMixin, FormView):
@@ -52,52 +57,45 @@ class ISBNLookupView(LoginRequiredMixin, View):
         return render(self.request, 'material_management/book.html', result)
 
 
-class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, View):
+class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
     """
     View which shows the choice-menu and handles what happens with post-data. Creates a new Material
      object of chosen type
     """
-    def get(self, _request) -> HttpResponse:
-        return render(self.request, 'material_management/new_studymaterial.html')
 
-    # pylint: disable=no-self-use
-    def post(self, request) -> Union[HttpResponseBadRequest, HttpResponseRedirect, HttpResponse]:
-        """
-        This method handles all the responses which might be submitted using the template, fills in
-        the form and validates it before returning a specific return url. Take care when working
-        with the DOI, as this is quoted to be safe to handled on post. Unquoted DOI's will break
-        and fail due to the use of '/' in them
+    forms = {
+        'book': BookForm,
+        'paper': ScientificPaperForm,
+        'other': OtherMaterialForm,
+    }
 
-        :param request: Probably a Django HttpRequest
-        :return: Bad request or a redirect to the page the right data, or a response with errors
-        """
-        material_type = request.POST.get('type')
+    template_name = 'material_management/new_studymaterial.html'
 
-        # Set all book related variables
-        if material_type == 'book':
-            form = BookForm(request.POST)
+    form_name_field_name = 'object_type'
+
+    # noinspection PyMethodOverriding
+    # pylint: disable=arguments-differ,unused-argument
+    def form_valid(self, request: HttpRequest, form: Form, form_name: str) -> Optional[Any]:
+        obj = form.save()
+
+        if isinstance(form, BookForm):
             reverse_url = 'material_management:isbndetail'
             kwargs = {'isbn': request.POST.get('ISBN')}
-        # Set all paper related variables
-        elif material_type == 'paper':
-            form = ScientificPaperForm(request.POST)
+        elif isinstance(Form, ScientificPaperForm):
             reverse_url = 'material_management:articledetail'
-            kwargs = {'doi': quote(request.POST.get('DOI'), safe='')}
-        # Type is not supported
-        elif material_type == 'other':
-            form = OtherMaterialForm(request.POST)
+            kwargs = {'doi': quote(request.POST.get('DOI', safe=''))}
+        elif isinstance(Form, OtherMaterialForm):
             reverse_url = 'material_management:otherdetail'
-            if form.is_valid():
-                saved_obj = form.save()
-                return redirect(reverse(reverse_url, kwargs={'pk': saved_obj.pk}))
+            kwargs = {'pk': obj.pk}
         else:
+            LOGGER.warning(
+                'Form of unknown type was submitted to material create.')
             return HttpResponseBadRequest()
 
-        if form.is_valid():
-            form.save()
-            return redirect(reverse(reverse_url, kwargs=kwargs))
+        if self.is_popup():
+            self.respond_script(obj)
 
-        return render(request, 'material_management/new_studymaterial.html', {'form': form})
+        return redirect(reverse(reverse_url, kwargs=kwargs))
 
 
 class ISBNSearchApiView(LoginRequiredMixin, View):

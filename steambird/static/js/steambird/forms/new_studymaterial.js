@@ -52,12 +52,11 @@ function searchIsbn(isbn) {
 function updateBook(response) {
     let book = response.meta;
 
-    $("#material-type").val($('#type-add').val());
-    $("#book-add-isbn").val(book["ISBN-13"]);
-    $("#book-add-title").val(book.Title);
-    $("#book-add-author").val(book.Authors.join(", "));
-    $("#book-add-year").val(book.Year);
-    $("#book-add-image").val(book.img);
+    $("#book-add-isbn input").val(book["ISBN-13"]);
+    $("#book-add-title input").val(book.Title);
+    $("#book-add-author input").val(book.Authors.join(", "));
+    $("#book-add-year input").val(book.Year);
+    $("#book-add-image input").val(book.img);
     $("#book-add-show-image").attr("src", book.img);
 }
 
@@ -67,7 +66,7 @@ $(($) => {
     });
 
     $('#book-add-isbn-search').click(() => {
-        searchIsbn($('#book-add-isbn').val());
+        searchIsbn($('#book-add-isbn input').val());
     });
 
     $('#book-add-image').change(event => {
@@ -76,11 +75,11 @@ $(($) => {
 
 
     $('#paper-add-isbn-search').click(() => {
-        searchIsbn($('#paper-add-isbn').val());
+        searchIsbn($('#book-add-isbn input').val());
     });
 
     $('#paper-add-doi-search').click(() => {
-        searchDoi(($('#paper-add-doi').val()))
+        searchDoi(($('#paper-add-doi input').val()))
     });
 
     $('#type-add').change(event => {
@@ -142,8 +141,6 @@ function searchDoi(doi) {
  * }}
  */
 function updateArticle(article) {
-
-
     const authors = article.author.map(author => {
         if (author.given && author.family) {
             return author.given + " " + author.family;
@@ -158,10 +155,9 @@ function updateArticle(article) {
         }
     }).join(", ");
 
-    $("#material-type").val($('#type-add').val());
-    $("#paper-add-doi").val(article.DOI);
-    $("#paper-add-title").val(article.title);
-    $("#paper-add-author").val(authors);
-    $("#paper-add-year").val(article.issued["date-parts"][0][0]);
-    $("#paper-add-url").val(article.URL);
+    $("#paper-add-doi input").val(article.DOI);
+    $("#paper-add-title input").val(article.title);
+    $("#paper-add-author input").val(authors);
+    $("#paper-add-year input").val(article.issued["date-parts"][0][0]);
+    $("#paper-add-url input").val(article.URL);
 }
