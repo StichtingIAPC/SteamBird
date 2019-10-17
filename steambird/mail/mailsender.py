@@ -201,10 +201,10 @@ def create_multilingual_mail(template_name: str, subject: str, context: dict,
 
     info = MIMEMultipart(_subtype='alternative')
     info.attach(SafeMIMEText(
-        get_template("steambird/mail/multilingual_header.html").render({}),
+        get_template("steambird/../templates/mail/multilingual_header.html").render({}),
         _subtype="html", _charset="utf-8"))
     info.attach(SafeMIMEText(
-        get_template("steambird/mail/multilingual_header.plain").render({}),
+        get_template("steambird/../templates/mail/multilingual_header.plain").render({}),
         _subtype="plain", _charset="utf-8"))
 
     info.add_header("Content-Disposition", "inline")
@@ -234,7 +234,7 @@ def _test():
     """
     context = {}
     subject = "Test"
-    template_name = "test"
+    template_name = "steambird/test"
     from_email = "test@iapc.nl"
     recipients = ["rkleef@iapc.nl"]
 
