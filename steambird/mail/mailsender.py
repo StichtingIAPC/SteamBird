@@ -29,8 +29,8 @@ from django.utils.translation import ugettext as _
 
 
 @contextmanager
-def language(l: str):
-    translation.activate(l)
+def language(lang: str):
+    translation.activate(lang)
     yield
     translation.deactivate()
 
@@ -59,7 +59,8 @@ class MultiTemplatableEmailMessage(EmailMultiAlternatives):
         """
         if isinstance(content, MIMEText):
             return content
-        elif isinstance(content, MIMEBase) and\
+
+        if isinstance(content, MIMEBase) and\
                 'Content-Transfer-Encoding' in content and\
                 content['Content-Transfer-Encoding'] != 'base64':
 
@@ -75,7 +76,7 @@ class MultilingualEmailMessage(EmailMultiAlternatives):
     .. _RFC8255: https://tools.ietf.org/html/rfc8255
     """
 
-    def __init__(self, mixed_subtype="multilingual", *args, **kwargs):
+    def __init__(self, *args, mixed_subtype="multilingual", **kwargs):
         super().__init__(*args, **kwargs)
         self.languages: List[Tuple[str, MIMEBase]] = []
         self.mixed_subtype = mixed_subtype
@@ -118,6 +119,7 @@ class MultilingualEmailMessage(EmailMultiAlternatives):
         self.languages.append((lang, content))
 
 
+# pylint: disable=invalid-name
 templates = None
 
 
@@ -127,6 +129,7 @@ def ensure_setup() -> None:
 
     :return: None
     """
+    # pylint: disable=global-statement
     global templates
 
     if templates:
@@ -134,16 +137,17 @@ def ensure_setup() -> None:
 
     # Collect all mail templates
     templates = defaultdict(lambda: defaultdict(list))
-    rx = re.compile(r'.*/mail/(?P<name>.*)/(?P<locale>[a-z]+)\.(?P<subtype>[a-z]+)')
+    regex = re.compile(
+        r'.*/mail/(?P<name>.*)/(?P<locale>[a-z]+)\.(?P<subtype>[a-z]+)')
     for template_dir in (get_app_template_dirs("templates")):
-        for dir, dirnames, filenames in os.walk(template_dir):
+        for directory, _, filenames in os.walk(template_dir):
             for filename in filenames:
-                match = rx.match("{}/{}".format(dir, filename))
+                match = regex.match("{}/{}".format(directory, filename))
                 if match:
                     d = match.groupdict()
                     templates[d['name']][d['locale']].append({
                         **d,
-                        'file': os.path.join(dir, filename),
+                        'file': os.path.join(directory, filename),
                     })
 
     templates = {k: dict(v) for k, v in templates.items()}
@@ -153,11 +157,11 @@ def create_multilingual_mail(template_name: str, subject: str, context: dict,
                              **kwargs) -> EmailMessage:
     ensure_setup()
 
-    langs = templates[template_name]
+    languages = templates[template_name]
 
-    if len(langs.items()) == 1:
-        langs: dict
-        lang, ts = list(langs.items())[0]
+    if len(languages.items()) == 1:
+        languages: dict
+        lang, tpls = list(languages.items())[0]
 
         with language(lang):
             msg = MultiTemplatableEmailMessage(
@@ -166,7 +170,7 @@ def create_multilingual_mail(template_name: str, subject: str, context: dict,
                 **kwargs
             )
 
-            for template in ts:
+            for template in tpls:
                 msg.attach_alternative(
                     SafeMIMEText(
                         _text=get_template(template['file']).render({
@@ -178,39 +182,45 @@ def create_multilingual_mail(template_name: str, subject: str, context: dict,
                     ), 'unknown/unknown')
 
         return msg
-    else:
-        msg = MultilingualEmailMessage(subject=subject, **kwargs)
 
-        for lang, ts in langs.items():
-            with language(lang):
-                lang_alt = MIMEMultipart(_subtype='alternative')
-                lang_alt.add_header("Subject", _(subject))
+    msg = MultilingualEmailMessage(subject=subject, **kwargs)
 
-                for template in ts:
-                    lang_alt.attach(
-                        SafeMIMEText(get_template(template['file']).render({
-                            'locale': template['locale'],
-                            **context,
-                        }), _subtype=template['subtype']))
+    for lang, tpls in languages.items():
+        with language(lang):
+            lang_alt = MIMEMultipart(_subtype='alternative')
+            lang_alt.add_header("Subject", _(subject))
 
-                msg.add_language(lang, lang_alt)
+            for template in tpls:
+                lang_alt.attach(
+                    SafeMIMEText(get_template(template['file']).render({
+                        'locale': template['locale'],
+                        **context,
+                    }), _subtype=template['subtype']))
 
-        info = MIMEMultipart(_subtype='alternative')
-        info.attach(SafeMIMEText(
-            get_template("steambird/mail/multilingual_header.html").render({}),
-            _subtype="html", _charset="utf-8"))
-        info.attach(SafeMIMEText(
-            get_template("steambird/mail/multilingual_header.plain").render({}),
-            _subtype="plain", _charset="utf-8"))
+            msg.add_language(lang, lang_alt)
 
-        info.add_header("Content-Disposition", "inline")
+    info = MIMEMultipart(_subtype='alternative')
+    info.attach(SafeMIMEText(
+        get_template("steambird/mail/multilingual_header.html").render({}),
+        _subtype="html", _charset="utf-8"))
+    info.attach(SafeMIMEText(
+        get_template("steambird/mail/multilingual_header.plain").render({}),
+        _subtype="plain", _charset="utf-8"))
 
-        msg.attach(info)
+    info.add_header("Content-Disposition", "inline")
 
-        return msg
+    msg.attach(info)
+
+    return msg
 
 
 def send_mimemessages(msgs: List[EmailMessage]) -> None:
+    """
+    Sends a list of EmailMessage.
+
+    :param msgs: list of messages to send
+    :return: nothing
+    """
     conn = get_connection()
     conn.open()
     for msg in msgs:
@@ -219,6 +229,9 @@ def send_mimemessages(msgs: List[EmailMessage]) -> None:
 
 
 def _test():
+    """
+    Example sending of a message.
+    """
     context = {}
     subject = "Test"
     template_name = "test"
