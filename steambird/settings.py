@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'steambird',
     'steambird.boecie',
     'steambird.teacher',
+    'steambird.material_management',
+
     'pysidian_core',
     'django_select2',
     'django_addanother',
@@ -122,7 +124,7 @@ LANGUAGES = [
     ('en', _('English')),
 ]
 
-LANGUAGE_CODE = 'nl'
+LANGUAGE_CODE = 'en'
 
 
 TIME_ZONE = 'Europe/Amsterdam'
@@ -147,9 +149,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Configures email backends
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = '130.89.148.239'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '130.89.148.239'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+try:
+    # pylint: disable=wildcard-import, unused-wildcard-import
+    from .local import *
+except ImportError:
+    print("Failed to import local.py. It is recommended to add them.")

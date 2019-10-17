@@ -6,28 +6,45 @@
 {% block content %}
     {% url 'boecie:teacher.create' as add_url %}
     {% url 'boecie:teacher.detail' teacher.pk as edit_url %}
+
     <div class="spacing"></div>
     <div class="container profile">
         <div class="row">
             <div class="col-xs-12 w-100">
-                <h2>
-                    {% if request.path == edit_url %}
-                        {% trans "Edit Teacher" %}
-                        <a class="btn btn-primary right"
+                {% if request.path == edit_url %}
+                    <h2>
+                        {% trans "Edit " %}{{ teacher }}
+                        <a class="btn btn-primary float-right"
                            href="{% url 'boecie:teacher.delete' teacher.pk %}">
-                            {% trans "Delete" %}</a>
-                    {% else %}
-                        <span>{% trans 'Creating Teacher' %}</span>
-                    {% endif %}
-
-                </h2>
+                            {% trans "Delete" %}
+                        </a>
+                    </h2>
+                    <span class="text-muted">
+                    <span class="fa fa-clock"></span>
+                    {% trans 'Last Login:' %}
+                        {% if teacher.user.last_login %}
+                            {{ teacher.user.last_login }}
+                        {% else %}
+                            <span class="text-danger">
+                            {% trans "Never logged in" %}
+                        </span>
+                        {% endif %}
+                    </span>
+                {% else %}
+                    <h2>
+                        <span>
+                            {% trans 'Creating Teacher' %}
+                        </span>
+                    </h2>
+                {% endif %}
             </div>
         </div>
         {% if form.errors or formset.errors %}
             <div class="row">
                 <div class="col-xs-12 w-100">
-                    <div class="alert alert-danger"
-                         role="alert">{% trans 'There were some problems with the data you entered. Please see below.' %}</div>
+                    <div class="alert alert-danger" role="alert">
+                        {% trans 'There were some problems with the data you entered. Please see below.' %}
+                    </div>
                 </div>
             </div>
             {% if form.non_field_errors %}
@@ -36,13 +53,68 @@
                         <div class="alert alert-danger" role="alert">
                             <ul>
                                 {% for error in form.non_field_errors %}
-                                    <li>{{ error }}</li>
+                                    <li>
+                                        {{ error }}
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                 </div>
             {% endif %}
+        {% endif %}
+
+        {% if request.path == add_url %}
+            <div class="row">
+                <div class="col-xs-12 w-100">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="card-title mb-0">
+                                Search for teacher in
+                                <a href="https://people.utwente.nl/">people.utwente.nl</a>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <form onsubmit="search_teachers(); return false;" name="people-utwente-search-form">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-2 control-label w-100" for="search-teacher-name-on-people">
+                                            {% trans 'Name of teacher' %}
+                                        </label>
+                                        <div class="col-sm-10 w-100">
+                                            <div class="form-inline">
+                                                <input type="text"
+                                                       name="teacher-name"
+                                                       id="search-teacher-name-on-people"
+                                                       class="form-control"
+                                                       placeholder="{% trans 'Name of teacher' %}"
+                                                >
+                                                <span style="display: none;" class="ml-2 text-primary" id="search-teacher-name-loading" role="status">
+                                                    Loading...
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-sm-2 control-label w-100" for="teacher-select">
+                                        {% trans 'Select teacher' %}
+                                    </label>
+                                    <div class="col-sm-10 w-100">
+                                        <div class="form-inline">
+                                            <select class="form-control" id="teacher-select" onchange="set_teacher();">
+                                                <option selected>{% trans 'Select teacher' %}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
 
         <form action="{{ request.path }}" method="post" class="form-horizontal">
@@ -52,14 +124,15 @@
                 <div class="col-xs-12 w-100">
                     <div class="card">
                         <div class="card-header">
-                            <h6 class="card-title mb-0">{% trans 'Teacher Information' %}
+                            <h6 class="card-title mb-0">
+                                {% trans 'Teacher Information' %}
                                 {% if edit_url %}
-                                <span class="ml-3">
-                                <a href="{% people_utwente teacher.initials teacher.surname_prefix teacher.last_name %}"
-                                   target="_blank">
-                                    <span class="fa fa-external-link-alt"></span>
-                                </a>
-                                </span>
+                                    <span class="ml-3">
+                                        <a href="{% people_utwente teacher.initials teacher.surname_prefix teacher.last_name %}"
+                                           target="_blank">
+                                            <span class="fa fa-external-link-alt"></span>
+                                        </a>
+                                    </span>
                                 {% endif %}
                             </h6>
                         </div>
@@ -69,58 +142,74 @@
                                 <div class="col-sm-offset-2 col-sm-10 w-100 form-control-static">
 
                                     {% if form.titles.errors %}
-                                        <span class="label label-danger">{% trans 'Titles' %}
+                                        <span class="label label-danger">
+                                            {% trans 'Titles' %}
                                             {% for error in form.titles.errors %}
-                                                {{ error }}{% endfor %}
+                                                {{ error }}
+                                            {% endfor %}
                                         </span>
                                     {% endif %}
 
                                     {% if form.initials.errors %}
-                                        <span class="label label-danger">{% trans 'Initials' %}
+                                        <span class="label label-danger">
+                                            {% trans 'Initials' %}
                                             {% for error in form.initials.errors %}
-                                                {{ error }}{% endfor %}
+                                                {{ error }}
+                                            {% endfor %}
                                         </span>
                                     {% endif %}
 
                                     {% if form.first_name.errors %}
-                                        <span class="label label-danger">{% trans 'First Name' %}
+                                        <span class="label label-danger">
+                                            {% trans 'First Name' %}
                                             {% for error in form.first_name.errors %}
-                                                {{ error }}{% endfor %}
+                                                {{ error }}
+                                            {% endfor %}
                                         </span>
                                     {% endif %}
 
                                     {% if form.surname_prefix.errors %}
-                                        <span class="label label-danger">{% trans 'Surname Prefix' %}
+                                        <span class="label label-danger">
+                                            {% trans 'Surname Prefix' %}
                                             {% for error in form.surname_prefix.errors %}
-                                                {{ error }}{% endfor %}
+                                                {{ error }}
+                                            {% endfor %}
                                         </span>
                                     {% endif %}
 
                                     {% if form.last_name.errors %}
-                                        <span class="label label-danger">{% trans 'Last name' %}
+                                        <span class="label label-danger">
+                                            {% trans 'Last name' %}
                                             {% for error in form.last_name.errors %}
-                                                {{ error }}{% endfor %}
+                                                {{ error }}
+                                            {% endfor %}
                                         </span>
                                     {% endif %}
 
                                     {% if form.email.errors %}
-                                        <span class="label label-danger">{% trans 'Email' %}
+                                        <span class="label label-danger">
+                                            {% trans 'Email' %}
                                             {% for error in form.email.errors %}
-                                                {{ error }}{% endfor %}
+                                                {{ error }}
+                                            {% endfor %}
                                         </span>
                                     {% endif %}
 
                                     {% if form.active.errors %}
-                                        <span class="label label-danger">{% trans 'Active' %}
+                                        <span class="label label-danger">
+                                            {% trans 'Active' %}
                                             {% for error in form.active.errors %}
-                                                {{ error }}{% endfor %}
+                                                {{ error }}
+                                            {% endfor %}
                                         </span>
                                     {% endif %}
 
                                     {% if form.retired.errors %}
-                                        <span class="label label-danger">{% trans 'Retired' %}
+                                        <span class="label label-danger">
+                                            {% trans 'Retired' %}
                                             {% for error in form.retired.errors %}
-                                                {{ error }}{% endfor %}
+                                                {{ error }}
+                                            {% endfor %}
                                         </span>
                                     {% endif %}
                                 </div>
@@ -128,8 +217,8 @@
 
                             <div class="form-group">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans 'Title' %}
-                                        <b class="form-required">*</b>
+                                    <label class="col-sm-2 control-label w-100">
+                                        {% trans 'Titles' %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
@@ -138,10 +227,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans 'Initials' %}
-                                        <b class="form-required">*</b>
+                                    <label class="col-sm-2 control-label w-100">
+                                        {% trans 'Initials' %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
@@ -150,10 +239,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans 'First Name' %}
-                                        <b class="form-required">*</b>
+                                    <label class="col-sm-2 control-label w-100">
+                                        {% trans 'First Name' %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
@@ -164,7 +253,8 @@
                             </div>
                             <div class="form-group">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans 'Surname Prefix' %}
+                                    <label class="col-sm-2 control-label w-100">
+                                        {% trans 'Surname Prefix' %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
@@ -173,10 +263,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans 'Last Name' %}
-                                        <b class="form-required">*</b>
+                                    <label class="col-sm-2 control-label w-100">
+                                        {% trans 'Last Name' %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
@@ -185,10 +275,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans 'Email' %}
-                                        <b class="form-required">*</b>
+                                    <label class="col-sm-2 control-label w-100">
+                                        {% trans 'Email' %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
@@ -197,10 +287,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans 'Active' %}
-                                        <b class="form-required">*</b>
+                                    <label class="col-sm-2 control-label w-100">
+                                        {% trans 'Active' %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
@@ -209,10 +299,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group required">
                                 <div class="row">
-                                    <label class="col-sm-2 control-label w-100">{% trans 'Retired' %}
-                                        <b class="form-required">*</b>
+                                    <label class="col-sm-2 control-label w-100">
+                                        {% trans 'Retired' %}
                                     </label>
                                     <div class="col-sm-10 w-100">
                                         <div class="form-inline">
@@ -230,19 +320,21 @@
                 <div class="col-xs-12 w-100">
                     <div class="card ">
                         <div class="card-header">
-                            <h6 class="card-title mb-0">{% trans 'Save profile' %}</h6>
+                            <h6 class="card-title mb-0">
+                                {% trans 'Save profile' %}
+                            </h6>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="w-100 col-xs-12">
                                     {% if edit_url %}
-                                        <button class="btn btn-primary btn-block"
-                                                type="submit">
-                                            {% trans "Save Edit" %}</button>
+                                        <button class="btn btn-primary btn-block" type="submit">
+                                            {% trans "Save Edit" %}
+                                        </button>
                                     {% else %}
-                                    <button class="btn btn-primary btn-block"
-                                            type="submit">
-                                        {% trans "Create new teacher" %}</button>
+                                        <button class="btn btn-primary btn-block" type="submit">
+                                            {% trans "Create new teacher" %}
+                                        </button>
                                     {% endif %}
                                 </div>
                             </div>
@@ -254,5 +346,50 @@
         </form>
         <div class="spacing"></div>
     </div>
+    {% if edit_url %}
+        {% include "boecie/teaches_courses.html" %}
+    {% endif %}
 {% endblock %}
 
+{% block endjs %}
+{{ block.super }}
+<script>
+    var current_search_results = [];
+
+    function search_teachers() {
+        let url = "{% url 'boecie:api_find_teacher' %}";
+
+        let text = document.forms["people-utwente-search-form"]["teacher-name"].value;
+
+        $("#search-teacher-name-loading").show();
+
+        fetch(url + "?" + $.param({query: text})).then(response => {
+        	response.json().then(value => {
+				current_search_results = value;
+				$("#search-teacher-name-loading").hide();
+				let selector = $("#teacher-select");
+				selector.empty();
+				selector.append($("<option selected>{% trans 'Select teacher' %}</option>"));
+                $.each(value, (key, value) =>
+                	selector.append(
+                		$("<option></option>")
+                            .attr("value", key)
+                            .text(value.name)
+                    )
+                );
+			});
+        });
+    }
+
+    function set_teacher() {
+    	let current = current_search_results[$("#teacher-select").val()];
+
+        $("#{{ form.titles.id_for_label }}").val(current.acedemic_title);
+		$("#{{ form.initials.id_for_label }}").val(current.initials);
+		$("#{{ form.first_name.id_for_label }}").val(current.first_name);
+		$("#{{ form.surname_prefix.id_for_label }}").val(current.surname_prefix);
+		$("#{{ form.last_name.id_for_label }}").val(current.family_name);
+		$("#{{ form.email.id_for_label }}").val(current.email);
+    }
+</script>
+{% endblock %}

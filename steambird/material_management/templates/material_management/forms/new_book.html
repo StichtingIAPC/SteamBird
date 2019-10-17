@@ -1,0 +1,82 @@
+{% load i18n %}
+{% load bootstrapify %}
+
+<form style="display: none;"
+      id="book-add"
+      class="form-add"
+      data-toggle="validator"
+      role="form"
+      method="post"
+      action="{% url "material_management:material.create" %}">
+    {% csrf_token %}
+    {{ form.object_type }}
+
+    <div class="form-group required was-validated">
+        <label for="{{ form.ISBN.id_for_label }}"
+               class="control-label">
+            {% trans 'ISBN' %}
+        </label>
+        <span class="input-group" id="book-add-isbn">
+            {{ form.ISBN|form_bootstrapify }}
+{#                   onkeyup="this.value=this.value.replace(/[^0-9\-xX]/g,'')"/> {# TODO check if this doesn't break stuff (see gitlab Issue on ISBN number) #}
+            <span class="input-group-append">
+                <button id="book-add-isbn-search"
+                        type="button"
+                        class="btn btn-success">
+                    {% trans 'Search' %}
+                </button>
+            </span>
+            <div class="invalid-feedback">ISBN can only contain numbers, dashes (-), and a X's</div>
+        </span>
+    </div>
+
+    <div class="form-group required was-validated" id="book-add-title">
+        <label for="{{ form.name.id_for_label }}"
+               class="control-label">
+            {% trans 'Title' %}
+        </label>
+        {{ form.name|form_bootstrapify }}
+    </div>
+
+    <div class="form-group required was-validated" id="book-add-author">
+        <label for="{{ form.author.id_for_label }}"
+               class="control-label">
+            {% trans 'Author(s)' %}
+        </label>
+        {{ form.author|form_bootstrapify }}
+    </div>
+
+    <div class="form-group required was-validated" id="book-add-year">
+        <label for="{{ form.year_of_publishing.id_for_label }}"
+               class="control-label">
+            {% trans 'Publishing year' %}
+        </label>
+        {{ form.year_of_publishing|form_bootstrapify }}
+    </div>
+
+    <div class="form-group required was-validated" id="book-add-edition">
+        <label for="{{ form.edition.id_for_label }}"
+               class="control-label">
+            {% trans 'Edition' %}
+        </label>
+        {{ form.edition|form_bootstrapify }}
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-8 col-sm-12" id="book-add-image">
+            <label for="{{ form.img.id_for_label }}"
+                   class="control-label">
+                {% trans 'Image link' %}
+            </label>
+            {{ form.img|form_bootstrapify }}
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <img src="#"
+                 id="book-add-show-image"
+                 alt="{% trans 'Cover Image' %}"/>
+        </div>
+    </div>
+
+    <input type="submit" value="{% trans 'Create' %}" class="btn btn-success"/>
+</form>

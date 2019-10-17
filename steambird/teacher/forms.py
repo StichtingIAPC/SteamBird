@@ -1,28 +1,17 @@
-import isbnlib as i
+"""
+This module contains all forms used in the teacher Views
+"""
+
 from django import forms
-from django.core.exceptions import ValidationError
+
 from django.forms import HiddenInput, MultipleHiddenInput
 from django.urls import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
+
 from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget
 
-from steambird.models_materials import StudyMaterialEdition
-from steambird.models_msp import MSPLine
-
-
-class ISBNForm(forms.Form):
-    isbn = forms.CharField(label=_('ISBN number'), max_length=18, min_length=10)
-
-    def clean(self):
-        data = self.cleaned_data
-
-        isbn = data.get('isbn')
-        if i.get_isbnlike(isbn):
-            if i.is_isbn10(isbn) or i.is_isbn13(isbn):
-                return True
-            raise ValidationError('ISBN does not seem to be a ISBN13 or ISBN10')
-        raise ValidationError('ISBN does not seem valid')
+from steambird.models.materials import StudyMaterialEdition
+from steambird.models.msp import MSPLine
 
 
 class PrefilledMSPLineForm(forms.ModelForm):
@@ -65,6 +54,6 @@ class PrefilledSuggestAnotherMSPLineForm(forms.ModelForm):
                     "scientificarticle__author__icontains",
                     "scientificarticle__year_of_publishing__icontains",
                 ]
-            ), reverse_lazy('teacher:isbn')),
+            ), reverse_lazy('material_management:material.create')),
             # TODO: Convert this to a teacher:book.create view when it exists.
         }

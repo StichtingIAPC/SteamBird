@@ -6,36 +6,50 @@
 {% block brand_link %}{% url 'index' %}{% endblock %}
 {% block brand_text %}Steambird{% endblock %}
 
-{% block css %}
-    <link href="{% static "steambird.less" %}" rel="stylesheet/less" type="text/css">
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "js/libs/0.11.9-validator.min.js" %}"></script>
 {% endblock %}
 
+{% block css %}
+    {{ block.super }}
+    <link href="{% static "css/steambird.less" %}" rel="stylesheet/less" type="text/css">
+{% endblock %}
 
+{% block page_title %}
+    {% trans "Steambird" %}
+{% endblock %}
 
 {% block nav_items %}
     {% url 'index' as home %}
     {% url 'teacher:index' as teacher_home %}
     {% url 'boecie:index' as boecie_home %}
+
     <li class="{% active_menu home %}">
-        <a class="nav-link" href="{{ home }}">{% trans "Home" %}</a>
+        <a class="nav-link" href="{{ home }}">
+            {% trans "Home" %}
+        </a>
     </li>
     <li class="{% active_menu teacher_home %}">
-        <a class="nav-link" href="{{ teacher_home }}">{% trans "Teacher" %}</a>
+        <a class="nav-link" href="{{ teacher_home }}">
+            {% trans "Teacher" %}
+        </a>
     </li>
     <li class="{% active_menu boecie_home %}">
-        <a class="nav-link" href="{{ boecie_home }}">{% trans "Boecie" %}</a>
+        <a class="nav-link" href="{{ boecie_home }}">
+            {% trans "Boecie" %}
+        </a>
     </li>
 {% endblock %}
 
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
-        <div class="textmodule">
-            <h2>Project SteamBird</h2>
-            <div class="textmodule-text">
-                <p>@Luuk, Deal with it.</p>
-            </div>
-        </div>
+        <h2>
+            {% trans "Project SteamBird" %}</h2>
+        <p>
+            {% trans "@Luuk, Deal with it." %}
+        </p>
     </div>
 {% endblock %}
 
@@ -45,31 +59,53 @@
     &copy; {{ year }} Stichting IAPC
     &middot; {% trans "KvK 41029973" %}
     &middot; {% trans "tel. 053 489 3927" %}
-    &middot; <a href="https://www.iapc.nl">{% trans "Store Website" %}</a>
-    &middot; <a href="">{% trans "Privacy Policy" %}</a>
+    &middot;
+    <a href="https://www.iapc.nl">
+        {% trans "Store Website" %}
+    </a>
+    &middot;
+    <a href="">
+        {% trans "Privacy Policy" %}
+    </a>
+    <div class="spacing"></div>
 {% endblock %}
+
+
 
 {# If you are already logged in#}
 {% block usermenu_dropdown_user %}
     {% if request.user.is_staff %}
-        <a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin" %}</a>
+        <a class="dropdown-item" href="{% url 'admin:index' %}">
+            {% trans "Admin" %}
+        </a>
         <div class="dropdown-divider"></div>
     {% endif %}
-    <a class="dropdown-item" href="{% url "logout" %}">{% trans "Log out" %}</a>
+    <a class="dropdown-item" href="{% url "logout" %}">
+        {% trans "Log out" %}
+    </a>
 {% endblock %}
 
 {# Not logged in #}
 {% block usermenu_dropdown_guest %}
-    <form action="{% url 'login' %}?next={{ request.path }}" method="POST" class="pl-4 pl-lg-2 pr-4 pr-lg-2">
+    <form action="{% url 'login' %}?next={{ request.path }}"
+          method="POST"
+          class="pl-4 pl-lg-2 pr-4 pr-lg-2">
         {% csrf_token %}
         <div class="form-group">
-            <label for="login_username">{% trans 'Username' %}: </label>
-            <input id="login_username" required type="text" class="form-control" name="username" />
+            <label for="login_username">
+                {% trans 'Username' %}:
+            </label>
+            <input id="login_username" required type="text" class="form-control" name="username"/>
         </div>
         <div class="form-group">
-            <label for="login_password">{% trans 'Password' %}: </label>
-            <input id="login_password" required type="password" class="form-control" name="password" />
+            <label for="login_password">
+                {% trans 'Password' %}:
+            </label>
+            <input id="login_password" required type="password" class="form-control"
+                   name="password"/>
         </div>
-        <button type="submit" class="btn btn-primary">{% trans 'Login' %}</button>
+        <button type="submit" class="btn btn-primary">
+            {% trans 'Login' %}
+        </button>
     </form>
 {% endblock %}

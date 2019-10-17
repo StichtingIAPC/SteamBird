@@ -1,0 +1,29 @@
+{% extends 'steambird/base.html' %}
+{% load i18n %}
+{% load active_menu %}
+
+{% block brand_text %}
+    Steambird Teacher
+{% endblock %}
+
+{% block page_title %}
+    {% trans "Steambird Teacher" %}
+{% endblock %}
+
+{% block nav_items %}
+    {% url 'teacher:index' as home %}
+    {% url 'teacher:courseview.list' as courseview %}
+
+    <li class="{% active_menu home %}">
+        <a class="nav-link" href="{{ home }}">
+            {% trans "Home" %}
+        </a>
+    </li>
+    <li class="{% active_menu courseview %}">
+        <a class="nav-link"
+           href="{{ courseview }}">
+            {% trans "Course Overview" %}
+        </a>
+    </li>
+
+{% endblock %}

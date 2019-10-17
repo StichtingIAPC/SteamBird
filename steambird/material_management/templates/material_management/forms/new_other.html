@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load bootstrapify %}
+
+
+<form style="display: none;"
+      id="other-add"
+      class="form-add"
+      data-toggle="validator"
+      role="form"
+      method="post"
+      action="{% url "material_management:material.create" %}">
+    {% csrf_token %}
+    {{ form.object_type }}
+
+    <div class="form-group required" id="other-add-name">
+        <label for="{{ form.name.id_for_label }}"
+               class="control-label">
+            {% trans 'Name' %}
+        </label>
+        {{ form.name|form_bootstrapify }}
+    </div>
+    <div class="form-group required" id="other-add-description">
+        <label for="{{ form.description.id_for_label }}"
+               class="control-label">
+            {% trans 'Description' %}
+        </label>
+        {{ form.description|form_bootstrapify }}
+    </div>
+
+    <input type="submit" value="{% trans 'Create' %}" class="btn btn-success"/>
+</form>

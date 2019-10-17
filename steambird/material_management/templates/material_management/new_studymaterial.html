@@ -1,0 +1,28 @@
+{% extends 'steambird/base.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container">
+        <div class="spacing"></div>
+        <h2>{% trans 'Add material' %}</h2>
+
+        {{ form.errors }}
+        <select id="type-add">
+            <option value selected>Select type...</option>
+            <option value="book">Book</option>
+            <option value="paper">Scientific Article</option>
+            <option value="other">Other Materials</option>
+        </select>
+        <div class="spacing"></div>
+
+        {% include "material_management/forms/new_book.html" with form=book %}
+        {% include "material_management/forms/new_article.html" with form=paper %}
+        {% include "material_management/forms/new_other.html" with form=other %}
+    </div>
+{% endblock %}
+
+{% block endjs %}
+    <script src="{% static "js/steambird/forms/new_studymaterial.js" %}"></script>
+{% endblock %}
+

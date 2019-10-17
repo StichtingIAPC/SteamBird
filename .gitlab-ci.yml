@@ -1,43 +1,17 @@
 stages:
+  - prepare
   - test
   - build
   - deploy
 
-Test dependencies:
-  stage: test
-  image: python:3.7
-  script:
-    - pip install pipenv
-    - pipenv install -d --deploy --system
+variables:
+  PIPENV_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pipenv"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-Run pylint:
-  stage: test
-  image: python:3.7
-  before_script:
-    - pip install pipenv
-    - pipenv install -d --deploy --system
-  script:
-    # Run linter without W0511 warnings to prevent non-zero exit codes for that
-    #  particular warning.
-    - pylint steambird -dfixme
-    # Show just the W0511 warnings, so one can see a list of actions that still
-    #  need to be done.
-    - pylint steambird --exit-zero -dall -efixme
-
-Deploy to container registry:
-  stage: deploy
-  only:
-    - /^release/.*$/
-  except:
-    - branches
-  when: manual
-  environment:
-    name: production
-    url: https://steambird.iapc.utwente.nl/
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
-  script:
-    - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_REGISTRY_USERNAME\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - export VERSION=$(echo $CI_COMMIT_TAG | cut -d'/' -f2)
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $DOCKER_REGISTRY/$CI_PROJECT_PATH:$VERSION --destination $DOCKER_REGISTRY/$CI_PROJECT_PATH:latest
+include:
+  # Validate runs dependency validation, license validation and syntax checks
+  - local: /.gitlab/prepare.yml
+  # Test runs unit tests, browser tests and integration tests
+  - local: /.gitlab/test.yml
+  # Deploy deploys to various hosts
+  - local: /.gitlab/deploy.yml

@@ -1,0 +1,116 @@
+// vim: ts=4:sts=4:sw=4:expandtab
+
+graph COURSE_TREE_MODEL {
+    rankdir=LR;
+
+    Study [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Study</i></td></tr>
+    <tr><td port="pk">pk: PRIMARY</td></tr>
+    <tr><td port="officer">officer: ID</td></tr>
+    <tr><td port="type">type: ID</td></tr>
+    <tr><td port="director">director: ID</td></tr>
+    <tr><td>name: TEXT</td></tr>
+</table>
+>, shape=plain]
+
+    StudyType [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>StudyType</i></td></tr>
+    <tr><td>BACHELOR<br/>
+MASTER<br/>
+PREMASTER</td></tr>
+</table>
+>, shape=plain]
+
+    Course [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Course</i></td></tr>
+    <tr><td port="pk">pk: PRIMARY</td></tr>
+    <tr><td port="coordinator">coordinator: ID</td></tr>
+    <tr><td port="period">period: ID</td></tr>
+    <tr><td>name: TEXT</td></tr>
+    <tr><td>calendar_year: INT</td></tr>
+</table>
+>, shape=plain]
+
+    Period [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Period</i></td></tr>
+    <tr><td>Q1<br/>
+Q2<br/>
+Q3<br/>
+Q4<br/>
+Q5<br/>
+Q1_HALF<br/>
+Q3_HALF<br/>
+FULL_YEAR</td></tr>
+</table>
+>, shape=plain]
+
+    Course_SubCourses [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Course_SubCourses</i></td></tr>
+    <tr><td port="parent">parent: ID</td></tr>
+    <tr><td port="child">child: ID</td></tr>
+</table>
+>, shape=plain]
+
+    Study_Course [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Study_Course</i></td></tr>
+    <tr><td port="study">study: ID</td></tr>
+    <tr><td port="course">course: ID</td></tr>
+    <tr><td>study_year: INT</td></tr>
+    <tr><td><i>CONSTRAINT:<br/>course.type != "BACHELOR"<br/>OR study_year != null</i></td></tr>
+</table>
+>, shape=plain]
+
+    MSP [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>MSP (External)</i></td></tr>
+</table>
+>, shape=plain]
+
+    Course_MSP [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Course_MSP</i></td></tr>
+    <tr><td port="msp">msp: ID</td></tr>
+    <tr><td port="course">course: ID</td></tr>
+</table>
+>, shape=plain]
+
+    Course_Teacher [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Course_Teacher</i></td></tr>
+    <tr><td port="course">course: ID</td></tr>
+    <tr><td port="teacher">teacher: ID</td></tr>
+</table>
+>, shape=plain]
+
+    Teacher [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>Teacher (External)</i></td></tr>
+</table>
+>, shape=plain]
+
+    EducationalOfficer [label=<
+<table border="0" cellborder="1" cellspacing="0">
+    <tr><td><i>EducationalOfficer (External)</i></td></tr>
+</table>
+>, shape=plain]
+
+    Study:type -- StudyType
+    Study:director -- Teacher
+    Study:pk -- Study_Course:study
+    Course:pk -- Study_Course:course
+    Course:pk -- Course_SubCourses:parent
+    Course:pk -- Course_SubCourses:child
+    Course:pk -- Course_MSP:course
+    Course_MSP:msp -- MSP
+    Course:pk -- Course_Teacher:course
+    Course_Teacher:teacher -- Teacher
+    Course:coordinator -- Teacher
+    Course:period -- Period
+    Study:officer -- EducationalOfficer
+}

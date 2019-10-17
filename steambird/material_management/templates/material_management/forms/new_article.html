@@ -1,0 +1,64 @@
+{% load i18n %}
+{% load bootstrapify %}
+
+
+<form style="display: none;"
+      id="paper-add"
+      class="form-add"
+      data-toggle="validator"
+      role="form"
+      method="post"
+      action="{% url  "material_management:material.create" %}">
+    {% csrf_token %}
+    {{ form.object_type }}
+
+    <div class="form-group required was-validated">
+        <label for="{{ form.DOI.id_for_label }}" class="control-label">
+            {% trans 'DOI' %}
+        </label>
+        <span class="input-group" id="paper-add-doi">
+            {{ form.DOI|form_bootstrapify }}
+            <span class="input-group-append">
+                <button id="paper-add-doi-search"
+                        type="button"
+                        class="btn btn-success">
+                    {% trans 'Search' %}
+                </button>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group required was-validated" id="paper-add-title">
+        <label for="{{ form.name.id_for_label }}"
+               class="control-label">
+            {% trans 'Title' %}
+        </label>
+        {{ form.name|form_bootstrapify }}
+    </div>
+
+    <div class="form-group required was-validated" id="paper-add-author">
+        <label for="{{ form.author.id_for_label }}"
+               class="control-label">
+            {% trans 'Author(s)' %}
+        </label>
+        {{ form.author|form_bootstrapify }}
+    </div>
+
+    <div class="form-group required was-validated" id="paper-add-year">
+        <label for="{{ form.year_of_publishing.id_for_label }}"
+               class="control-label">
+            {% trans 'Publishing year' %}
+        </label>
+        {{ form.year_of_publishing|form_bootstrapify }}
+    </div>
+
+    <div class="form-group" id="paper-add-url">
+        <label for="{{ form.url.id_for_label }}"
+               class="control-label">
+            {% trans 'URL' %}
+        </label>
+        {{ form.url|form_bootstrapify }}
+    </div>
+
+    <input type="submit" value="{% trans 'Create' %}" class="btn btn-success"/>
+</form>

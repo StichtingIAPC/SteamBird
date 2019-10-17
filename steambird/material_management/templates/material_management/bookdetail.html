@@ -1,0 +1,37 @@
+{% extends 'steambird/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <h2>{% trans 'Book Details' %}</h2>
+        <div class="row">
+            <div class="col-3">{% trans 'ISBN' %}</div>
+            <div class="col-9">{{ book.ISBN }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{% trans 'Title' %}</div>
+            <div class="col-9">{{ book.name }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{% trans 'Author(s)' %}</div>
+            <div class="col-9">{{ book.author }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{% trans 'Year of Publishing' %}</div>
+            <div class="col-9">{{ book.year_of_publishing }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{% trans 'Edition' %}</div>
+            <div class="col-9">{{ book.edition }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{% trans 'Image URL' %}</div>
+            <div class="col-9">{{ book.img }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{% trans 'Image' %}</div>
+            <div class="col-9"><img src="{{ book.img }}"></div>
+        </div>
+    </div>
+{% endblock %}

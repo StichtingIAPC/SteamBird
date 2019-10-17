@@ -1,0 +1,57 @@
+{% extends 'teacher/base.html' %}
+{% load i18n %}
+
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <h2>Project Stoomvogel</h2>
+        <div class="col-12">
+            <p>
+                {% blocktrans %}
+                    Hello <b>{{ teacher }}</b>, this is the current status of the courses you are
+                    assigned to: (according to osiris)
+                {% endblocktrans %}
+                <br>
+                {% blocktrans %}
+                    These are the courses we could find you give in <b>{{ year }} {{ period }}</b>
+                {% endblocktrans %}
+            </p>
+        </div>
+        <div>
+            {% for course in courses %}
+                <div class="card">
+                    <div class="card-header">
+                        {{ course }}
+                    </div>
+                    <ul class="list-group">
+                        {% for book in course.materials.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="{% url 'teacher:msp.detail' book.id %}">
+                                    {{ book.teacher_str }}
+                                </a>
+                                <span
+                                    class="badge badge-{{ book.stage_bootstrap_tab }} badge-pill">
+                                    {{ book.stage }}
+                                </span>
+                            </li>
+
+                        {% empty %}
+                            <li class="list-group-item">
+                                {% trans "No books" %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <br>
+            {% empty %}
+                <div class="card">
+                    <div class="card-header">
+                        {% trans "No courses found" %}
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -5,46 +5,60 @@
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
-        <div class="textmodule">
-            <h2>Project SteamBird - Boecie Overview</h2>
-            <br>
-            <div class="col-12">
-                {% for type, studies in types.items %}
-                    <h3>{{ type|capfirst }}: </h3>
-                    <hr>
+        <h2>Project SteamBird - Boecie Overview</h2>
+        <br>
+        <div class="col-12">
+            {% for type, studies in types.items %}
+                <h3>
+                    {{ type|capfirst }}:
+                </h3>
+                <hr>
+                <table class="table table-striped study-overview">
+                    <tr class="hidden"></tr>
                     {% for study in studies %}
-                    <div class="row">
-                        <div class="col-3">
-                            <b><a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a></b><br>
-                        </div>
-                        <div class="col-5">
-                            <div class="progress">
-                                <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                                     style="width: {{ study.courses_updated_teacher_p|unlocalize }}%"
-                                     aria-valuenow="{{ study.courses_updated_teacher_p|unlocalize }}"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"
-                                     title="{{ study.courses_updated_teacher_p}}%">{{ study.courses_updated_teacher_p }}%
+                        <tr class="row">
+                            <td class="col-3">
+                                <b>
+                                    <a href="{% url 'boecie:study.list' study.id %}">{{ study.name }}</a>
+                                </b>
+                                <a href="{% url 'boecie:courses.overview' study.id %}">
+                                    <span class="fa fa-list"></span>
+                                </a>
+                            </td>
+                            <td class="col-5">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped bg-success"
+                                         role="progressbar"
+                                         style="width: {{ study.courses_updated_teacher_p|unlocalize }}%"
+                                         aria-valuenow="{{ study.courses_updated_teacher_p|unlocalize }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100"
+                                         title="{{ study.courses_updated_teacher_p }}%">
+                                        {{ study.courses_updated_teacher_p }}%
+                                    </div>
+                                    <div class="progress-bar progress-bar-striped bg-warning"
+                                         role="progressbar"
+                                         style="width: {{ study.courses_updated_association_p|unlocalize }}%"
+                                         aria-valuenow="{{ study.courses_updated_association_p|unlocalize }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100"
+                                         title="{{ study.courses_updated_association_p }}%">
+                                        {{ study.courses_updated_association_p }}%
+                                    </div>
                                 </div>
-                                <div class="progress-bar progress-bar-striped bg-secondary" role="progressbar"
-                                     style="width: {{ study.courses_updated_association_p|unlocalize }}%"
-                                     aria-valuenow="{{ study.courses_updated_association_p|unlocalize }}"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"
-                                     title="{{ study.courses_updated_association_p }}%">{{ study.courses_updated_association_p }}%
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            Total: {{ study.courses_total }}, Updated: {{ study.courses_updated_association }}
-                            ({{ study.courses_updated_association_p }}%),
-                            Finalized: {{ study.courses_updated_teacher }} ({{ study.courses_updated_teacher_p }}%)
-                        </div>
-                    </div>
+                            </td>
+                            <td class="col-4">
+                                Total: {{ study.courses_total }},
+
+                                Updated: {{ study.courses_updated_association }} ({{ study.courses_updated_association_p }}%),
+
+                                Finalized: {{ study.courses_updated_teacher }} ({{ study.courses_updated_teacher_p }}%)
+                            </td>
+                        </tr>
                     {% endfor %}
-                    <div class="spacing"></div>
-                {% endfor %}
-            </div>
+                </table>
+                <div class="spacing"></div>
+            {% endfor %}
         </div>
     </div>
 

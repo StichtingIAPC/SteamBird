@@ -8,6 +8,11 @@
 
 Project SteamBird. (SB) is a re-imagined version of the old ABC, for keeping track of StudyBooks
 
+## Goal of this project
+
+This project has as main goal to make the managing of book information within the University of Twente easier. It has been started as an in house development of 'Stichting IAPC', but might be licensed to other people later on. The main focus is the admin interface in which we have tried to create an as smooth as possible integration to quickly and easily add, update and manage information
+
+
 
 ## Getting your enviroment set up
 
@@ -20,8 +25,13 @@ To get started with working on this code, you will need to do some installation 
  - Open a console/shell and run `pipenv --python 3.7`
  - Now we have created a pipenv enviroment, we can use all wonderful pipenv commands. Start by running: `pipenv sync -d` to install all packages for this project
  
- 
-## Goal of this project
+## Starting up again
 
-This project has as main goal to make the managing of book information within the University of Twente easier. It has been started as an in house development of 'Stichting IAPC', but might be licensed to other people later on. The main focus is the admin interface in which we have tried to create an as smooth as possible integration to quickly and easily add, update and manage information
+When you been away for a bit, it is thouroughly recommended to always pull and run `pipenv sync -d` to be most up to date with the current state of the project.
+
+
+## Before you commit
+
+Don't forget to run the pylint locally before committing, and especially a merge request! This is done (assuming you installed it using pipenv):
+`pipenv run pylint steambird -dfixme` or, when doing this within a (pipenv) shell `pylint steambird -dfixme`. This will return a list of 'issues' as seen by the linter. Fix these before committing!
  

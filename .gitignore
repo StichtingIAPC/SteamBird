@@ -10,3 +10,9 @@
 *.pyc
 
 *.mo
+
+steambird/local.py
+
+docs/build/
+
+static/

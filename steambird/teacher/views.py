@@ -1,64 +1,61 @@
-from django.http import Http404
-from django.shortcuts import render, redirect
+"""
+This module contains all the View related logic for any pages the teachers might see. It currently
+is more a set of tools which aren't integrated into a fluid process yet
+"""
+import logging
+from typing import Union, Dict, Any
+
+from django.forms import Form
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView, TemplateView
 
-from isbnlib.dev import NoDataForSelectorError
-import isbnlib as i
-
-from steambird.models import Teacher, MSP, MSPLineType
-from steambird.models_msp import MSPLine
+from steambird.models import Teacher, MSP, MSPLineType, Config
+from steambird.models.msp import MSPLine
 from steambird.perm_utils import IsTeacherMixin
-from .forms import ISBNForm, PrefilledMSPLineForm, \
+from .forms import PrefilledMSPLineForm, \
     PrefilledSuggestAnotherMSPLineForm
+
+LOGGER = logging.getLogger(__name__)
 
 
 class HomeView(IsTeacherMixin, View):
-
+    """
+    The Homeview for teachers, is still pretty empty and could be improved upon.
+    """
     # pylint: disable=no-self-use
-    def get(self, request):
-        return render(request, "steambird/teacher/home.html")
-
-
-class ISBNView(IsTeacherMixin, FormView):
-    form_class = ISBNForm
-    template_name = 'steambird/teacher/ISBN.html'
-
-    def form_valid(self, form):
-        isbn = form.data['isbn']
-        return redirect(reverse('teacher:isbndetail', kwargs={'isbn': isbn}))
-
-    def form_invalid(self, form):
-        return render(self.request, 'steambird/teacher/ISBN.html', {'form': form})
-
-
-class ISBNDetailView(IsTeacherMixin, View):
-
-    def get(self, _request, isbn):
-        try:
-            meta_info = i.meta(isbn)
-            # desc = i.desc(isbn)
-            cover = i.cover(isbn)
-            # print(meta_info, cover)
-            try:
-                meta_info['img'] = cover['thumbnail']
-            except (TypeError, KeyError):
-                meta_info['img'] = ['']
-
-            return render(self.request, 'steambird/teacher/book.html', {'book': meta_info})
-        except NoDataForSelectorError:
-            return render(self.request, 'steambird/teacher/book.html',
-                          {'retrieved_data': "No data was found for given ISBN"})
+    def get(self, request: HttpRequest) -> HttpResponse:
+        return render(request, "teacher/home.html")
 
 
 class CourseView(IsTeacherMixin, TemplateView):
-    template_name = 'steambird/teacher/courseoverview.html'
+    """
+    View which returns a list with all courses a teacher gives. Currently has no filters for
+    coordinators or teachers, and just works on the teachers ID
+    """
+    template_name = 'teacher/courseoverview.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs) -> Union[Dict[str, Any], Http404]:
+        """
+        Method to get and setup context data. Retrieves all courses of the current active period and
+        return them in a list.
+
+        :param kwargs: Dict object
+        :return:
+        """
         data = super().get_context_data(**kwargs)
+
+        data['year'] = Config.get_system_value('year')
+        data['period'] = Config.get_system_value('period')
+
         try:
-            data["teacher"] = Teacher.objects.get(user=self.request.user)
+            data['teacher'] = Teacher.objects.get(user=self.request.user)
+            data['courses'] = data["teacher"].all_courses_period(
+                year=data['year'],
+                period=data['period']
+            )
         except Teacher.DoesNotExist:
             raise Http404
 
@@ -73,7 +70,7 @@ class MSPDetail(IsTeacherMixin, FormView):
     view concern the same data-structure.
     """
 
-    template_name = "steambird/teacher/msp/detail.html"
+    template_name = "teacher/msp/detail.html"
     form_class = PrefilledSuggestAnotherMSPLineForm
 
     def get_success_url(self):
@@ -87,17 +84,29 @@ class MSPDetail(IsTeacherMixin, FormView):
             'pk': self.kwargs.get("pk"),
         })
 
-    def form_valid(self, form):
+    def form_valid(self, form: Form) -> HttpResponseRedirect:
         """
         Makes sure the data is saved after submission.
 
         :param form: The form and its data.
         :return: a redirect to get_success_url.
         """
-        form.save(commit=True)
+        new_mspline = form.save(commit=False)
+        new_mspline.created_by = self.request.user
+        new_mspline.created_by_side = "TEACHER"
+        new_mspline.save()
+        form.save_m2m()
         return super().form_valid(form)
 
-    def get_initial(self):
+    def form_invalid(self, form):
+        LOGGER.warning(
+            "Invalid MSPLine create body submitted, with errors: {}",
+            form.errors,
+        )
+
+        return super().form_invalid(form)
+
+    def get_initial(self) -> dict:
         """
         Fills in initial data for the primary form. The primary form is the
         form at the bottom of the page, where the teacher can request other
@@ -111,13 +120,13 @@ class MSPDetail(IsTeacherMixin, FormView):
 
         return initial
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         """
         Constructs the context (apart from the primary form). This means that it
         will generate all secondary forms, and meta data for allowing proper
         and nice-looking renderings of the view.
 
-        :param kwargs: ¯\\_(ツ)_/¯
+        :param kwargs: Dict of any kwargs passed as defined in the URL listing
         :return: a context
         """
         try:

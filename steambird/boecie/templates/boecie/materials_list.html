@@ -1,0 +1,98 @@
+{% extends 'boecie/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <h2> {% trans 'Material List' %}</h2>
+        <div class="spacing"></div>
+        {% for type, materials in grouped_materials.items %}
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ type }}</h2>
+                </div>
+                {% if type == 'Book' %}
+                    <div class="card-body p-0">
+                        <table class="table table-striped ">
+                            <tr>
+                                <th>{% trans 'Name' %}</th>
+                                <th>{% trans 'Edition' %}</th>
+                                <th>{% trans 'Author(s)' %}</th>
+                                <th>{% trans 'ISBN' %}</th>
+                                <th>{% trans 'Image' %}</th>
+                            </tr>
+                            {% for material in materials %}
+                                <tr>
+                                    <td>
+                                        {{ material.name }}
+                                    </td>
+                                    <td>
+                                        {{ material.edition }}
+                                    </td>
+                                    <td>
+                                        {{ material.author }}
+                                    </td>
+                                    <td>
+                                        {{ material.ISBN }}
+                                    </td>
+                                    <td>
+                                        {% if material.img %}
+                                            <img src="{{ material.img }}" style="height: 50px">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                {% elif type == 'Scientific Article' %}
+                    <div class="card-body p-0">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>{% trans 'Name' %}</th>
+                                <th>{% trans 'Author(s)' %}</th>
+                                <th>{% trans 'Year of Publishing' %}</th>
+                                <th>{% trans 'DOI' %}</th>
+                            </tr>
+                            {% for material in materials %}
+                                <tr>
+                                    <td>
+                                        {{ material.name }}
+                                    </td>
+                                    <td>
+                                        {{ material.author }}
+                                    </td>
+                                    <td>
+                                        {{ material.year_of_publishing }}
+                                    </td>
+                                    <td>
+                                        <a href="https://dx.doi.org/{{ material.DOI }}"
+                                           target="_blank">
+                                            {{ material.DOI }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="card-body p-0">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>{% trans 'Name' %}</th>
+                            </tr>
+                            {% for material in materials %}
+                                <tr>
+                                    <td>
+                                        {{ material.name }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="spacing"></div>
+        {% endfor %}
+    </div>
+{% endblock %}

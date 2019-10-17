@@ -1,0 +1,22 @@
+{% extends 'boecie/base.html' %}
+{% load i18n %}
+{% load l10n %}
+
+{% block content %}
+    <div class="spacing"></div>
+    <div class="container">
+        <h2>
+            {% trans "Project SteamBird - LML Export" %}
+        </h2>
+        <br>
+        <div class="col-12">
+            <form method="post" action="">
+                {% csrf_token %}
+                {{ form.as_p }}
+                Errors: {{ form.errors }}
+                <input type="submit" value='Get CSV'>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

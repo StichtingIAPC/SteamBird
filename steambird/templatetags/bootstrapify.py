@@ -1,3 +1,6 @@
+"""
+Filter to bootstrapify Django template form-tags
+"""
 from django import template
 from django.utils.safestring import mark_safe
 
@@ -11,7 +14,7 @@ def form_bootstrapify(formfield_html):
     formfield_html = str(formfield_html)
 
     if any(["type=\"{}\"".format(x) in formfield_html
-            for x in ["text", "url", "email", "password"]]) or \
+            for x in ["text", "url", "email", "password", "number"]]) or \
         any(["</{}>".format(x) in formfield_html
              for x in ["textarea", "select"]]):
 

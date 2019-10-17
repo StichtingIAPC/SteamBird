@@ -1,0 +1,29 @@
+{% extends 'steambird/base.html' %}
+{% load i18n %}
+
+{# TODO: replace this TEMP PAGE! #}
+{% block content %}
+
+    <div class="spacing"></div>
+    <div class="container">
+        <div class="spacing"></div>
+        <div class="row">
+            <b> {% trans "Title" %}:</b> {{ scientificarticle.name }}
+        </div>
+        <div class="row">
+            <b>{% trans "DOI" %}:</b> {{ scientificarticle.DOI }}
+        </div>
+        <div class="row">
+            <b>{% trans "Author(s)" %}:</b> {{ scientificarticle.author }}
+        </div>
+        <div class="row">
+            <b>{% trans "Year of publishing" %}:</b> {{ scientificarticle.year_of_publishing }}
+        </div>
+        <div class="row">
+            <a href="{{ scientificarticle.url }}">
+                {{ scientificarticle.url }}
+            </a>
+        </div>
+        <div class="spacing"></div>
+    </div>
+{% endblock %}

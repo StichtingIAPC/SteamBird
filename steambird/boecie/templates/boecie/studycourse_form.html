@@ -1,0 +1,52 @@
+{% load i18n %}
+{% load bootstrapify %}
+
+<div class="spacing"></div>
+    <form method="post">
+    {{ form.form_name }}
+        {{ form.media.css }}
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.errors }}
+            <div class="row">
+
+                <label class="col-2 control-label w-100">
+                    {% trans 'Study Year' %}
+                </label>
+                <div class="col-2 w-100">
+                    <div class="form-inline">
+                        {{ form.study_year|form_bootstrapify }}
+                    </div>
+                </div>
+
+                {% if form.study %}
+                    {# If adding Studies, Course is set, show only study part extra#}
+                    <label class="col-1 control-label w-100">
+                        {% trans 'Study' %}
+                    </label>
+                    <div class="col-3 w-100">
+                        <div class="form-inline">
+                            {{ form.study }}
+                        </div>
+                    </div>
+
+                {% elif form.course %}
+                    {# If adding courses, Study is set, show only course part extra#}
+                    <label class="col-1 control-label w-100">
+                        {% trans 'Course' %}
+                    </label>
+                    <div class="col-5 w-100">
+                        <div class="form-inline">
+                            {{ form.course }}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="col-2">
+                    <button class="btn btn-outline-success right" type="submit">
+                        {% trans 'Add course to study' %}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+{{ form.media.js }}

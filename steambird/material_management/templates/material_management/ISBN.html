@@ -1,0 +1,15 @@
+{% extends 'steambird/base.html' %}
+{% load i18n %}
+
+{# TODO: replace this TEMP PAGE! #}
+{% block content %}
+
+    <div class="spacing"></div>
+    <div class="container">
+        <form action="{{ request.path }}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input class="btn btn-danger" type="submit" value="Submit">
+        </form>
+    </div>
+{% endblock %}
