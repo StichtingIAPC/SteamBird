@@ -36,7 +36,7 @@ class ISBNView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form: Form) -> HttpResponseRedirect:
         isbn = form.data['isbn']
-        return redirect(reverse('isbnlookup', kwargs={'isbn': isbn}))
+        return redirect(reverse('material_management:isbnlookup', kwargs={'isbn': isbn}))
 
     def form_invalid(self, form: Form) -> HttpResponse:
         return render(self.request, 'material_management/ISBN.html', {'form': form})
@@ -79,13 +79,13 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
         obj = form.save()
 
         if isinstance(form, BookForm):
-            reverse_url = 'isbndetail'
+            reverse_url = 'material_management:isbndetail'
             kwargs = {'isbn': request.POST.get('ISBN')}
         elif isinstance(Form, ScientificPaperForm):
-            reverse_url = 'articledetail'
+            reverse_url = 'material_management:articledetail'
             kwargs = {'doi': quote(request.POST.get('DOI', safe=''))}
         elif isinstance(Form, OtherMaterialForm):
-            reverse_url = 'otherdetail'
+            reverse_url = 'material_management:otherdetail'
             kwargs = {'pk': obj.pk}
         else:
             LOGGER.warning(

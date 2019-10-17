@@ -8,7 +8,7 @@
       data-toggle="validator"
       role="form"
       method="post"
-      action="{% url "msp.new" %}">
+      action="{% url "material_management:material.create" %}">
     {% csrf_token %}
     {{ form.object_type }}
 

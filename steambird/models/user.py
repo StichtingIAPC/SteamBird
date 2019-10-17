@@ -19,7 +19,10 @@ class Teacher(models.Model):
     """
     Teacher definition. The information here is things one could find on e.g. people.utwente.nl
     """
-    titles = models.CharField(max_length=50, verbose_name=_("Academic titles"))
+    titles = models.CharField(max_length=50,
+                              verbose_name=_("Academic titles"),
+                              blank=True,
+                              null=True)
     initials = models.CharField(max_length=15, verbose_name=_("Initials"))
     first_name = models.CharField(max_length=50, verbose_name=_("First name"))
     surname_prefix = models.CharField(

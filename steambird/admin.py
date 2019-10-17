@@ -20,7 +20,7 @@ admin.site.register(Config)
 
 
 @admin.register(AuthToken)
-class AUthTokenAdmin(admin.ModelAdmin):
+class AuthTokenAdmin(admin.ModelAdmin):
     fields = ('user', 'token', 'last_host')
     list_display = (
         'token',

@@ -2,11 +2,17 @@
 {% load bootstrapify %}
 
 
-<form style="display: none;" id="paper-add" class="form-add" method="post" action="{% url "msp.new" %}">
+<form style="display: none;"
+      id="paper-add"
+      class="form-add"
+      data-toggle="validator"
+      role="form"
+      method="post"
+      action="{% url  "material_management:material.create" %}">
     {% csrf_token %}
     {{ form.object_type }}
 
-    <div class="form-group required">
+    <div class="form-group required was-validated">
         <label for="{{ form.DOI.id_for_label }}" class="control-label">
             {% trans 'DOI' %}
         </label>
@@ -22,7 +28,7 @@
         </span>
     </div>
 
-    <div class="form-group required" id="paper-add-title">
+    <div class="form-group required was-validated" id="paper-add-title">
         <label for="{{ form.name.id_for_label }}"
                class="control-label">
             {% trans 'Title' %}
@@ -30,7 +36,7 @@
         {{ form.name|form_bootstrapify }}
     </div>
 
-    <div class="form-group required" id="paper-add-author">
+    <div class="form-group required was-validated" id="paper-add-author">
         <label for="{{ form.author.id_for_label }}"
                class="control-label">
             {% trans 'Author(s)' %}
@@ -38,7 +44,7 @@
         {{ form.author|form_bootstrapify }}
     </div>
 
-    <div class="form-group required" id="paper-add-year">
+    <div class="form-group required was-validated" id="paper-add-year">
         <label for="{{ form.year_of_publishing.id_for_label }}"
                class="control-label">
             {% trans 'Publishing year' %}

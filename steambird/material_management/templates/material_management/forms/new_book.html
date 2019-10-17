@@ -7,12 +7,13 @@
       data-toggle="validator"
       role="form"
       method="post"
-      action="{% url "msp.new" %}">
+      action="{% url "material_management:material.create" %}">
     {% csrf_token %}
     {{ form.object_type }}
 
     <div class="form-group required was-validated">
-        <label for="{{ form.ISBN.id_for_label }}" class="control-label">
+        <label for="{{ form.ISBN.id_for_label }}"
+               class="control-label">
             {% trans 'ISBN' %}
         </label>
         <span class="input-group" id="book-add-isbn">
@@ -29,7 +30,7 @@
         </span>
     </div>
 
-    <div class="form-group required" id="book-add-title">
+    <div class="form-group required was-validated" id="book-add-title">
         <label for="{{ form.name.id_for_label }}"
                class="control-label">
             {% trans 'Title' %}
@@ -37,7 +38,7 @@
         {{ form.name|form_bootstrapify }}
     </div>
 
-    <div class="form-group required" id="book-add-author">
+    <div class="form-group required was-validated" id="book-add-author">
         <label for="{{ form.author.id_for_label }}"
                class="control-label">
             {% trans 'Author(s)' %}
@@ -45,7 +46,7 @@
         {{ form.author|form_bootstrapify }}
     </div>
 
-    <div class="form-group required" id="book-add-year">
+    <div class="form-group required was-validated" id="book-add-year">
         <label for="{{ form.year_of_publishing.id_for_label }}"
                class="control-label">
             {% trans 'Publishing year' %}
@@ -53,7 +54,7 @@
         {{ form.year_of_publishing|form_bootstrapify }}
     </div>
 
-    <div class="form-group required" id="book-add-edition">
+    <div class="form-group required was-validated" id="book-add-edition">
         <label for="{{ form.edition.id_for_label }}"
                class="control-label">
             {% trans 'Edition' %}
