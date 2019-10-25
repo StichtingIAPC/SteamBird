@@ -40,6 +40,26 @@
                     <div class="col-3">{{ course.course_code }}</div>
                     <div class="col-3">{{ course.name }}</div>
                     <div class="col-6">{{ course.coordinator }}</div>
+                    <ul class="list-group">
+                        {% for msp in course.materials.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <a href="{% url 'teacher:msp.detail' msp.id %}">
+                                    {{ msp.teacher_str }}
+{#                                    TODO: make this actually useful information#}
+                                </a>
+                                <span
+                                        class="badge badge-{{ msp.stage_bootstrap_tab }} badge-pill">
+                                    {{ msp.stage }}
+                                </span>
+                            </li>
+
+                        {% empty %}
+                            <li class="list-group-item">
+                                {% trans "No msps" %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
                 </div>
             {% endfor %}
             <br>
