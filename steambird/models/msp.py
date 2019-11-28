@@ -152,6 +152,19 @@ class MSP(models.Model):
         return '{}: {}'.format(
             last_line.type, ', '.join(map(str, last_line.materials.all())))
 
+    def last_line_materials(self):
+        last_line = self.mspline_set.filter(
+            Q(type=MSPLineType.request_material) |
+            Q(type=MSPLineType.approve_material)).last()
+
+        if not last_line:
+            last_line = self.mspline_set.last()
+
+        if not last_line:
+            return _t("Empty MSP")
+
+        return last_line.materials.order_by('polymorphic_ctype').all()
+
     def __str__(self):
         last_line: MSPLine = self.mspline_set.last()
         if not last_line:
