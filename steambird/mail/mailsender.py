@@ -4,13 +4,12 @@ When multiple templates are available, RFC8255_ must be commonly adopted.
 As this, at the time of writing, RFC8255_ is not yet commonly adopted, so only
 one language per email must be specified.
 
-TODO: implement language preferences.
-
 .. _RFC8255: https://tools.ietf.org/html/rfc8255
 """
 
 import os
 import re
+import sys
 from collections import defaultdict
 from contextlib import contextmanager
 from email.encoders import encode_base64
@@ -19,13 +18,35 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from typing import List, Tuple
 
+from django import get_version
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, SafeMIMEMultipart, \
     SafeMIMEText, EmailMessage, get_connection
 from django.template.loader import get_template
 from django.template.loaders.app_directories import get_app_template_dirs
 from django.utils import translation
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, get_language
+
+
+__ALL__ = [
+    'get_mailer_name', 'language', 'MultiTemplatableEmailMessage',
+    'MultilingualEmailMessage', 'create_multilingual_email', 'create_email',
+    'send_mimemessages', '_test'
+]
+
+
+def get_mailer_name():
+    """
+    TODO: Include release or build version in header
+    :return: Valid body for an X-Mailer header
+    """
+    tags = [
+        "RFC8255",
+        "MIME",
+        "django/{}".format(get_version()),
+        "python/{}.{}".format(sys.version_info[0], sys.version_info[1])
+    ]
+    return "steambird/{} ({})".format("0.1", "; ".join(tags))
 
 
 @contextmanager
@@ -123,7 +144,7 @@ class MultilingualEmailMessage(EmailMultiAlternatives):
 templates = None
 
 
-def ensure_setup() -> None:
+def _ensure_setup() -> None:
     """
     Ensure templates are populated
 
@@ -155,15 +176,39 @@ def ensure_setup() -> None:
 
 def create_multilingual_mail(template_name: str, subject: str, context: dict,
                              **kwargs) -> EmailMessage:
-    ensure_setup()
+    """
+    Creates an instance of EmailMessage. If multiple languages exist for
+    the given template name, it will create an RFC8255_ compatible email, and if
+    only one language exists, it will simply send an email in that language,
+    without bothering with any multilingual crap.
 
-    languages = templates[template_name]
+    As of implementing this method, very few to no email clients support
+    RFC8255_ and so it is recommended to either use create_mail with a
+    preference language or use this method and only create one set of language
+    templates.
 
-    if len(languages.items()) == 1:
-        languages: dict
-        lang, tpls = list(languages.items())[0]
+    :param template_name: The template that should be used for this email
+    :param subject: The subject of this email
+    :param context: The context for the template
+    :param kwargs: Any other data that should be passed to the EmailMessage
+        constructor
+    :return: an EmailMessage
+
+    .. _RFC8255: https://tools.ietf.org/html/rfc8255
+    """
+    _ensure_setup()
+    kwargs['headers'] = kwargs['headers'] if 'headers' in kwargs else {}
+
+    kwargs['headers'] = {"X-Mailer": get_mailer_name(), **kwargs['headers']}
+
+    langs = templates[template_name]
+
+    if len(langs.items()) == 1:
+        lang, tpls = list(langs.items())[0]
 
         with language(lang):
+            kwargs['headers'] = {"Content-Language": lang, **kwargs['headers']}
+
             msg = MultiTemplatableEmailMessage(
                 subject=subject,
                 body=False,
@@ -185,7 +230,7 @@ def create_multilingual_mail(template_name: str, subject: str, context: dict,
 
     msg = MultilingualEmailMessage(subject=subject, **kwargs)
 
-    for lang, tpls in languages.items():
+    for lang, tpls in langs.items():
         with language(lang):
             lang_alt = MIMEMultipart(_subtype='alternative')
             lang_alt.add_header("Subject", _(subject))
@@ -212,6 +257,59 @@ def create_multilingual_mail(template_name: str, subject: str, context: dict,
     msg.attach(info)
 
     return msg
+
+
+def create_email(template_name: str, subject: str, context: dict,
+                 **kwargs) -> EmailMessage:
+    """
+    Attempts to create an email that only has a single language, which is
+    pulled from the context using get_language.
+
+    If it cannot send the email in the requested language, it will call
+    create_multilingual_email to send an email in all the languages that are
+    available.
+
+    :param template_name: The template that should be used for this email
+    :param subject: The subject of this email
+    :param context: The context for the template
+    :param kwargs: Any other data that should be passed to the EmailMessage
+        constructor
+    :return: an EmailMessage
+    """
+    _ensure_setup()
+    lang = get_language()
+    kwargs['headers'] = kwargs['headers'] if 'headers' in kwargs else {}
+
+    kwargs['headers'] = {
+        "X-Mailer": get_mailer_name(),
+        "Content-Language": lang,
+        **kwargs['headers']
+    }
+
+    langs = templates[template_name]
+    if lang in langs:
+        tpls = langs[lang]
+
+        msg = MultiTemplatableEmailMessage(
+            subject=_(subject),
+            body=False,
+            **kwargs
+        )
+
+        for template in tpls:
+            msg.attach_alternative(
+                SafeMIMEText(
+                    _text=get_template(template['file']).render({
+                        'locale': template['locale'],
+                        **context,
+                    }),
+                    _subtype=template['subtype'],
+                    _charset=msg.encoding or settings.DEFAULT_CHARSET
+                ), 'unknown/unknown')
+
+        return msg
+
+    return create_multilingual_mail(template_name, subject, context, **kwargs)
 
 
 def send_mimemessages(msgs: List[EmailMessage]) -> None:
