@@ -125,7 +125,7 @@ class Book(StudyMaterialEdition):
         raise ValueError("ISBN does not match either known lengths")
 
     def __str__(self):
-        return "{}: {}".format(self.ISBN, self.name)
+        return "{}: {}, {} Edition".format(self.ISBN, self.name, self.edition)
 
     class Meta:
         verbose_name = _("Book")
