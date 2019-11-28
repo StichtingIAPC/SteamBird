@@ -177,7 +177,7 @@ def _ensure_setup() -> None:
 def create_multilingual_mail(template_name: str, subject: str, context: dict,
                              **kwargs) -> EmailMessage:
     """
-    Creates an inctance of EmailMessage. If multiple languages exist for
+    Creates an instance of EmailMessage. If multiple languages exist for
     the given template name, it will create an RFC8255_ compatible email, and if
     only one language exists, it will simply send an email in that language,
     without bothering with any multilingual crap.
