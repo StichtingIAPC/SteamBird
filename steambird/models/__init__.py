@@ -7,6 +7,9 @@ from steambird.models.coursetree import *
 from steambird.models.materials import *
 
 # noinspection PyUnresolvedReferences
+from steambird.models.mail import *
+
+# noinspection PyUnresolvedReferences
 from steambird.models.msp import *
 
 # noinspection PyUnresolvedReferences
