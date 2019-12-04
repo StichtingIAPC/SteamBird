@@ -74,7 +74,7 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
     form_name_field_name = 'object_type'
 
     # noinspection PyMethodOverriding
-    # pylint: disable=arguments-differ,unused-argument
+    # pylint: disable=arguments-differ,unused-argument, logging-format-interpolation
     def form_valid(self, request: HttpRequest, form: Form, form_name: str) -> Optional[Any]:
         obj = form.save()
 
@@ -89,7 +89,8 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
             kwargs = {'pk': obj.pk}
         else:
             LOGGER.warning(
-                'Form of unknown type was submitted to material create, namely: {}.'.format(obj.__class__.__name__))
+                'Form of unknown type was submitted to material create, namely:'
+                ' {}.'.format(obj.__class__.__name__))
             return HttpResponseBadRequest()
 
         if self.is_popup():
