@@ -2,6 +2,11 @@
 {% load staticfiles %}
 {% load i18n %}
 
+{% block js %}
+    {{ block.super }}
+    <script src="{% static "js/libs/0.11.9-validator.min.js" %}"></script>
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="spacing"></div>

@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView, DetailView
 from django_addanother.views import CreatePopupMixin
+from isbnlib import NotValidISBNError
 
 from steambird.material_management.forms import ISBNForm, BookForm, ScientificPaperForm, \
     OtherMaterialForm
@@ -80,7 +81,7 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
 
         if isinstance(form, BookForm):
             reverse_url = 'material_management:isbndetail'
-            kwargs = {'isbn': request.POST.get('ISBN')}
+            kwargs = {'isbn': request.POST.get('isbn')}
         elif isinstance(Form, ScientificPaperForm):
             reverse_url = 'material_management:articledetail'
             kwargs = {'doi': quote(request.POST.get('DOI', safe=''))}
@@ -105,7 +106,8 @@ class ISBNSearchApiView(LoginRequiredMixin, View):
     """
 
     # pylint: disable=no-self-use
-    def get(self, request: HttpRequest) -> Union[HttpResponseNotFound, JsonResponse]:
+    def get(self, request: HttpRequest) -> Union[HttpResponseNotFound, HttpResponseBadRequest,
+                                                 JsonResponse]:
         """
         Makes a call to the isbn_lookup tool which either returns a JSON response of data, or
         returns a HttpResponseNotFound if nothing can be found
@@ -114,7 +116,13 @@ class ISBNSearchApiView(LoginRequiredMixin, View):
         :return: Either a response, or the string "No data was found for given ISBN"
         """
         isbn = request.GET['isbn']
-        isbn_data = isbn_lookup(isbn)
+        try:
+            isbn_data = isbn_lookup(isbn)
+        except NotValidISBNError:
+            return HttpResponseBadRequest(
+                dumps(str("400")),
+                content_type="application/json",
+            )
 
         if isbn_data is None:
             return HttpResponseNotFound(

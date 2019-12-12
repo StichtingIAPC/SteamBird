@@ -24,13 +24,15 @@ $.fn.enterKey = function (fnc) {
  * @param isbn {string}
  */
 function searchIsbn(isbn) {
-    $.ajax({
+    response = $.ajax({
         url: "/api/isbn/search",
         data: {
             isbn,
         },
-    }).done(updateBook);
+    }).done(updateBook).fail(invalidISBN)
+
 }
+
 
 /**
  * @param response {{
@@ -50,15 +52,36 @@ function searchIsbn(isbn) {
  *  }}
  */
 function updateBook(response) {
+    $('#book-add-isbn-search').html('Search');
     let book = response.meta;
 
-    $("#book-add-isbn input").val(book["ISBN-13"]);
+
+    $("#book-add-isbn input").removeClass("is-invalid").addClass("is-valid").val(book["ISBN-13"]);
     $("#book-add-title input").val(book.Title);
     $("#book-add-author input").val(book.Authors.join(", "));
     $("#book-add-year input").val(book.Year);
     $("#book-add-image input").val(book.img);
     $("#book-add-show-image").attr("src", book.img);
+
 }
+
+function invalidISBN(jqxhr, textstatus, error) {
+    $('#book-add-isbn-search').html('Search');
+    if (jqxhr.status == 400) {
+        $("#book-add-isbn input").removeClass("is-valid").addClass("is-invalid");
+    } else {
+        $("#book-add-isbn input").removeClass("is-invalid").addClass("is-valid");
+
+        $("#book-add-title input").val('');
+        $("#book-add-author input").val('');
+        $("#book-add-year input").val('');
+        $("#book-add-edition input").val('');
+        $("#book-add-image input").val('');
+        $("#book-add-show-image").attr("src", '');
+    }
+}
+
+
 
 $(($) => {
     $('#book-add-isbn').enterKey(ev => {
@@ -67,6 +90,7 @@ $(($) => {
 
     $('#book-add-isbn-search').click(() => {
         searchIsbn($('#book-add-isbn input').val());
+        $('#book-add-isbn-search').html('Searching...');
     });
 
     $('#book-add-image').change(event => {

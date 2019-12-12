@@ -1,6 +1,7 @@
 from typing import Optional
 
 import isbnlib
+from isbnlib import NotValidISBNError
 from isbnlib.dev import NoDataForSelectorError
 
 from crossref.restful import Works
@@ -19,6 +20,8 @@ def isbn_lookup(isbn: str):
     """
     try:
         meta_info = isbnlib.meta(isbn)
+        if meta_info is None:
+            raise NotValidISBNError(isbn)
         desc = isbnlib.desc(isbn)
         cover = isbnlib.cover(isbn)
 
