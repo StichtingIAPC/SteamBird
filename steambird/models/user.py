@@ -13,8 +13,6 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 
-
-
 class Teacher(models.Model):
     """
     Teacher definition. The information here is things one could find on e.g. people.utwente.nl
@@ -87,12 +85,17 @@ class Teacher(models.Model):
         return self.coordinated_courses.filter(calendar_year=year) \
             .union(self.teaches_courses.filter(calendar_year=year))
 
-    def __str__(self):
-        if self.surname_prefix:
-            return "{} {} {} {}".format(
-                self.titles, self.initials, self.surname_prefix, self.last_name)
+    def __str__(self) -> str:
+        """
+        Returns stringified formal name
 
-        return "{} {} {}".format(self.titles, self.initials, self.last_name)
+        :return: string consisting of all non-None names
+        """
+        return ' '.join(filter(lambda x: x,
+                        [self.titles,
+                         self.initials,
+                         self.surname_prefix,
+                         self.last_name]))
 
     class Meta:
         verbose_name = _('Teacher')
