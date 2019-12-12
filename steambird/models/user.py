@@ -92,10 +92,10 @@ class Teacher(models.Model):
         :return: string consisting of all non-None names
         """
         return ' '.join(filter(lambda x: x,
-                        [self.titles,
-                         self.initials,
-                         self.surname_prefix,
-                         self.last_name]))
+                               [self.titles,
+                                self.initials,
+                                self.surname_prefix,
+                                self.last_name]))
 
     class Meta:
         verbose_name = _('Teacher')
