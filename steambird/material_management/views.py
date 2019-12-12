@@ -74,22 +74,23 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
     form_name_field_name = 'object_type'
 
     # noinspection PyMethodOverriding
-    # pylint: disable=arguments-differ,unused-argument
+    # pylint: disable=arguments-differ,unused-argument, logging-format-interpolation
     def form_valid(self, request: HttpRequest, form: Form, form_name: str) -> Optional[Any]:
         obj = form.save()
 
         if isinstance(form, BookForm):
             reverse_url = 'material_management:isbndetail'
             kwargs = {'isbn': request.POST.get('ISBN')}
-        elif isinstance(Form, ScientificPaperForm):
+        elif isinstance(form, ScientificPaperForm):
             reverse_url = 'material_management:articledetail'
             kwargs = {'doi': quote(request.POST.get('DOI', safe=''))}
-        elif isinstance(Form, OtherMaterialForm):
+        elif isinstance(form, OtherMaterialForm):
             reverse_url = 'material_management:otherdetail'
             kwargs = {'pk': obj.pk}
         else:
             LOGGER.warning(
-                'Form of unknown type was submitted to material create.')
+                'Form of unknown type was submitted to material create, namely:'
+                ' {}.'.format(obj.__class__.__name__))
             return HttpResponseBadRequest()
 
         if self.is_popup():
