@@ -13,7 +13,7 @@ from django_addanother.widgets import AddAnotherWidgetWrapper
 from django_select2.forms import ModelSelect2MultipleWidget, ModelSelect2Widget
 
 from steambird.models import Course, Teacher, CourseStudy, Study, Config, \
-    StudyMaterialEdition, MSPLine, MSP
+    StudyMaterialEdition, MSPLine, MSP, StudyYear
 
 
 def get_course_form(course_id=None):
@@ -25,6 +25,8 @@ def get_course_form(course_id=None):
 
         teachers = Course.teachers
         materials = Course.materials
+        if course_id is None:
+            study_year = forms.ChoiceField(choices=((i.value, i.name) for i in StudyYear))
 
         class Meta:
             model = Course
@@ -39,6 +41,7 @@ def get_course_form(course_id=None):
                 'calendar_year',
                 'coordinator',
                 'period',
+                *(['study_year'] if course_id is None else []),
             ]
 
             widgets = {
@@ -81,7 +84,9 @@ def get_course_form(course_id=None):
                         'last_name__icontains',
                         'email__icontains'
                     ]
-                ), reverse_lazy('boecie:teacher.create'))
+                ), reverse_lazy('boecie:teacher.create')),
+
+
             }
     return CourseForm
 

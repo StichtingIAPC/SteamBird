@@ -336,11 +336,12 @@ class CourseCreateView(IsStudyAssociationMixin, CreateView):
             form.instance.updated_associations = True
         form.save(commit=True)
 
+
         study = Study.objects.get(pk=self.kwargs['pk'])
         course = Course.objects.get(course_code=form.cleaned_data['course_code'],
                                     period=form.cleaned_data['period'])
         CourseStudy.objects.create(study=study, course=course,
-                                   study_year='1').save()  # TODO fix study_year
+                                   study_year=int(form.cleaned_data['study_year'])).save()
 
         return redirect(
             reverse('boecie:study.list', kwargs={'pk': self.kwargs['pk']}))
