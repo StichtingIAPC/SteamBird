@@ -116,6 +116,23 @@ class MSP(models.Model):
     def resolved(self):
         return self.mspline_set.last().type == MSPLineType.approve_material.name
 
+    def needs_attention(self):
+        return self.mspline_set.last().type == MSPLineType.set_available_materials.name
+
+    def stage_bootstrap_tab(self):
+        if self.resolved():
+            return 'success'
+        elif self.needs_attention():
+            return  'warning'
+        return 'danger'
+
+    def stage(self):
+        if self.resolved():
+            return _('✔')
+        elif self.needs_attention():
+            return _('!')
+        return _('?')
+
     @property
     def all_teachers(self) -> List[Teacher]:
         return self.teachers + [

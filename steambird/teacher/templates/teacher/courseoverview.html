@@ -25,20 +25,29 @@
                         {{ course }}
                     </div>
                     <ul class="list-group">
-                        {% for book in course.materials.all %}
+{#                    #TODO @ self: make this a table (or something) that we have more control over#}
+                        {% for msp in course.materials.all %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="{% url 'teacher:msp.detail' book.id %}">
-                                    {{ book.teacher_str }}
+                                <a href="{% url 'teacher:msp.detail' msp.id %}">
+                                    {{ msp.teacher_str }}
                                 </a>
-                                <span
-                                    class="badge badge-{{ book.stage_bootstrap_tab }} badge-pill">
-                                    {{ book.stage }}
-                                </span>
+                                <div style="max-height: 20px;">
+                                    <span class="badge badge-{{ msp.stage_bootstrap_tab }} badge-pill">
+                                        {{ msp.stage }}
+                                    </span>
+                                    &nbsp;
+
+                                        <a href="https://www.google.com/doodles/" ><div class="fa fa-trash"></div> </a>
+
+
+                                </div>
+
+
                             </li>
 
                         {% empty %}
                             <li class="list-group-item">
-                                {% trans "No books" %}
+                                {% trans "No msps" %}
                             </li>
                         {% endfor %}
                     </ul>
