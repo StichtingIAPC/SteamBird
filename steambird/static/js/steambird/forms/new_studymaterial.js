@@ -69,6 +69,7 @@ function invalidISBN(jqxhr, textstatus, error) {
     $('#book-add-isbn-search').html('Search');
     if (jqxhr.status == 400) {
         $("#book-add-isbn input").removeClass("is-valid").addClass("is-invalid");
+        $("#book-add-isbn > .invalid-feedback").html("The entered ISBN does not pass the checksum and is therefore invalid. Please make sure you typed it correctly.")
     } else {
         $("#book-add-isbn input").removeClass("is-invalid").addClass("is-valid");
 

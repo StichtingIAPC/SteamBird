@@ -81,7 +81,7 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
 
         if isinstance(form, BookForm):
             reverse_url = 'material_management:isbndetail'
-            kwargs = {'isbn': request.POST.get('isbn')}
+            kwargs = {'isbn': request.POST.get('ISBN')}
         elif isinstance(Form, ScientificPaperForm):
             reverse_url = 'material_management:articledetail'
             kwargs = {'doi': quote(request.POST.get('DOI', safe=''))}
