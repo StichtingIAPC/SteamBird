@@ -74,17 +74,36 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
 
     form_name_field_name = 'object_type'
 
+    # def get_success_url(self, form):
+    #     if isinstance(form, BookForm):
+    #         reverse_url = 'material_management:isbndetail'
+    #         kwargs = {'isbn': self.request.POST.get('ISBN')}
+    #     elif isinstance(form, ScientificPaperForm):
+    #         reverse_url = 'material_management:articledetail'
+    #         kwargs = {'doi': quote(self.request.POST.get('DOI'), safe='')}
+    #     elif isinstance(form, OtherMaterialForm):
+    #         reverse_url = 'material_management:otherdetail'
+    #         kwargs = {'pk': self.instance.pk}
+    #     else:
+    #         LOGGER.warning(
+    #             'Form of unknown type was submitted to material create.')
+    #         return HttpResponseBadRequest()
+    #     return reverse(reverse_url, kwargs=kwargs)
+
     # noinspection PyMethodOverriding
     # pylint: disable=arguments-differ,unused-argument
     def form_valid(self, request: HttpRequest, form: Form, form_name: str) -> Optional[Any]:
         obj = form.save()
 
+        if self.is_popup():
+            self.respond_script(obj)
+
         if isinstance(form, BookForm):
             reverse_url = 'material_management:isbndetail'
-            kwargs = {'isbn': request.POST.get('ISBN')}
+            kwargs = {'isbn': self.request.POST.get('ISBN')}
         elif isinstance(form, ScientificPaperForm):
             reverse_url = 'material_management:articledetail'
-            kwargs = {'doi': quote(request.POST.get('DOI'), safe='')}
+            kwargs = {'doi': quote(self.request.POST.get('DOI'), safe='')}
         elif isinstance(form, OtherMaterialForm):
             reverse_url = 'material_management:otherdetail'
             kwargs = {'pk': obj.pk}
@@ -92,10 +111,6 @@ class AddMaterialView(LoginRequiredMixin, CreatePopupMixin, MultiFormView):
             LOGGER.warning(
                 'Form of unknown type was submitted to material create.')
             return HttpResponseBadRequest()
-
-        if self.is_popup():
-            self.respond_script(obj)
-
         return redirect(reverse(reverse_url, kwargs=kwargs))
 
 

@@ -2,6 +2,7 @@
 This package contains all definitions and setup needed regarding materials. It is what can be
 considered the key point an MSP or MSP line is about
 """
+from urllib.parse import quote
 
 from django.db import models
 from django.urls import reverse
@@ -175,7 +176,7 @@ class ScientificArticle(StudyMaterialEdition):
         return "{}{}".format(self.name, ' (' + self.DOI + ')' if self.DOI else '')
 
     def get_absolute_url(self):
-        return reverse('material_management:articledetail', args=[self.DOI])
+        return reverse('material_management:articledetail', args=[quote(self.DOI, safe='')])
 
     class Meta:
         verbose_name = _("Scientific Article")
