@@ -8,9 +8,9 @@ from typing import Union, Dict, Any
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, DeleteView
 
 from steambird.models import Teacher, MSP, MSPLineType, Config
 from steambird.models.msp import MSPLine
@@ -60,6 +60,16 @@ class CourseView(IsTeacherMixin, TemplateView):
             raise Http404
 
         return data
+
+class CourseDeleteMSPView(IsTeacherMixin, DeleteView):
+    """
+    Delete-view which should remove a number of references if the main MSP is removed. In the end
+    this should delte the many-to-many tables we have, also related MSPLines
+    """
+
+    model = MSP
+    success_url = reverse_lazy('teacher:courseview.list')
+    template_name = 'teacher/courseoverview_confirm_delete.html'
 
 
 class MSPDetail(IsTeacherMixin, FormView):

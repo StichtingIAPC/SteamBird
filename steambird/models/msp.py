@@ -119,6 +119,7 @@ class MSP(models.Model):
     def needs_attention(self):
         return self.mspline_set.last().type == MSPLineType.set_available_materials.name
 
+    # pylint: disable=no-else-return
     def stage_bootstrap_tab(self):
         if self.resolved():
             return 'success'
@@ -126,6 +127,7 @@ class MSP(models.Model):
             return  'warning'
         return 'danger'
 
+    # pylint: disable=no-else-return
     def stage(self):
         if self.resolved():
             return _('✔')
