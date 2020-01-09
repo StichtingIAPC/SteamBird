@@ -25,6 +25,8 @@ class ISBNForm(forms.Form):
 
 class BookForm(forms.ModelForm):
 
+    ISBN = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'onkeyup': 'this.value=this.value.replace(/[^0-9xX]/g,\'\')'}))
+
     """
     Form for inputting book information. Makes use of the Book model.
     """

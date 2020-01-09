@@ -8,21 +8,28 @@
     <div class="container">
         <div class="spacing"></div>
         <div class="row">
-            <b> {% trans "Title" %}:</b> {{ scientificarticle.name }}
+            <b> {% trans "Title" %}:&nbsp;</b> {{ scientificarticle.name }}
         </div>
         <div class="row">
-            <b>{% trans "DOI" %}:</b> {{ scientificarticle.DOI }}
+            <b>{% trans "DOI" %}:&nbsp;</b> {{ scientificarticle.DOI }}
         </div>
         <div class="row">
-            <b>{% trans "Author(s)" %}:</b> {{ scientificarticle.author }}
+            <b>{% trans "Author(s)" %}:&nbsp;</b> {{ scientificarticle.author }}
         </div>
         <div class="row">
-            <b>{% trans "Year of publishing" %}:</b> {{ scientificarticle.year_of_publishing }}
+            <b>{% trans "Year of publishing" %}:&nbsp;</b> {{ scientificarticle.year_of_publishing }}
         </div>
         <div class="row">
-            <a href="{{ scientificarticle.url }}">
-                {{ scientificarticle.url }}
-            </a>
+            <b>URL:&nbsp;</b>
+            {% if scientificarticle.url %}
+                <a href="{{ scientificarticle.url }}">
+                    {{ scientificarticle.url }}
+                </a>
+            {% else %}
+                <a href="https://doi.org/{{ scientificarticle.DOI }}">
+                    https://doi.org/{{ scientificarticle.DOI }}
+                </a>
+            {% endif %}
         </div>
         <div class="spacing"></div>
     </div>

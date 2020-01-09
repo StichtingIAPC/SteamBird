@@ -4,6 +4,7 @@ considered the key point an MSP or MSP line is about
 """
 
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from polymorphic.models import PolymorphicModel
@@ -76,6 +77,9 @@ class OtherMaterial(StudyMaterialEdition):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('material_management:otherdetail', args=[self.pk])
+
     class Meta:
         verbose_name = _("Other Material")
         verbose_name_plural = _("Other Materials")
@@ -127,6 +131,9 @@ class Book(StudyMaterialEdition):
     def __str__(self):
         return "{}: {}, {} Edition".format(self.ISBN, self.name, self.edition)
 
+    def get_absolute_url(self):
+        return reverse('material_management:isbndetail', args=[self.ISBN])
+
     class Meta:
         verbose_name = _("Book")
         verbose_name_plural = _("Books")
@@ -166,6 +173,9 @@ class ScientificArticle(StudyMaterialEdition):
 
     def __str__(self):
         return "{}{}".format(self.name, ' (' + self.DOI + ')' if self.DOI else '')
+
+    def get_absolute_url(self):
+        return reverse('material_management:articledetail', args=[self.DOI])
 
     class Meta:
         verbose_name = _("Scientific Article")
