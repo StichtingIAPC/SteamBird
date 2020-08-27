@@ -3,8 +3,6 @@ from typing import List, Optional
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, ugettext as _t
 
-from email.utils import make_msgid
-
 
 class MailTopic(models.Model):
     """
@@ -37,10 +35,6 @@ class MailTopic(models.Model):
         return "SteamBird_{}".format(self.pk)
 
 
-def gen_msgid():
-    return make_msgid("SteamBird")
-
-
 class MailMessage(models.Model):
     """
     A mail message describes a single message, that either still needs to be
@@ -48,7 +42,6 @@ class MailMessage(models.Model):
     """
 
     message_id: str = models.TextField(
-        default=gen_msgid,
         unique=True,
         verbose_name=_("The content of the Message-ID header"),
     )
@@ -66,6 +59,16 @@ class MailMessage(models.Model):
         on_delete=models.DO_NOTHING,
         verbose_name=_("The topic this message belongs to"),
     )
+
+    def save_and_send(self):
+        """
+        Sends the mail, and if it succeeded, saves this object, and if it fails,
+        doesn't, and throws.
+
+        It also populates this object with generated content like a Message-ID
+        and some default headers like the In-Reply-To and References.
+        """
+        pass
 
     def _in_reply_to_hdr_body(self) -> Optional[str]:
         msg = self.topic.last_message()

@@ -16,6 +16,7 @@ from email.encoders import encode_base64
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import make_msgid
 from typing import List, Tuple
 
 from django import get_version
@@ -47,6 +48,10 @@ def get_mailer_name():
         "python/{}.{}".format(sys.version_info[0], sys.version_info[1])
     ]
     return "steambird/{} ({})".format("0.1", "; ".join(tags))
+
+
+def generate_msgid(specifiers: List[str]):
+    return make_msgid(".".join(["SteamBird"] + specifiers))
 
 
 @contextmanager
