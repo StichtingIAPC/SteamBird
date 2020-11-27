@@ -56,8 +56,8 @@ class CourseView(IsTeacherMixin, TemplateView):
                 year=data['year'],
                 period=data['period']
             )
-        except Teacher.DoesNotExist:
-            raise Http404
+        except Teacher.DoesNotExist as error:
+            raise Http404 from error
 
         return data
 
@@ -131,8 +131,8 @@ class MSPDetail(IsTeacherMixin, FormView):
         """
         try:
             msp = MSP.objects.get(pk=self.kwargs.get("pk"))
-        except MSPLine.DoesNotExist:
-            raise Http404
+        except MSPLine.DoesNotExist as error:
+            raise Http404 from error
 
         data = super().get_context_data(**kwargs)
         # The main MSP

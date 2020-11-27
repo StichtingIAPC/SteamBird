@@ -91,7 +91,8 @@ disable=parameter-unpacking,
         too-few-public-methods,
         too-many-ancestors,
         no-member,
-        superfluous-parens
+        superfluous-parens,
+        invalid-str-returned
 
 enable=c-extension-no-member
 
