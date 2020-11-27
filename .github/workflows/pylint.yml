@@ -2,20 +2,22 @@ name: Run pylint
 on: [push]
 jobs:
   do-lint:
-    # Note that Ubuntu 20.04 runs Python 3.8, which is currently required.
-    # If we need to upgrade to a later version of python, so would this
-    # image need to be updated.
-    # For some reason, actiosn/setup-python doesn't seem to work for this.
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out branch
         uses: actions/checkout@v2
+      - name: Install python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.8"
       - name: Install dependencies
-        uses: VaultVulp/action-pipenv@v2.0.1
-        with:
-          command: install -d
+        run: |
+          echo "Check python version"
+          python -V
+          python -m pip install --upgrade pip
+          python -m pip install pipenv
+          pipenv sync -d
       - name: Lint
-        uses: VaultVulp/action-pipenv@v2.0.1
-        with:
-          command: run pylint --rcfile=.pylintrc steambird -dfixme
+        run: |
+          pipenv run pylint --rcfile=.pylintrc steambird -dfixme
 
