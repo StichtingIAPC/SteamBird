@@ -10,6 +10,7 @@ jobs:
         with:
           command: install -d
       - name: Lint
+        uses: VaultVulp/action-pipenv@v2.0.1
         with:
           command: run pylint --rcfile=.pylintrc steambird -dfixme
 
