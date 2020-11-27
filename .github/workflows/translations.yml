@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Check out branch
         uses: actions/checkout@v2
+      - name: Install gettext
+        run: |
+          sudo apt-get install -y gettext
       - name: Check that ${{ matrix.language }} doesn't contain ${{ matrix.type }} entries
         run: |
           msgattrib --${{ matrix.type }} locale/${{ matrix.language }}/LC_MESSAGES/django.po --color=never
