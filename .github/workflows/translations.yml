@@ -31,12 +31,9 @@ jobs:
           done
           if [ "${{ matrix.report-type }}" = "error" ]
           then
-            git log --format=%aN | sort | uniq | while read line
-            do
-              if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null
-              then
-                exit 1
-              fi
-            done
+            if ! (msgattrib --${{ matrix.type }} locale/${{ matrix.language }}/LC_MESSAGES/django.po | grep '^')
+            then
+              exit 1
+            fi
           fi
 
