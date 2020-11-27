@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d306fbef47014ad5c77ddd481d4e59d303a230e0b74f0e68668ba705a83d442d"
+            "sha256": "de87af5aa7f00980f26762cbf92cf9c793e7b9322394071552416f8fb3c19be7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -184,11 +184,10 @@
         },
         "pysidian-core": {
             "hashes": [
-                "md5:db1e9e2d6c4d2f22bb6c9aad067cb57d",
-                "sha256:18ad962df14431298782c35452374ac0ab22e26e06338b854e8373bae9a22683"
+                "sha256:78881a2878650ef817b20e4d0ef22cf1e9f359d650205e157b15077bc2bffdff"
             ],
             "index": "pypi",
-            "version": "==0.0.10"
+            "version": "==0.0.11"
         },
         "python-dateutil": {
             "hashes": [
@@ -375,7 +374,7 @@
                 "sha256:dcab1d98b469a12a1a624ead220584391648790275560e1a43e54c5dceae65e7",
                 "sha256:dcaeec1b5f0eca77faea2a35ab790b4f3680ff75590bfcb7145986905aab2f58"
             ],
-            "markers": "python_version >= '3.6' and python_version < '4'",
+            "markers": "python_version >= '3.6' and python_version < '4.0'",
             "version": "==5.6.4"
         },
         "jinja2": {
