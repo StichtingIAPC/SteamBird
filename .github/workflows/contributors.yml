@@ -1,0 +1,27 @@
+name: Lint
+on: [push]
+jobs:
+  do-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v2
+      - name: Check contributors
+        run: |
+          git log --format=%aN |\
+            sort | uniq |\
+            while read line
+            do if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null
+                then echo "ERROR: $line"
+              fi
+            done
+          git log --format=%aN |\
+            sort | uniq |\
+            while read line
+            do if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null
+                then exit 1
+              fi
+            done
+
+
+
