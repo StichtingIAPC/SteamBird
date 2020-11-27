@@ -125,7 +125,7 @@ class StudyAssociation(models.Model):
 
     def __str__(self):
         return '{} ({})'.format(self.name, ', '.join(
-            [study for study in self.studies.values_list('slug', flat=True)]))
+            self.studies.values_list('slug', flat=True)))
 
 
 class AuthToken(models.Model):

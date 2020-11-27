@@ -143,7 +143,7 @@ class StudyDetailView(IsStudyAssociationMixin, FormView):
 
         form.instance.study = Study.objects.get(pk=self.kwargs['pk'])
         form.save()
-        return super(StudyDetailView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('boecie:study.list', kwargs={'pk': self.kwargs['pk']})
@@ -318,7 +318,7 @@ class CourseCreateView(IsStudyAssociationMixin, CreateView):
         :return: context dictionary
         """
 
-        context = super(CourseCreateView, self).get_context_data()
+        context = super().get_context_data()
         context['is_edit'] = False
         context['course_form'] = context['form']
         return context
@@ -378,7 +378,7 @@ class TeacherEditView(IsStudyAssociationMixin, UpdateView):
         :return: Dictionary object
         """
 
-        result = super(TeacherEditView, self).get_context_data()
+        result = super().get_context_data()
         result['courses'] = Teacher.objects.get(pk=self.kwargs['pk']).all_courses_year(
             year=Config.get_system_value('year')
         )
@@ -694,8 +694,8 @@ class MSPDetail(IsStudyAssociationMixin, FormView):
         """
         try:
             msp = MSP.objects.get(pk=self.kwargs.get("pk"))
-        except MSPLine.DoesNotExist:
-            raise Http404
+        except MSPLine.DoesNotExist as error:
+            raise Http404 from error
 
         data = super().get_context_data(**kwargs)
         # The main MSP
