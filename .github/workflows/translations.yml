@@ -1,0 +1,17 @@
+name: Check that translations are complete
+on: [push]
+jobs:
+  do-check-translations:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: [nl, en]
+        type: [fuzzy, obsolete, untranslated]
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v2
+      - name: Check that ${{ matrix.language }} doesn't contain ${{ matrix.type }} entries
+        run: |
+          msgattrib --${{ matrix.type }} locale/${{ matrix.language }}/LC_MESSAGES/django.po --color=never
+          ! (msgattrib --${{ matrix.type }} locale/${{ matrix.language }}/LC_MESSAGES/django.po | grep '^')
+
