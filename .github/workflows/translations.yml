@@ -1,0 +1,39 @@
+name: Check that translations are complete
+on: [push]
+jobs:
+  do-check-translations:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    strategy:
+      matrix:
+        language: [nl, en]
+        type: [only-fuzzy, untranslated]
+        report-type: [error]
+        include:
+          - language: nl
+            type: only-obsolete
+            report-type: warning
+          - language: en
+            type: only-obsolete
+            report-type: warning
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v2
+      - name: Install gettext
+        run: |
+          sudo apt-get install -y gettext
+      - name: Check that ${{ matrix.language }} doesn't contain ${{ matrix.type }} entries
+        run: |
+          msgattrib --${{ matrix.type }} locale/${{ matrix.language }}/LC_MESSAGES/django.po | while read -r msg
+          do
+            echo "$msg" | grep msgid | grep -v "\"\"" | cut -d' ' -f 3-| awk '{ print "::${{ matrix.report-type }} ::Translation issue: " $0 }'
+            echo "$msg"
+          done
+          if [ "${{ matrix.report-type }}" = "error" ]
+          then
+            if (msgattrib --${{ matrix.type }} locale/${{ matrix.language }}/LC_MESSAGES/django.po | grep '^')
+            then
+              exit 1
+            fi
+          fi
+
