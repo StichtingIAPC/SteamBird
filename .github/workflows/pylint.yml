@@ -1,0 +1,15 @@
+name: Run pylint
+on: [push]
+jobs:
+  do-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        uses: VaultVulp/action-pipenv@v2.0.1
+        with:
+          command: install -d
+      - name: Lint
+        with:
+          command: run pylint --rcfile=.pylintrc steambird -dfixme
+
