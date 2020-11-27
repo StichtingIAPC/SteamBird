@@ -1,0 +1,39 @@
+name: Unit tests
+on: [push]
+
+jobs:
+  normal-unit-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: stoomvogel
+          POSTGRES_PASSWORD: stoomvogel
+          POSTGRES_DB: stoomvogel
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v2
+      - name: Install python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.8"
+      - name: Install dependencies
+        run: |
+          echo "Check python version"
+          python -V
+          python -m pip install --upgrade pip
+          python -m pip install pipenv
+          pipenv sync -d
+      - name: Prepare Django
+        run: |
+          pipenv run python manage.py migrate
+      - name: Test
+        run: |
+          pipenv run python manage.py test steambird --tag=unit
