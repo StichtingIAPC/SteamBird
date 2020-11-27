@@ -9,10 +9,10 @@ verify_ssl = true
 name = "iapc-releases"
 
 [packages]
-django = ">=2.1"
-django-modeltranslation = "==0.13b1"
-django-polymorphic = "==2.0.3"
-pysidian-core = ">=0.0.9"
+django = ">=3,<4"
+django-modeltranslation = ">=0.16,<0.17"
+django-polymorphic = ">=3,<4"
+pysidian-core = "==0.0.10"
 isbnlib = "*"
 django_select2 = "*"
 psycopg2 = "*"
@@ -36,4 +36,4 @@ sphinx-autodoc-annotation = "*"
 m2r = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
