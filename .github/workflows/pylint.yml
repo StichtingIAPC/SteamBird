@@ -1,4 +1,4 @@
-name: Run pylint
+name: Lint
 on: [push]
 jobs:
   do-lint:

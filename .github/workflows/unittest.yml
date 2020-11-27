@@ -34,6 +34,10 @@ jobs:
       - name: Prepare Django
         run: |
           pipenv run python manage.py migrate
+        env:
+          DB_HOST: postgres
       - name: Test
         run: |
           pipenv run python manage.py test steambird --tag=unit
+        env:
+          DB_HOST: postgres
