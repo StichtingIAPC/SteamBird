@@ -3,7 +3,6 @@ on: [push]
 jobs:
   do-check-translations:
     runs-on: ubuntu-latest
-    continue-on-error: true
     strategy:
       matrix:
         language: [nl, en]
