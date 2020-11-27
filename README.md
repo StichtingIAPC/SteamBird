@@ -1,8 +1,8 @@
 # SteamBird
 
 [![Pipeline](https://git.iapc.utwente.nl/www/steambird/badges/master/pipeline.svg)](https://git.iapc.utwente.nl/www/steambird/pipelines)
-[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg?logo=python)](https://www.python.org/downloads/release/python-370/)
-[![Django 2.1](https://img.shields.io/badge/django-2.1-336f33.svg?logo=django)](https://docs.djangoproject.com/en/2.1/releases/2.1/)
+[![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg?logo=python)](https://www.python.org/downloads/release/python-380/)
+[![Django 3.1](https://img.shields.io/badge/django-3.1-336f33.svg?logo=django)](https://docs.djangoproject.com/en/3.1/releases/3.1/)
 [![Pipenv](https://img.shields.io/badge/pipenv-%E2%9C%94-brightgreen.svg)](https://pipenv.readthedocs.io/en/latest/)
 [![GitLab](https://img.shields.io/badge/GitLab-IAPC-brightgreen.svg?logo=gitlab)](https://git.iapc.utwente.nl/www/steambird)
 
