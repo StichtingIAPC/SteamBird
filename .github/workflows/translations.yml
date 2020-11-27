@@ -30,7 +30,7 @@ jobs:
             echo "$msg"
           done
           if [ "${{ matrix.report-type }}" = "error" ]
-          do
+          then
             git log --format=%aN | sort | uniq | while read line
             do
               if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null
