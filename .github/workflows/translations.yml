@@ -24,6 +24,19 @@ jobs:
           sudo apt-get install -y gettext
       - name: Check that ${{ matrix.language }} doesn't contain ${{ matrix.type }} entries
         run: |
-          msgattrib --${{ matrix.type }} locale/${{ matrix.language }}/LC_MESSAGES/django.po | while read -r msg; do echo "$msg" | grep msgid | grep -v "\"\"" | cut -d' ' -f 3-| awk '{ print "::${{ matrix.report-type }} ::Translation issue: " $0 }'; echo "$msg"; done
-          if [ "${{ matrix.report-type }}" = "error" ]; do git log --format=%aN | sort | uniq | while read line; do if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null; then exit 1; fi; done; fi
+          msgattrib --${{ matrix.type }} locale/${{ matrix.language }}/LC_MESSAGES/django.po | while read -r msg
+          do
+            echo "$msg" | grep msgid | grep -v "\"\"" | cut -d' ' -f 3-| awk '{ print "::${{ matrix.report-type }} ::Translation issue: " $0 }'
+            echo "$msg"
+          done
+          if [ "${{ matrix.report-type }}" = "error" ]
+          do
+            git log --format=%aN | sort | uniq | while read line
+            do
+              if ! grep "\"$line\"" CONTRIBUTORS.md > /dev/null
+              then
+                exit 1
+              fi
+            done
+          fi
 
