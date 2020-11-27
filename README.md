@@ -2,6 +2,7 @@
 
 [![Contributors file](https://github.com/StichtingIAPC/SteamBird/workflows/Check%20contributors%20file/badge.svg)](https://github.com/StichtingIAPC/SteamBird/blob/master/CONTRIBUTORS.md)
 [![Lint and test](https://github.com/StichtingIAPC/SteamBird/workflows/Lint%20and%20test/badge.svg)](https://github.com/StichtingIAPC/SteamBird/actions?query=branch%3Amaster)
+[![Translations](https://github.com/StichtingIAPC/SteamBird/workflows/Check%20that%20translations%20are%20complete/badge.svg)](https://github.com/StichtingIAPC/SteamBird/actions?query=branch%3Amaster+workflow%3Atranslations)
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg?logo=python)](https://www.python.org/downloads/release/python-380/)
 [![Django 3.1](https://img.shields.io/badge/django-3.1-336f33.svg?logo=django)](https://docs.djangoproject.com/en/3.1/releases/3.1/)
 [![Pipenv](https://img.shields.io/badge/pipenv-%E2%9C%94-brightgreen.svg)](https://pipenv.readthedocs.io/en/latest/)
