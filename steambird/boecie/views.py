@@ -23,7 +23,7 @@ from django_addanother.views import CreatePopupMixin
 from steambird.boecie.forms import ConfigForm, get_course_form, TeacherForm, \
     StudyCourseForm, LmlExportForm, MSPCreateForm
 from steambird.models import Book, Config, MSP, Study, Course, Teacher, \
-    CourseStudy, MSPLineType, MSPLine, StudyMaterialEdition, AuthToken
+    CourseStudy, MSPLineType, MSPLine, StudyMaterialEdition, AuthToken, StudyAssociation
 from steambird.models.coursetree import Period
 from steambird.perm_utils import IsStudyAssociationMixin, IsBoecieMixin
 from steambird.teacher.forms import PrefilledSuggestAnotherMSPLineForm, \
@@ -60,6 +60,7 @@ class HomeView(IsStudyAssociationMixin, View):
         period = Config.get_system_value('period')
 
         studies = Study.objects.order_by('type') \
+            .filter(studyassociation__users__in=[self.request.user]) \
             .annotate(course_total=Count('course', filter=Q(
                 course__period=period,
                 course__calendar_year=year))) \
@@ -67,7 +68,7 @@ class HomeView(IsStudyAssociationMixin, View):
                 course__updated_teacher=True,
                 course__period=period,
                 course__calendar_year=year))) \
-            .annotate(courses_updated_assications=Count('course', filter=Q(
+            .annotate(courses_updated_associations=Count('course', filter=Q(
                 course__updated_associations=True,
                 course__period=period,
                 course__calendar_year=year)))
@@ -75,7 +76,7 @@ class HomeView(IsStudyAssociationMixin, View):
         for study in studies:
             course_total = study.course_total
             courses_updated_teacher = study.courses_updated_teacher
-            courses_updated_associations = study.courses_updated_assications
+            courses_updated_associations = study.courses_updated_associations
             context['types'][study.type].append({
                 'name': study.name,
                 'type': study.type,
@@ -90,7 +91,11 @@ class HomeView(IsStudyAssociationMixin, View):
                     round((((courses_updated_associations - courses_updated_teacher) /
                             course_total * 100) if course_total > 0 else 0), 2)
             })
+
+        associations = StudyAssociation.objects.filter(users__in=[self.request.user])
+
         context["types"] = dict(context["types"])
+        context["studyassociations"] = associations
 
         # TODO: Add fixed MSP (not yet finalized by teacher) count (?)
         return render(request, "boecie/index.html", context)

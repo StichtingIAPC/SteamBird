@@ -5,7 +5,12 @@
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
-        <h2>Project SteamBird - Boecie Overview</h2>
+        <h2>Boecie Overview</h2>
+        <h3>|
+            {% for studyassociation in studyassociations %}
+                {{ studyassociation.name }} |
+            {% endfor %}
+        </h3>
         <br>
         <div class="col-12">
             {% for type, studies in types.items %}
