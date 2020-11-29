@@ -18,3 +18,6 @@ By adding my name to this document, I agree to the terms laid out in the
   using the additional names:
   * "A.B.R. Flake"
   * "bflake"
+* "Jesse Visser"<br/>
+    using the additional name:
+    * "Jessseee"
