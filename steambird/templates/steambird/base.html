@@ -20,36 +20,61 @@
     {% trans "Steambird" %}
 {% endblock %}
 
-{% block nav_items %}
-    {% url 'index' as home %}
-    {% url 'teacher:index' as teacher_home %}
-    {% url 'boecie:index' as boecie_home %}
-
-    <li class="{% active_menu home %}">
-        <a class="nav-link" href="{{ home }}">
-            {% trans "Home" %}
-        </a>
-    </li>
-    <li class="{% active_menu teacher_home %}">
-        <a class="nav-link" href="{{ teacher_home }}">
-            {% trans "Teacher" %}
-        </a>
-    </li>
-    <li class="{% active_menu boecie_home %}">
-        <a class="nav-link" href="{{ boecie_home }}">
-            {% trans "Boecie" %}
-        </a>
-    </li>
-{% endblock %}
-
 {% block content %}
     <div class="spacing"></div>
     <div class="container">
-        <h2>
-            {% trans "Project SteamBird" %}</h2>
-        <p>
-            {% trans "@Luuk, Deal with it." %}
-        </p>
+        <div class="row">
+            <div class="offset-md-1 offset-lg-0 col-md-5 col-lg-4 col-xl-3 order-0 d-none d-md-block">
+                <a href="{% url 'index' %}">
+                    <img class="ml-4" style="height:246px" src="{% static 'img/steambird.png' %}">
+                </a>
+            </div>
+            <div class="col-md-5 col-lg-4 col-xl-3 order-1">
+                <a class="text-decoration-none" href="{% url 'teacher:index' %}">
+                    <div class="card tile my-2 mx-1">
+                        <i class="icon fa fas fa-chalkboard-teacher"></i>
+                        <div class="card-caption">
+                           {% trans "Teacher" %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="offset-md-1 offset-lg-0 col-md-5 col-lg-4 col-xl-3 order-2">
+                <a class="text-decoration-none" href="https://boeken.iapc.utwente.nl/" target="_blank">
+                    <div class="card tile my-2 mx-1">
+                        <i class="icon fa fas fa-user-graduate"></i>
+                        <div class="card-caption">
+                            {% trans "Student" %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-5 col-lg-4 col-xl-3 order-3">
+                <a class="text-decoration-none" href="{% url 'boecie:index' %}">
+                    <div class="card tile my-2 mx-1">
+                        <i class="icon fa fas fa-book-open"></i>
+                        <div class="card-caption">
+                            {% trans "BoeCie" %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="offset-md-1 offset-lg-0 col-md-10 col-lg-8 col-xl-6 order-4 order-lg-0 order-xl-4">
+                <div class="card card-textbox my-2 mx-1">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Welcome to project SteamBird
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <i>{% trans "@Luuk, Deal with it." %}</i>
+                        <p>SteamBird is the replacement for the ABC (Arjan's Book Companion) system of IAPC</p>
+                        <p>For years the book committee of IAPC together with the study associations Inter-Actief and Proto made sure all book and course information is up to date in order for students to be able to buy the right books for their courses. Over the years, this has led to the development of the ABC system that aids the book committee in doing its task. Steambird is supposed to be a more mature and more modern service to replace the dated ABC system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 

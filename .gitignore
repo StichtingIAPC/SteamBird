@@ -15,4 +15,5 @@ steambird/local.py
 
 docs/build/
 
-static/
+static/*
+!static/img
